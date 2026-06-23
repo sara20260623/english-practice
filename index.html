@@ -159,7 +159,7 @@ function showHint() {
   const div = document.createElement('div');
   div.className = 'msg hint';
   div.innerHTML = '💡 参考说法：<br>' + turn.hints.map((h,i) =>
-    `• ${h}<br><span style="font-size:.72rem;color:#a16207;opacity:.85">　${turn.hintsZh[i]}</span>`
+    `• ${h} <button onclick="speak('${h.replace(/'/g,"\\'")}') " style="background:none;border:none;cursor:pointer;font-size:.8rem;opacity:.6;vertical-align:middle">🔊</button><br><span style="font-size:.72rem;color:#a16207;opacity:.85">　${turn.hintsZh[i]}</span>`
   ).join('<br>');
   const msgs = document.getElementById('messages');
   msgs.appendChild(div);
