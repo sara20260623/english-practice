@@ -10,12 +10,12 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4f8;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
 h1{font-size:1.4rem;color:#1a202c;margin-bottom:16px}
 .scenes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:700px;margin-bottom:20px}
-.scene-btn{padding:14px;border:2px solid #e2e8f0;border-radius:10px;background:#fff;cursor:pointer;text-align:left;transition:.15s}
+.scene-btn{padding:20px 14px 16px;border:2px solid #e2e8f0;border-radius:14px;background:#fff;cursor:pointer;text-align:center;transition:.15s}
 .scene-btn:hover{border-color:#4a90d9;background:#ebf4ff}
 .scene-btn.active{border-color:#4a90d9;background:#ebf4ff}
-.scene-btn .icon{font-size:1.4rem}
-.scene-btn .label{font-size:.85rem;font-weight:600;color:#2d3748;margin-top:4px}
-.scene-btn .desc{font-size:.75rem;color:#718096;margin-top:2px}
+.scene-btn .icon{font-size:2rem}
+.scene-btn .label{font-size:.88rem;font-weight:600;color:#2d3748;margin-top:8px}
+.scene-btn .desc{font-size:.75rem;color:#718096;margin-top:4px}
 .chat-box{width:100%;max-width:700px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;flex-direction:column;height:480px}
 .messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
 .msg{max-width:78%;padding:10px 14px;border-radius:14px;font-size:.9rem;line-height:1.5}
@@ -94,6 +94,11 @@ textarea:focus{border-color:#4a90d9}
 .phonics-layout{display:flex;gap:12px;flex-wrap:wrap}
 .phonics-sidebar{width:200px;min-width:140px;display:flex;flex-direction:column;gap:6px;max-height:560px;overflow-y:auto}
 .phonics-main{flex:1;min-width:260px}
+@media(max-width:600px){
+  .phonics-layout{flex-direction:column}
+  .phonics-sidebar{width:100%;max-height:none;flex-direction:row;flex-wrap:wrap;overflow-y:visible}
+  .phonics-cat-btn{font-size:.75rem;padding:5px 8px}
+}
 .phonics-cat-btn{padding:7px 10px;border:1px solid #e2e8f0;border-radius:8px;background:#f7fafc;cursor:pointer;font-size:.82rem;text-align:left;color:#4a5568}
 .phonics-cat-btn.active{border-color:#4a90d9;background:#ebf4ff;color:#2b6cb0;font-weight:600}
 .phonics-card{background:#f7fafc;border-radius:12px;padding:16px;margin-bottom:12px}
@@ -125,6 +130,39 @@ textarea:focus{border-color:#4a90d9}
 .stat-label{font-size:.75rem;color:#718096;margin-top:2px}
 /* 词汇卡片音标 */
 .vocab-card .sym{font-size:.72rem;color:#4a90d9;margin-top:1px}
+/* 场景收藏 */
+.scene-btn .star{position:absolute;top:5px;right:7px;font-size:.75rem;opacity:.35;cursor:pointer;background:none;border:none;padding:0;line-height:1}
+.scene-btn .star.on{opacity:.9}
+.scene-btn{position:relative}
+/* 暗色模式 */
+@media(prefers-color-scheme:dark){
+  body{background:#1a202c;color:#e2e8f0}
+  h1{color:#e2e8f0}
+  .chat-box,.panel,.quiz-box,.repeat-card,.phonics-card{background:#2d3748;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+  .msg.bot{background:#374151;color:#e2e8f0}
+  .msg.hint{background:#3d3000;border-color:#92400e;color:#fcd34d}
+  .msg.bot .zh{color:#9ca3af;border-top-color:#4b5563}
+  .tab-btn{background:#2d3748;border-color:#4b5563;color:#cbd5e0}
+  .tab-btn.active{background:#1e3a5f;border-color:#4a90d9;color:#93c5fd}
+  .scene-btn{background:#2d3748;border-color:#4b5563}
+  .scene-btn .label{color:#e2e8f0}
+  .scene-btn .desc{color:#9ca3af}
+  .scene-btn:hover,.scene-btn.active{background:#1e3a5f;border-color:#4a90d9}
+  textarea{background:#374151;border-color:#4b5563;color:#e2e8f0}
+  .vocab-card{background:#2d3748;border-color:#4b5563}
+  .vocab-card .en{color:#e2e8f0}
+  .vocab-card:hover{background:#374151}
+  .vocab-section{color:#9ca3af;border-bottom-color:#4b5563}
+  .wordbook-item,.history-item,.phonics-word,.phonics-sent,.stat-card{background:#374151}
+  .vocab-search,.quiz-input{background:#374151;border-color:#4b5563;color:#e2e8f0}
+  .speed-btn,.cat-btn,.phonics-cat-btn{background:#374151;border-color:#4b5563;color:#cbd5e0}
+  .quiz-btn.secondary{background:#374151;border-color:#4b5563;color:#cbd5e0}
+  .phonics-card{background:#374151}
+}
+/* 复习提醒 */
+.review-badge{display:inline-block;background:#ef4444;color:#fff;border-radius:10px;font-size:.65rem;padding:1px 5px;margin-left:4px;vertical-align:middle}
+/* 进步曲线 */
+#chartCanvas{width:100%;max-width:668px;height:160px;display:block;margin-top:12px}
 </style>
 </head>
 <body>
@@ -135,7 +173,7 @@ textarea:focus{border-color:#4a90d9}
   <button class="tab-btn" onclick="switchTab('quiz')">🧠 测验</button>
   <button class="tab-btn" onclick="switchTab('repeat')">🎙️ 跟读</button>
   <button class="tab-btn" onclick="switchTab('phonics')">🔤 音标</button>
-  <button class="tab-btn" onclick="switchTab('wordbook')">⭐ 单词本</button>
+  <button class="tab-btn" onclick="switchTab('wordbook')">⭐ 单词本<span id="reviewBadge" class="review-badge" style="display:none">0</span></button>
   <button class="tab-btn" onclick="switchTab('history')">📈 练习记录</button>
 </div>
 <div class="speed-bar" style="width:100%;max-width:700px">
@@ -187,6 +225,7 @@ textarea:focus{border-color:#4a90d9}
 </div>
 <div id="tab-history" class="panel">
   <div class="stats-grid" id="statsGrid"></div>
+  <canvas id="chartCanvas"></canvas>
   <div class="history-list" id="historyList"></div>
 </div>
 <script>
@@ -298,15 +337,29 @@ const SCENES = [
 let turnIndex = 0;
 let hintShown = false;
 
+function getFavScenes() { return JSON.parse(localStorage.getItem('favScenes')||'[]'); }
+function toggleFav(id, e) {
+  e.stopPropagation();
+  const favs = getFavScenes();
+  const idx = favs.indexOf(id);
+  if (idx >= 0) favs.splice(idx,1); else favs.push(id);
+  localStorage.setItem('favScenes', JSON.stringify(favs));
+  renderScenes();
+}
+
 function renderScenes() {
+  const favs = getFavScenes();
+  const sorted = [...SCENES].sort((a,b) => (favs.includes(b.id)?1:0)-(favs.includes(a.id)?1:0));
   const c = document.getElementById('scenes');
-  c.innerHTML = SCENES.map(s =>
-    `<button class="scene-btn" onclick="startScene('${s.id}')">
+  c.innerHTML = sorted.map(s => {
+    const isFav = favs.includes(s.id);
+    return `<button class="scene-btn" onclick="startScene('${s.id}')">
+      <button class="star${isFav?' on':''}" onclick="toggleFav('${s.id}',event)" title="收藏">${isFav?'⭐':'☆'}</button>
       <div class="icon">${s.icon}</div>
       <div class="label">${s.label}</div>
       <div class="desc">${s.desc}</div>
-    </button>`
-  ).join('');
+    </button>`;
+  }).join('');
 }
 
 function startScene(id) {
@@ -478,6 +531,7 @@ function showSimilarity(userText) {
 }
 
 renderScenes();
+updateReviewBadge();
 
 // ── tab 切换 ──
 function switchTab(tab) {
@@ -1043,11 +1097,29 @@ function startRepeatMic(targetEn) {
 }
 
 // ── 单词本（localStorage）──
+// ── 单词本 + 复习提醒 ──
+function getReviewDue(word) {
+  if (!word.addedDate) return false;
+  const intervals = [1,3,7,14,30]; // 艾宾浩斯间隔（天）
+  const added = new Date(word.addedDate);
+  const now = new Date();
+  const daysPassed = Math.floor((now - added) / 86400000);
+  return intervals.some(d => d === daysPassed);
+}
+
+function updateReviewBadge() {
+  const book = JSON.parse(localStorage.getItem('wordbook')||'[]');
+  const due = book.filter(getReviewDue).length;
+  const badge = document.getElementById('reviewBadge');
+  if (badge) { badge.style.display = due ? 'inline-block' : 'none'; badge.textContent = due; }
+}
+
 function saveWord(en, zh) {
   const book = JSON.parse(localStorage.getItem('wordbook') || '[]');
   if (!book.find(w => w.en === en)) {
-    book.push({en, zh, date: new Date().toLocaleDateString()});
+    book.push({en, zh, date: new Date().toLocaleDateString(), addedDate: new Date().toISOString()});
     localStorage.setItem('wordbook', JSON.stringify(book));
+    updateReviewBadge();
     alert('已加入单词本：' + en);
   } else {
     alert('已在单词本中：' + en);
@@ -1057,16 +1129,20 @@ function saveWord(en, zh) {
 function renderWordbook() {
   const book = JSON.parse(localStorage.getItem('wordbook') || '[]');
   const el = document.getElementById('wordbookList');
+  updateReviewBadge();
   if (!book.length) { el.innerHTML = '<div style="color:#a0aec0;font-size:.85rem;padding:12px">单词本是空的，在词汇卡片中点「+ 单词本」添加</div>'; return; }
-  el.innerHTML = book.map((w,i) =>
-    `<div class="wordbook-item">
-      <span><b>${w.en}</b> — ${w.zh}</span>
+  const dueCount = book.filter(getReviewDue).length;
+  const dueHdr = dueCount ? `<div style="background:#fef9c3;border:1px solid #fde047;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:.82rem;color:#854d0e">🔔 今天有 <b>${dueCount}</b> 个单词需要复习（按艾宾浩斯遗忘曲线提醒）</div>` : '';
+  el.innerHTML = dueHdr + book.map((w,i) => {
+    const due = getReviewDue(w);
+    return `<div class="wordbook-item" style="${due?'border-left:3px solid #f59e0b':''}">
+      <span><b>${w.en}</b>${due?' <span class="review-badge">复习</span>':''} — ${w.zh}</span>
       <span>
-        <button onclick="speak('${w.en}')" style="background:none;border:none;cursor:pointer;font-size:.85rem;opacity:.6">🔊</button>
+        <button onclick="speak('${w.en.replace(/'/g,"\\'")}') " style="background:none;border:none;cursor:pointer;font-size:.85rem;opacity:.6">🔊</button>
         <button class="del-btn" onclick="delWord(${i})">删除</button>
       </span>
-    </div>`
-  ).join('');
+    </div>`;
+  }).join('');
 }
 
 function delWord(i) {
@@ -1103,6 +1179,45 @@ function renderHistory() {
     <div class="stat-card"><div class="stat-num">${avg}%</div><div class="stat-label">平均得分</div></div>
     <div class="stat-card"><div class="stat-num" style="font-size:1rem">${topScene}</div><div class="stat-label">最常练场景</div></div>
   `;
+  // 进步曲线（最近20条，按时间正序）
+  const canvas = document.getElementById('chartCanvas');
+  const recent = [...hist].reverse().slice(-20);
+  if (canvas && recent.length >= 2) {
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = canvas.offsetWidth * dpr;
+    canvas.height = 160 * dpr;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    const W = canvas.offsetWidth, H = 160, pad = 24;
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--chart-bg') || '#f7fafc';
+    ctx.fillRect(0,0,W,H);
+    // grid lines
+    ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 1;
+    [0,0.25,0.5,0.75,1].forEach(v => {
+      const y = H - pad - v*(H-pad*2);
+      ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(W-pad,y); ctx.stroke();
+      ctx.fillStyle = '#a0aec0'; ctx.font = '10px sans-serif';
+      ctx.fillText((v*100).toFixed(0)+'%', 2, y+4);
+    });
+    // line
+    const step = (W - pad*2) / (recent.length - 1);
+    ctx.beginPath(); ctx.strokeStyle = '#4a90d9'; ctx.lineWidth = 2;
+    recent.forEach((h,i) => {
+      const x = pad + i*step, y = H - pad - h.score*(H-pad*2);
+      i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+    // dots
+    recent.forEach((h,i) => {
+      const x = pad + i*step, y = H - pad - h.score*(H-pad*2);
+      ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2);
+      ctx.fillStyle = h.score>=0.6?'#166534':h.score>=0.3?'#854d0e':'#991b1b';
+      ctx.fill();
+    });
+    ctx.fillStyle = '#718096'; ctx.font = '11px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('近期得分走势（最近'+recent.length+'次）', W/2, H-4);
+  } else if (canvas) { canvas.width = 0; }
   el.innerHTML = hist.map(h => {
     const cls = h.score >= 0.6 ? 'good' : h.score >= 0.3 ? 'ok' : 'bad';
     const lbl = h.score >= 0.6 ? '✅ 很接近' : h.score >= 0.3 ? '🟡 差一点' : '🔴 差得多';
@@ -1714,6 +1829,8 @@ function renderPhonics(idx) {
   ).join('');
 
   const p = PHONICS[idx];
+  const main = document.getElementById('phoneticsMain');
+  main.scrollIntoView({behavior:'smooth', block:'start'});
   const wordsHtml = p.words.map((w,i) => `
     <div class="phonics-word">
       <div class="pw-en">${w.en} <button onclick="speak('${w.en}')" style="background:none;border:none;cursor:pointer;opacity:.5;font-size:.8rem">🔊</button></div>
