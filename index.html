@@ -100,6 +100,8 @@ textarea:focus{border-color:#4a90d9;box-shadow:0 0 0 3px rgba(74,144,217,.12)}
   .phonics-cat-btn{font-size:.75rem;padding:5px 8px}
 }
 .phonics-cat-btn{padding:7px 10px;border:1px solid #e2e8f0;border-radius:8px;background:#f7fafc;cursor:pointer;font-size:.82rem;text-align:left;color:#4a5568}
+.ph-grp-hdr{font-size:.72rem;font-weight:700;padding:6px 4px 2px;letter-spacing:.5px}
+.ph-grp-sub{font-size:.68rem;color:#a0aec0;padding:2px 4px 3px}
 .phonics-cat-btn.active{border-color:#4a90d9;background:#ebf4ff;color:#2b6cb0;font-weight:600}
 .phonics-card{background:#f7fafc;border-radius:12px;padding:16px;margin-bottom:12px}
 .phonics-symbol{font-size:2.2rem;font-weight:800;color:#2b6cb0;display:inline-block;margin-right:8px}
@@ -1277,584 +1279,726 @@ function exportWordbook() {
 // ── 音标学习 ──
 const PHONICS = [
   {
-    symbol:'/iː/', name:'长音 ee', desc:'嘴角向两边咧开，发长"衣"音，嘴型不变', rhyme:'衣（拉长）',
+    symbol:"/iː/",
+    name:"长音 ee",
+    desc:"嘴角向两边咧开，发长\"衣\"音，嘴型不变",
+    rhyme:"衣（拉长）",
     words:[
-      {en:'data', sym:'/ˈdeɪtə/', zh:'数据', rhyme:'得他'},
-      {en:'team', sym:'/tiːm/', zh:'团队', rhyme:'踢姆'},
-      {en:'feature', sym:'/ˈfiːtʃər/', zh:'功能', rhyme:'非车'},
+      {en:"data", sym:"/ˈdeɪtə/", zh:"数据", rhyme:"得他"},
+      {en:"team", sym:"/tiːm/", zh:"团队", rhyme:"踢姆"},
+      {en:"feature", sym:"/ˈfiːtʃər/", zh:"功能", rhyme:"非车"},
     ],
     sentences:[
-      {en:'The team reviewed the data.', zh:'团队审查了数据。'},
-      {en:'This feature needs to be fixed immediately.', zh:'这个功能需要立即修复。'},
+      {en:"The team reviewed the data.", zh:"团队审查了数据。"},
+      {en:"This feature needs to be fixed immediately.", zh:"这个功能需要立即修复。"},
     ]
   },
   {
-    symbol:'/ɪ/', name:'短音 i', desc:'嘴微张，舌位居中偏高，快速发"衣"，比/iː/短促', rhyme:'衣（短促）',
+    symbol:"/ɪ/",
+    name:"短音 i",
+    desc:"嘴微张，舌位居中偏高，快速发\"衣\"，比/iː/短促",
+    rhyme:"衣（短促）",
     words:[
-      {en:'fix', sym:'/fɪks/', zh:'修复', rhyme:'非克斯'},
-      {en:'pipeline', sym:'/ˈpaɪplaɪn/', zh:'数据管道', rhyme:'派普莱因'},
-      {en:'incremental', sym:'/ˌɪnkrəˈmentl/', zh:'增量的', rhyme:'因克瑞门特'},
+      {en:"fix", sym:"/fɪks/", zh:"修复", rhyme:"非克斯"},
+      {en:"pipeline", sym:"/ˈpaɪplaɪn/", zh:"数据管道", rhyme:"派普莱因"},
+      {en:"incremental", sym:"/ˌɪnkrəˈmentl/", zh:"增量的", rhyme:"因克瑞门特"},
     ],
     sentences:[
-      {en:'Can you fix the pipeline issue?', zh:'你能修复管道问题吗？'},
-      {en:'We use incremental load to reduce run time.', zh:'我们用增量加载来减少运行时间。'},
+      {en:"Can you fix the pipeline issue?", zh:"你能修复管道问题吗？"},
+      {en:"We use incremental load to reduce run time.", zh:"我们用增量加载来减少运行时间。"},
     ]
   },
   {
-    symbol:'/æ/', name:'短音 a', desc:'嘴大张，舌头低平，发介于"啊"和"哎"之间的音', rhyme:'啊哎（混合）',
+    symbol:"/e/",
+    name:"短音 e",
+    desc:"嘴微张，舌位中等，发短促的\"哎\"，比/æ/嘴张得小",
+    rhyme:"哎（短促）",
     words:[
-      {en:'batch', sym:'/bætʃ/', zh:'批次', rhyme:'拜趣'},
-      {en:'backfill', sym:'/ˈbækfɪl/', zh:'回填', rhyme:'拜克菲'},
-      {en:'transaction', sym:'/trænˈzækʃn/', zh:'交易', rhyme:'踹恩扎克辛'},
+      {en:"check", sym:"/tʃek/", zh:"检查"},
+      {en:"test", sym:"/test/", zh:"测试"},
+      {en:"error", sym:"/ˈerər/", zh:"错误", rhyme:"诶若"},
     ],
     sentences:[
-      {en:'The batch job failed last night.', zh:'批处理任务昨晚失败了。'},
-      {en:'We need to backfill the transaction data.', zh:'我们需要回填交易数据。'},
+      {en:"Check the error log for details.", zh:"查看错误日志了解详情。"},
+      {en:"Run the test before deployment.", zh:"部署前先跑测试。"},
     ]
   },
   {
-    symbol:'/ɑː/', name:'长音 ar', desc:'嘴大张，舌头低平后缩，发长"啊"音', rhyme:'啊（拉长）',
+    symbol:"/æ/",
+    name:"短音 a",
+    desc:"嘴大张，舌头低平，发介于\"啊\"和\"哎\"之间的音",
+    rhyme:"啊哎（混合）",
     words:[
-      {en:'schema', sym:'/ˈskiːmə/', zh:'结构/模式', rhyme:'斯基马'},
-      {en:'archive', sym:'/ˈɑːkaɪv/', zh:'归档', rhyme:'啊凯夫'},
-      {en:'target', sym:'/ˈtɑːɡɪt/', zh:'目标', rhyme:'踏盖特'},
+      {en:"batch", sym:"/bætʃ/", zh:"批次", rhyme:"拜趣"},
+      {en:"backfill", sym:"/ˈbækfɪl/", zh:"回填", rhyme:"拜克菲"},
+      {en:"transaction", sym:"/trænˈzækʃn/", zh:"交易", rhyme:"踹恩扎克辛"},
     ],
     sentences:[
-      {en:'Archive the old data to reduce storage cost.', zh:'归档旧数据以降低存储成本。'},
-      {en:'Write the result to the target table.', zh:'把结果写入目标表。'},
+      {en:"The batch job failed last night.", zh:"批处理任务昨晚失败了。"},
+      {en:"We need to backfill the transaction data.", zh:"我们需要回填交易数据。"},
     ]
   },
   {
-    symbol:'/ɔː/', name:'长音 or', desc:'嘴圆唇向前突出，发长"奥"音', rhyme:'哦（圆唇拉长）',
+    symbol:"/ɑː/",
+    name:"长音 ar",
+    desc:"嘴大张，舌头低平后缩，发长\"啊\"音",
+    rhyme:"啊（拉长）",
     words:[
-      {en:'source', sym:'/sɔːrs/', zh:'来源', rhyme:'搔斯'},
-      {en:'report', sym:'/rɪˈpɔːrt/', zh:'报表', rhyme:'瑞破特'},
-      {en:'transform', sym:'/trænsˈfɔːrm/', zh:'转换', rhyme:'踹恩斯佛姆'},
+      {en:"schema", sym:"/ˈskiːmə/", zh:"结构/模式", rhyme:"斯基马"},
+      {en:"archive", sym:"/ˈɑːkaɪv/", zh:"归档", rhyme:"啊凯夫"},
+      {en:"target", sym:"/ˈtɑːɡɪt/", zh:"目标", rhyme:"踏盖特"},
     ],
     sentences:[
-      {en:'Check the source table first.', zh:'先检查来源表。'},
-      {en:'The report is generated every morning.', zh:'报表每天早上生成。'},
+      {en:"Archive the old data to reduce storage cost.", zh:"归档旧数据以降低存储成本。"},
+      {en:"Write the result to the target table.", zh:"把结果写入目标表。"},
     ]
   },
   {
-    symbol:'/uː/', name:'长音 oo', desc:'嘴唇向前圆拢，发长"乌"音', rhyme:'乌（拉长）',
+    symbol:"/ɒ/",
+    name:"短音 o（英式）",
+    desc:"嘴大张唇略圆，发短促\"哦\"，美式中常变为/ɑː/",
+    rhyme:"哦（短促）",
     words:[
-      {en:'tool', sym:'/tuːl/', zh:'工具', rhyme:'图'},
-      {en:'loop', sym:'/luːp/', zh:'循环', rhyme:'鲁普'},
-      {en:'remove', sym:'/rɪˈmuːv/', zh:'移除'},
+      {en:"job", sym:"/dʒɒb/", zh:"作业", rhyme:"贾博"},
+      {en:"log", sym:"/lɒɡ/", zh:"日志", rhyme:"咯格"},
+      {en:"drop", sym:"/drɒp/", zh:"删除/丢弃", rhyme:"追阿普"},
     ],
     sentences:[
-      {en:'Use this tool to remove duplicates.', zh:'用这个工具来去重。'},
-      {en:'The loop runs until all records are processed.', zh:'循环一直运行直到所有记录处理完。'},
+      {en:"Check the log file for the error.", zh:"查看日志文件中的错误。"},
+      {en:"Do not drop the production table.", zh:"不要删除生产表。"},
     ]
   },
   {
-    symbol:'/ə/', name:'弱读音 schwa', desc:'最常见的英语音，嘴放松，轻发"呃"，出现在非重读音节', rhyme:'呃（轻声）',
+    symbol:"/ɔː/",
+    name:"长音 or",
+    desc:"嘴圆唇向前突出，发长\"奥\"音",
+    rhyme:"哦（圆唇拉长）",
     words:[
-      {en:'data', sym:'/ˈdeɪtə/', zh:'数据', rhyme:'得他'},
-      {en:'database', sym:'/ˈdeɪtəbeɪs/', zh:'数据库', rhyme:'得特贝斯'},
-      {en:'schedule', sym:'/ˈskedʒuəl/', zh:'调度', rhyme:'斯开举'},
+      {en:"source", sym:"/sɔːrs/", zh:"来源", rhyme:"搔斯"},
+      {en:"report", sym:"/rɪˈpɔːrt/", zh:"报表", rhyme:"瑞破特"},
+      {en:"transform", sym:"/trænsˈfɔːrm/", zh:"转换", rhyme:"踹恩斯佛姆"},
     ],
     sentences:[
-      {en:'The database schedule runs at midnight.', zh:'数据库调度在午夜执行。'},
-      {en:'Check the data before loading.', zh:'加载前先检查数据。'},
+      {en:"Check the source table first.", zh:"先检查来源表。"},
+      {en:"The report is generated every morning.", zh:"报表每天早上生成。"},
     ]
   },
   {
-    symbol:'/θ/', name:'清音 th', desc:'舌尖轻触上齿背，气流从两侧送出，不振动声带', rhyme:'思（咬舌）',
+    symbol:"/ʊ/",
+    name:"短音 oo",
+    desc:"嘴唇稍圆，比/uː/更短更放松，发短促\"乌\"",
+    rhyme:"乌（短促）",
     words:[
-      {en:'threshold', sym:'/ˈθreʃhoʊld/', zh:'阈值', rhyme:'斯瑞斯侯德'},
-      {en:'throughput', sym:'/ˈθruːpʊt/', zh:'吞吐量', rhyme:'斯如普特'},
-      {en:'method', sym:'/ˈmeθəd/', zh:'方法'},
+      {en:"put", sym:"/pʊt/", zh:"放入"},
+      {en:"full", sym:"/fʊl/", zh:"全量"},
+      {en:"push", sym:"/pʊʃ/", zh:"推送", rhyme:"普希"},
     ],
     sentences:[
-      {en:'The throughput exceeds the threshold.', zh:'吞吐量超过了阈值。'},
-      {en:'We need a better method to solve this.', zh:'我们需要更好的方法来解决这个问题。'},
+      {en:"Push the full dataset to the target.", zh:"把完整数据集推送到目标端。"},
+      {en:"Put the result into the summary table.", zh:"把结果放入汇总表。"},
     ]
   },
   {
-    symbol:'/v/', name:'摩擦音 v', desc:'上齿轻触下唇，振动声带，中文里没有对应音', rhyme:'无（咬唇）',
+    symbol:"/uː/",
+    name:"长音 oo",
+    desc:"嘴唇向前圆拢，发长\"乌\"音",
+    rhyme:"乌（拉长）",
     words:[
-      {en:'validate', sym:'/ˈvælɪdeɪt/', zh:'验证', rhyme:'拜里带特'},
-      {en:'variance', sym:'/ˈveriəns/', zh:'偏差'},
-      {en:'volume', sym:'/ˈvɒljuːm/', zh:'数据量'},
+      {en:"tool", sym:"/tuːl/", zh:"工具", rhyme:"图"},
+      {en:"loop", sym:"/luːp/", zh:"循环", rhyme:"鲁普"},
+      {en:"remove", sym:"/rɪˈmuːv/", zh:"移除"},
     ],
     sentences:[
-      {en:'Validate the data before writing to the target.', zh:'在写入目标表前先验证数据。'},
-      {en:'The variance exceeds the acceptable range.', zh:'偏差超出了可接受范围。'},
+      {en:"Use this tool to remove duplicates.", zh:"用这个工具来去重。"},
+      {en:"The loop runs until all records are processed.", zh:"循环一直运行直到所有记录处理完。"},
     ]
   },
   {
-    symbol:'/r/', name:'美式 r', desc:'舌尖不碰上颚，向后卷起，嘴唇略圆，是中文里没有的音', rhyme:'儿（卷舌）',
+    symbol:"/ʌ/",
+    name:"短音 u",
+    desc:"嘴微张居中，发短促\"啊\"，比/ɑː/更短更轻",
+    rhyme:"啊（短轻）",
     words:[
-      {en:'reconciliation', sym:'/ˌrekənsɪliˈeɪʃn/', zh:'对账'},
-      {en:'retry', sym:'/ˌriːˈtraɪ/', zh:'重试', rhyme:'瑞追'},
-      {en:'report', sym:'/rɪˈpɔːrt/', zh:'报表', rhyme:'瑞破特'},
+      {en:"run", sym:"/rʌn/", zh:"运行"},
+      {en:"debug", sym:"/ˌdiːˈbʌɡ/", zh:"调试", rhyme:"滴拜格"},
+      {en:"cluster", sym:"/ˈklʌstər/", zh:"集群", rhyme:"克拉斯特"},
     ],
     sentences:[
-      {en:'Run the reconciliation report every month-end.', zh:'每月末运行对账报表。'},
-      {en:'Set the retry count to three.', zh:'把重试次数设为三次。'},
+      {en:"Run the job and check the result.", zh:"运行任务并检查结果。"},
+      {en:"Debug the query to find the issue.", zh:"调试查询找到问题所在。"},
     ]
   },
   {
-    symbol:'/w/', name:'半元音 w', desc:'嘴唇圆拢，快速滑向后面的元音，类似中文"乌"但更短', rhyme:'乌（快速）',
+    symbol:"/ə/",
+    name:"弱读音 schwa",
+    desc:"最常见的英语音，嘴放松，轻发\"呃\"，出现在非重读音节",
+    rhyme:"呃（轻声）",
     words:[
-      {en:'workflow', sym:'/ˈwɜːrkfloʊ/', zh:'工作流', rhyme:'我可夫劳'},
-      {en:'warehouse', sym:'/ˈwerhaʊs/', zh:'仓库', rhyme:'我偶好斯'},
-      {en:'workaround', sym:'/ˈwɜːrkaraʊnd/', zh:'临时方案', rhyme:'我可鹰冉'},
+      {en:"data", sym:"/ˈdeɪtə/", zh:"数据", rhyme:"得他"},
+      {en:"database", sym:"/ˈdeɪtəbeɪs/", zh:"数据库", rhyme:"得特贝斯"},
+      {en:"schedule", sym:"/ˈskedʒuəl/", zh:"调度", rhyme:"斯开举"},
     ],
     sentences:[
-      {en:'The workflow runs every weekday.', zh:'工作流每个工作日运行。'},
-      {en:'This is a workaround, not a real fix.', zh:'这是临时方案，不是真正的修复。'},
+      {en:"The database schedule runs at midnight.", zh:"数据库调度在午夜执行。"},
+      {en:"Check the data before loading.", zh:"加载前先检查数据。"},
     ]
   },
   {
-    symbol:'/dʒ/', name:'塞擦音 j', desc:'类似中文"只"，但舌位更前，嘴唇不圆', rhyme:'知（浊音）',
+    symbol:"/ɜː/",
+    name:"长音 er",
+    desc:"嘴微张居中，舌位居中，发长\"呃\"，美式常带卷舌",
+    rhyme:"呃（拉长卷舌）",
     words:[
-      {en:'job', sym:'/dʒɒb/', zh:'作业/任务', rhyme:'贾博'},
-      {en:'join', sym:'/dʒɔɪn/', zh:'关联', rhyme:'贾因'},
-      {en:'adjustment', sym:'/əˈdʒʌstmənt/', zh:'调整'},
+      {en:"merge", sym:"/mɜːrdʒ/", zh:"合并", rhyme:"目杰"},
+      {en:"service", sym:"/ˈsɜːrvɪs/", zh:"服务", rhyme:"搜维斯"},
+      {en:"alert", sym:"/əˈlɜːrt/", zh:"告警"},
     ],
     sentences:[
-      {en:'The batch job runs every night.', zh:'批处理作业每晚运行。'},
-      {en:'Join the two tables on order ID.', zh:'通过订单ID关联这两张表。'},
-    ]
-  },
-  // ── 其余元音 ──
-  {
-    symbol:'/e/', name:'短音 e', desc:'嘴微张，舌位中等，发短促的"哎"，比/æ/嘴张得小', rhyme:'哎（短促）',
-    words:[
-      {en:'check', sym:'/tʃek/', zh:'检查'},
-      {en:'test', sym:'/test/', zh:'测试'},
-      {en:'error', sym:'/ˈerər/', zh:'错误', rhyme:'诶若'},
-    ],
-    sentences:[
-      {en:'Check the error log for details.', zh:'查看错误日志了解详情。'},
-      {en:'Run the test before deployment.', zh:'部署前先跑测试。'},
+      {en:"Merge the data and trigger an alert if gaps remain.", zh:"合并数据，如有差距则触发告警。"},
+      {en:"The service returned an error.", zh:"服务返回了一个错误。"},
     ]
   },
   {
-    symbol:'/ʌ/', name:'短音 u', desc:'嘴微张居中，发短促"啊"，比/ɑː/更短更轻', rhyme:'啊（短轻）',
+    symbol:"/eɪ/",
+    name:"双元音 ay",
+    desc:"从/e/滑向/ɪ/，嘴先微张再向两侧咧，类似\"哎\"",
+    rhyme:"哎（滑音）",
     words:[
-      {en:'run', sym:'/rʌn/', zh:'运行'},
-      {en:'debug', sym:'/ˌdiːˈbʌɡ/', zh:'调试', rhyme:'滴拜格'},
-      {en:'cluster', sym:'/ˈklʌstər/', zh:'集群', rhyme:'克拉斯特'},
+      {en:"data", sym:"/ˈdeɪtə/", zh:"数据", rhyme:"得他"},
+      {en:"table", sym:"/ˈteɪbl/", zh:"表", rhyme:"台博"},
+      {en:"statement", sym:"/ˈsteɪtmənt/", zh:"语句"},
     ],
     sentences:[
-      {en:'Run the job and check the result.', zh:'运行任务并检查结果。'},
-      {en:'Debug the query to find the issue.', zh:'调试查询找到问题所在。'},
+      {en:"The data in the table looks correct.", zh:"表中的数据看起来是正确的。"},
+      {en:"Review the SQL statement carefully.", zh:"仔细检查SQL语句。"},
     ]
   },
   {
-    symbol:'/ʊ/', name:'短音 oo', desc:'嘴唇稍圆，比/uː/更短更放松，发短促"乌"', rhyme:'乌（短促）',
+    symbol:"/aɪ/",
+    name:"双元音 i/y",
+    desc:"从/ɑː/滑向/ɪ/，嘴先大张再咧向两侧，类似\"爱\"",
+    rhyme:"爱",
     words:[
-      {en:'put', sym:'/pʊt/', zh:'放入'},
-      {en:'full', sym:'/fʊl/', zh:'全量'},
-      {en:'push', sym:'/pʊʃ/', zh:'推送', rhyme:'普希'},
+      {en:"pipeline", sym:"/ˈpaɪplaɪn/", zh:"数据管道", rhyme:"派普莱因"},
+      {en:"type", sym:"/taɪp/", zh:"类型"},
+      {en:"align", sym:"/əˈlaɪn/", zh:"对齐"},
     ],
     sentences:[
-      {en:'Push the full dataset to the target.', zh:'把完整数据集推送到目标端。'},
-      {en:'Put the result into the summary table.', zh:'把结果放入汇总表。'},
+      {en:"Align on the data type before coding.", zh:"编码前先对齐数据类型。"},
+      {en:"The pipeline runs on a nightly schedule.", zh:"管道按夜间计划运行。"},
     ]
   },
   {
-    symbol:'/ɒ/', name:'短音 o（英式）', desc:'嘴大张唇略圆，发短促"哦"，美式中常变为/ɑː/', rhyme:'哦（短促）',
+    symbol:"/ɔɪ/",
+    name:"双元音 oy",
+    desc:"从/ɔː/滑向/ɪ/，嘴先圆唇再咧开，类似\"噢伊\"",
+    rhyme:"哦一",
     words:[
-      {en:'job', sym:'/dʒɒb/', zh:'作业', rhyme:'贾博'},
-      {en:'log', sym:'/lɒɡ/', zh:'日志', rhyme:'咯格'},
-      {en:'drop', sym:'/drɒp/', zh:'删除/丢弃', rhyme:'追阿普'},
+      {en:"join", sym:"/dʒɔɪn/", zh:"关联", rhyme:"贾因"},
+      {en:"avoid", sym:"/əˈvɔɪd/", zh:"避免"},
+      {en:"deploy", sym:"/dɪˈplɔɪ/", zh:"部署", rhyme:"滴破义"},
     ],
     sentences:[
-      {en:'Check the log file for the error.', zh:'查看日志文件中的错误。'},
-      {en:'Do not drop the production table.', zh:'不要删除生产表。'},
+      {en:"Join the fact and dimension tables.", zh:"关联事实表和维度表。"},
+      {en:"Avoid deploying on Friday afternoon.", zh:"避免在周五下午部署。"},
     ]
   },
   {
-    symbol:'/eɪ/', name:'双元音 ay', desc:'从/e/滑向/ɪ/，嘴先微张再向两侧咧，类似"哎"', rhyme:'哎（滑音）',
+    symbol:"/aʊ/",
+    name:"双元音 ow",
+    desc:"从/ɑː/滑向/ʊ/，嘴先大张再圆拢，类似\"啊乌\"",
+    rhyme:"傲",
     words:[
-      {en:'data', sym:'/ˈdeɪtə/', zh:'数据', rhyme:'得他'},
-      {en:'table', sym:'/ˈteɪbl/', zh:'表', rhyme:'台博'},
-      {en:'statement', sym:'/ˈsteɪtmənt/', zh:'语句'},
+      {en:"output", sym:"/ˈaʊtpʊt/", zh:"输出", rhyme:"奥特普特"},
+      {en:"account", sym:"/əˈkaʊnt/", zh:"账户"},
+      {en:"download", sym:"/ˈdaʊnloʊd/", zh:"下载", rhyme:"断劳德"},
     ],
     sentences:[
-      {en:'The data in the table looks correct.', zh:'表中的数据看起来是正确的。'},
-      {en:'Review the SQL statement carefully.', zh:'仔细检查SQL语句。'},
+      {en:"Check the output after the job finishes.", zh:"任务完成后检查输出。"},
+      {en:"Download the report and review it.", zh:"下载报表并审核。"},
     ]
   },
   {
-    symbol:'/aɪ/', name:'双元音 i/y', desc:'从/ɑː/滑向/ɪ/，嘴先大张再咧向两侧，类似"爱"', rhyme:'爱',
+    symbol:"/əʊ/",
+    name:"双元音 o（英式）",
+    desc:"从/ə/滑向/ʊ/，嘴从放松到圆拢，类似\"哦乌\"",
+    rhyme:"哦乌",
     words:[
-      {en:'pipeline', sym:'/ˈpaɪplaɪn/', zh:'数据管道', rhyme:'派普莱因'},
-      {en:'type', sym:'/taɪp/', zh:'类型'},
-      {en:'align', sym:'/əˈlaɪn/', zh:'对齐'},
+      {en:"flow", sym:"/fləʊ/", zh:"流程/数据流"},
+      {en:"load", sym:"/ləʊd/", zh:"加载", rhyme:"咯德"},
+      {en:"node", sym:"/nəʊd/", zh:"节点", rhyme:"弄德"},
     ],
     sentences:[
-      {en:'Align on the data type before coding.', zh:'编码前先对齐数据类型。'},
-      {en:'The pipeline runs on a nightly schedule.', zh:'管道按夜间计划运行。'},
+      {en:"The data flow is blocked at this node.", zh:"数据流在这个节点被阻塞了。"},
+      {en:"Load the data incrementally to save time.", zh:"增量加载数据以节省时间。"},
     ]
   },
   {
-    symbol:'/ɔɪ/', name:'双元音 oy', desc:'从/ɔː/滑向/ɪ/，嘴先圆唇再咧开，类似"噢伊"', rhyme:'哦一',
+    symbol:"/ɪə/",
+    name:"双元音 ear",
+    desc:"从/ɪ/滑向/ə/，嘴先咧再放松，类似\"咦呃\"",
+    rhyme:"咦呃",
     words:[
-      {en:'join', sym:'/dʒɔɪn/', zh:'关联', rhyme:'贾因'},
-      {en:'avoid', sym:'/əˈvɔɪd/', zh:'避免'},
-      {en:'deploy', sym:'/dɪˈplɔɪ/', zh:'部署', rhyme:'滴破义'},
+      {en:"query", sym:"/ˈkwɪəri/", zh:"查询", rhyme:"奎瑞"},
+      {en:"clear", sym:"/klɪər/", zh:"清晰的", rhyme:"可里"},
+      {en:"near", sym:"/nɪər/", zh:"接近"},
     ],
     sentences:[
-      {en:'Join the fact and dimension tables.', zh:'关联事实表和维度表。'},
-      {en:'Avoid deploying on Friday afternoon.', zh:'避免在周五下午部署。'},
+      {en:"The query result is near the expected value.", zh:"查询结果接近预期值。"},
+      {en:"Make the logic clear before writing the code.", zh:"写代码前先把逻辑理清楚。"},
     ]
   },
   {
-    symbol:'/aʊ/', name:'双元音 ow', desc:'从/ɑː/滑向/ʊ/，嘴先大张再圆拢，类似"啊乌"', rhyme:'傲',
+    symbol:"/eə/",
+    name:"双元音 air",
+    desc:"从/e/滑向/ə/，嘴先微张再放松，类似\"哎呃\"",
+    rhyme:"哎呃",
     words:[
-      {en:'output', sym:'/ˈaʊtpʊt/', zh:'输出', rhyme:'奥特普特'},
-      {en:'account', sym:'/əˈkaʊnt/', zh:'账户'},
-      {en:'download', sym:'/ˈdaʊnloʊd/', zh:'下载', rhyme:'断劳德'},
+      {en:"compare", sym:"/kəmˈpeər/", zh:"对比", rhyme:"刚倍"},
+      {en:"declare", sym:"/dɪˈkleər/", zh:"声明", rhyme:"滴克来"},
+      {en:"aware", sym:"/əˈweər/", zh:"了解/注意"},
     ],
     sentences:[
-      {en:'Check the output after the job finishes.', zh:'任务完成后检查输出。'},
-      {en:'Download the report and review it.', zh:'下载报表并审核。'},
+      {en:"Compare the two tables and find the difference.", zh:"对比两张表找出差异。"},
+      {en:"Be aware of the cutoff date when querying.", zh:"查询时注意截止日期。"},
     ]
   },
   {
-    symbol:'/əʊ/', name:'双元音 o（英式）', desc:'从/ə/滑向/ʊ/，嘴从放松到圆拢，类似"哦乌"', rhyme:'哦乌',
+    symbol:"/ʊə/",
+    name:"双元音 ure",
+    desc:"从/ʊ/滑向/ə/，嘴先圆再放松，类似\"乌呃\"",
+    rhyme:"乌呃",
     words:[
-      {en:'flow', sym:'/fləʊ/', zh:'流程/数据流'},
-      {en:'load', sym:'/ləʊd/', zh:'加载', rhyme:'咯德'},
-      {en:'node', sym:'/nəʊd/', zh:'节点', rhyme:'弄德'},
+      {en:"ensure", sym:"/ɪnˈʃʊər/", zh:"确保"},
+      {en:"secure", sym:"/sɪˈkjʊər/", zh:"安全的"},
+      {en:"mature", sym:"/məˈtjʊər/", zh:"成熟的"},
     ],
     sentences:[
-      {en:'The data flow is blocked at this node.', zh:'数据流在这个节点被阻塞了。'},
-      {en:'Load the data incrementally to save time.', zh:'增量加载数据以节省时间。'},
+      {en:"Ensure the data is correct before sending the report.", zh:"发送报表前确保数据正确。"},
+      {en:"Secure access to sensitive data tables.", zh:"确保敏感数据表的访问安全。"},
     ]
   },
   {
-    symbol:'/ɪə/', name:'双元音 ear', desc:'从/ɪ/滑向/ə/，嘴先咧再放松，类似"咦呃"', rhyme:'咦呃',
+    symbol:"/p/",
+    name:"清塞音 p",
+    desc:"双唇闭合，积气后突然爆破，不振动声带",
+    rhyme:"趴（不送气）",
     words:[
-      {en:'query', sym:'/ˈkwɪəri/', zh:'查询', rhyme:'奎瑞'},
-      {en:'clear', sym:'/klɪər/', zh:'清晰的', rhyme:'可里'},
-      {en:'near', sym:'/nɪər/', zh:'接近'},
+      {en:"pipeline", sym:"/ˈpaɪplaɪn/", zh:"数据管道", rhyme:"派普莱因"},
+      {en:"partition", sym:"/pɑːˈtɪʃn/", zh:"分区", rhyme:"趴踢辛"},
+      {en:"parse", sym:"/pɑːrz/", zh:"解析", rhyme:"趴斯"},
     ],
     sentences:[
-      {en:'The query result is near the expected value.', zh:'查询结果接近预期值。'},
-      {en:'Make the logic clear before writing the code.', zh:'写代码前先把逻辑理清楚。'},
+      {en:"Parse the JSON field in the pipeline.", zh:"在管道中解析JSON字段。"},
+      {en:"Filter by the correct partition date.", zh:"按正确的分区日期过滤。"},
     ]
   },
   {
-    symbol:'/eə/', name:'双元音 air', desc:'从/e/滑向/ə/，嘴先微张再放松，类似"哎呃"', rhyme:'哎呃',
+    symbol:"/b/",
+    name:"浊塞音 b",
+    desc:"双唇闭合，积气后突然爆破，振动声带，是/p/的浊音版",
+    rhyme:"爸（浊音）",
     words:[
-      {en:'compare', sym:'/kəmˈpeər/', zh:'对比', rhyme:'刚倍'},
-      {en:'declare', sym:'/dɪˈkleər/', zh:'声明', rhyme:'滴克来'},
-      {en:'aware', sym:'/əˈweər/', zh:'了解/注意'},
+      {en:"backfill", sym:"/ˈbækfɪl/", zh:"回填", rhyme:"拜克菲"},
+      {en:"batch", sym:"/bætʃ/", zh:"批次", rhyme:"拜趣"},
+      {en:"baseline", sym:"/ˈbeɪslaɪn/", zh:"基准值"},
     ],
     sentences:[
-      {en:'Compare the two tables and find the difference.', zh:'对比两张表找出差异。'},
-      {en:'Be aware of the cutoff date when querying.', zh:'查询时注意截止日期。'},
+      {en:"Backfill the missing batch data.", zh:"回填缺失的批次数据。"},
+      {en:"Compare against the baseline.", zh:"与基准值对比。"},
     ]
   },
   {
-    symbol:'/ʊə/', name:'双元音 ure', desc:'从/ʊ/滑向/ə/，嘴先圆再放松，类似"乌呃"', rhyme:'乌呃',
+    symbol:"/t/",
+    name:"清塞音 t",
+    desc:"舌尖抵上齿龈，积气后爆破，不振动声带",
+    rhyme:"踏（不送气）",
     words:[
-      {en:'ensure', sym:'/ɪnˈʃʊər/', zh:'确保'},
-      {en:'secure', sym:'/sɪˈkjʊər/', zh:'安全的'},
-      {en:'mature', sym:'/məˈtjʊər/', zh:'成熟的'},
+      {en:"table", sym:"/ˈteɪbl/", zh:"表", rhyme:"台博"},
+      {en:"task", sym:"/tæsk/", zh:"任务", rhyme:"踏斯克"},
+      {en:"timeout", sym:"/ˈtaɪmaʊt/", zh:"超时", rhyme:"太姆奥特"},
     ],
     sentences:[
-      {en:'Ensure the data is correct before sending the report.', zh:'发送报表前确保数据正确。'},
-      {en:'Secure access to sensitive data tables.', zh:'确保敏感数据表的访问安全。'},
-    ]
-  },
-  // ── 其余辅音 ──
-  {
-    symbol:'/p/', name:'清塞音 p', desc:'双唇闭合，积气后突然爆破，不振动声带', rhyme:'趴（不送气）',
-    words:[
-      {en:'pipeline', sym:'/ˈpaɪplaɪn/', zh:'数据管道', rhyme:'派普莱因'},
-      {en:'partition', sym:'/pɑːˈtɪʃn/', zh:'分区', rhyme:'趴踢辛'},
-      {en:'parse', sym:'/pɑːrz/', zh:'解析', rhyme:'趴斯'},
-    ],
-    sentences:[
-      {en:'Parse the JSON field in the pipeline.', zh:'在管道中解析JSON字段。'},
-      {en:'Filter by the correct partition date.', zh:'按正确的分区日期过滤。'},
+      {en:"The task failed due to a timeout.", zh:"任务因超时而失败。"},
+      {en:"Truncate the staging table before reload.", zh:"重新加载前清空暂存表。"},
     ]
   },
   {
-    symbol:'/b/', name:'浊塞音 b', desc:'双唇闭合，积气后突然爆破，振动声带，是/p/的浊音版', rhyme:'爸（浊音）',
+    symbol:"/d/",
+    name:"浊塞音 d",
+    desc:"舌尖抵上齿龈，积气后爆破，振动声带，是/t/的浊音版",
+    rhyme:"搭（浊音）",
     words:[
-      {en:'backfill', sym:'/ˈbækfɪl/', zh:'回填', rhyme:'拜克菲'},
-      {en:'batch', sym:'/bætʃ/', zh:'批次', rhyme:'拜趣'},
-      {en:'baseline', sym:'/ˈbeɪslaɪn/', zh:'基准值'},
+      {en:"data", sym:"/ˈdeɪtə/", zh:"数据", rhyme:"得他"},
+      {en:"debug", sym:"/ˌdiːˈbʌɡ/", zh:"调试", rhyme:"滴拜格"},
+      {en:"dependency", sym:"/dɪˈpendənsi/", zh:"依赖", rhyme:"滴盆登西"},
     ],
     sentences:[
-      {en:'Backfill the missing batch data.', zh:'回填缺失的批次数据。'},
-      {en:'Compare against the baseline.', zh:'与基准值对比。'},
+      {en:"Debug the query to find the root cause.", zh:"调试查询找到根本原因。"},
+      {en:"This task has a dependency on the upstream job.", zh:"这个任务依赖上游作业。"},
     ]
   },
   {
-    symbol:'/t/', name:'清塞音 t', desc:'舌尖抵上齿龈，积气后爆破，不振动声带', rhyme:'踏（不送气）',
+    symbol:"/k/",
+    name:"清塞音 k/c",
+    desc:"舌后部抵软颚，积气后爆破，不振动声带",
+    rhyme:"喀（不送气）",
     words:[
-      {en:'table', sym:'/ˈteɪbl/', zh:'表', rhyme:'台博'},
-      {en:'task', sym:'/tæsk/', zh:'任务', rhyme:'踏斯克'},
-      {en:'timeout', sym:'/ˈtaɪmaʊt/', zh:'超时', rhyme:'太姆奥特'},
+      {en:"cluster", sym:"/ˈklʌstər/", zh:"集群", rhyme:"克拉斯特"},
+      {en:"column", sym:"/ˈkɒləm/", zh:"列", rhyme:"卡伦"},
+      {en:"compliance", sym:"/kəmˈplaɪəns/", zh:"合规"},
     ],
     sentences:[
-      {en:'The task failed due to a timeout.', zh:'任务因超时而失败。'},
-      {en:'Truncate the staging table before reload.', zh:'重新加载前清空暂存表。'},
+      {en:"The cluster has insufficient resources.", zh:"集群资源不足。"},
+      {en:"Check the compliance requirement before release.", zh:"发布前检查合规要求。"},
     ]
   },
   {
-    symbol:'/d/', name:'浊塞音 d', desc:'舌尖抵上齿龈，积气后爆破，振动声带，是/t/的浊音版', rhyme:'搭（浊音）',
+    symbol:"/ɡ/",
+    name:"浊塞音 g",
+    desc:"舌后部抵软颚，积气后爆破，振动声带，是/k/的浊音版",
+    rhyme:"嘎（浊音）",
     words:[
-      {en:'data', sym:'/ˈdeɪtə/', zh:'数据', rhyme:'得他'},
-      {en:'debug', sym:'/ˌdiːˈbʌɡ/', zh:'调试', rhyme:'滴拜格'},
-      {en:'dependency', sym:'/dɪˈpendənsi/', zh:'依赖', rhyme:'滴盆登西'},
+      {en:"gap", sym:"/ɡæp/", zh:"差距", rhyme:"盖普"},
+      {en:"granularity", sym:"/ˌɡrænjuˈlærɪti/", zh:"粒度", rhyme:"格爱纽拉瑞提"},
+      {en:"governance", sym:"/ˈɡʌvənəns/", zh:"治理", rhyme:"嘎ven斯"},
     ],
     sentences:[
-      {en:'Debug the query to find the root cause.', zh:'调试查询找到根本原因。'},
-      {en:'This task has a dependency on the upstream job.', zh:'这个任务依赖上游作业。'},
+      {en:"Close the gap before month-end reporting.", zh:"在月末报表前关闭差距。"},
+      {en:"Data governance ensures data quality.", zh:"数据治理确保数据质量。"},
     ]
   },
   {
-    symbol:'/k/', name:'清塞音 k/c', desc:'舌后部抵软颚，积气后爆破，不振动声带', rhyme:'喀（不送气）',
+    symbol:"/f/",
+    name:"清摩擦音 f",
+    desc:"上齿轻触下唇，气流从两侧摩擦，不振动声带",
+    rhyme:"发（咬唇）",
     words:[
-      {en:'cluster', sym:'/ˈklʌstər/', zh:'集群', rhyme:'克拉斯特'},
-      {en:'column', sym:'/ˈkɒləm/', zh:'列', rhyme:'卡伦'},
-      {en:'compliance', sym:'/kəmˈplaɪəns/', zh:'合规'},
+      {en:"filter", sym:"/ˈfɪltər/", zh:"过滤", rhyme:"菲尔特"},
+      {en:"field", sym:"/fiːld/", zh:"字段", rhyme:"菲尔德"},
+      {en:"full refresh", sym:"/fʊl rɪˈfreʃ/", zh:"全量刷新"},
     ],
     sentences:[
-      {en:'The cluster has insufficient resources.', zh:'集群资源不足。'},
-      {en:'Check the compliance requirement before release.', zh:'发布前检查合规要求。'},
+      {en:"Add a filter for the business date field.", zh:"为业务日期字段添加过滤条件。"},
+      {en:"A full refresh runs every Sunday.", zh:"全量刷新每周日运行。"},
     ]
   },
   {
-    symbol:'/ɡ/', name:'浊塞音 g', desc:'舌后部抵软颚，积气后爆破，振动声带，是/k/的浊音版', rhyme:'嘎（浊音）',
+    symbol:"/v/",
+    name:"摩擦音 v",
+    desc:"上齿轻触下唇，振动声带，中文里没有对应音",
+    rhyme:"无（咬唇）",
     words:[
-      {en:'gap', sym:'/ɡæp/', zh:'差距', rhyme:'盖普'},
-      {en:'granularity', sym:'/ˌɡrænjuˈlærɪti/', zh:'粒度', rhyme:'格爱纽拉瑞提'},
-      {en:'governance', sym:'/ˈɡʌvənəns/', zh:'治理', rhyme:'嘎ven斯'},
+      {en:"validate", sym:"/ˈvælɪdeɪt/", zh:"验证", rhyme:"拜里带特"},
+      {en:"variance", sym:"/ˈveriəns/", zh:"偏差"},
+      {en:"volume", sym:"/ˈvɒljuːm/", zh:"数据量"},
     ],
     sentences:[
-      {en:'Close the gap before month-end reporting.', zh:'在月末报表前关闭差距。'},
-      {en:'Data governance ensures data quality.', zh:'数据治理确保数据质量。'},
+      {en:"Validate the data before writing to the target.", zh:"在写入目标表前先验证数据。"},
+      {en:"The variance exceeds the acceptable range.", zh:"偏差超出了可接受范围。"},
     ]
   },
   {
-    symbol:'/f/', name:'清摩擦音 f', desc:'上齿轻触下唇，气流从两侧摩擦，不振动声带', rhyme:'发（咬唇）',
+    symbol:"/s/",
+    name:"清摩擦音 s",
+    desc:"舌尖接近上齿龈，气流从中间摩擦，不振动声带",
+    rhyme:"丝",
     words:[
-      {en:'filter', sym:'/ˈfɪltər/', zh:'过滤', rhyme:'菲尔特'},
-      {en:'field', sym:'/fiːld/', zh:'字段', rhyme:'菲尔德'},
-      {en:'full refresh', sym:'/fʊl rɪˈfreʃ/', zh:'全量刷新'},
+      {en:"source", sym:"/sɔːrs/", zh:"来源", rhyme:"搔斯"},
+      {en:"schema", sym:"/ˈskiːmə/", zh:"结构", rhyme:"斯基马"},
+      {en:"sync", sym:"/sɪŋk/", zh:"同步"},
     ],
     sentences:[
-      {en:'Add a filter for the business date field.', zh:'为业务日期字段添加过滤条件。'},
-      {en:'A full refresh runs every Sunday.', zh:'全量刷新每周日运行。'},
+      {en:"Sync the source data every 10 minutes.", zh:"每10分钟同步一次来源数据。"},
+      {en:"The schema changed and broke the pipeline.", zh:"表结构变更导致管道中断。"},
     ]
   },
   {
-    symbol:'/s/', name:'清摩擦音 s', desc:'舌尖接近上齿龈，气流从中间摩擦，不振动声带', rhyme:'丝',
+    symbol:"/z/",
+    name:"浊摩擦音 z",
+    desc:"发音方式同/s/，但振动声带，是/s/的浊音版",
+    rhyme:"兹（浊音）",
     words:[
-      {en:'source', sym:'/sɔːrs/', zh:'来源', rhyme:'搔斯'},
-      {en:'schema', sym:'/ˈskiːmə/', zh:'结构', rhyme:'斯基马'},
-      {en:'sync', sym:'/sɪŋk/', zh:'同步'},
+      {en:"analyze", sym:"/ˈænəlaɪz/", zh:"分析", rhyme:"案乃莱兹"},
+      {en:"authorize", sym:"/ˈɔːθəraɪz/", zh:"授权"},
+      {en:"optimize", sym:"/ˈɒptɪmaɪz/", zh:"优化", rhyme:"哦普提迈斯"},
     ],
     sentences:[
-      {en:'Sync the source data every 10 minutes.', zh:'每10分钟同步一次来源数据。'},
-      {en:'The schema changed and broke the pipeline.', zh:'表结构变更导致管道中断。'},
+      {en:"Optimize the query to reduce run time.", zh:"优化查询以减少运行时间。"},
+      {en:"Authorize the analyst to access the table.", zh:"授权分析师访问该表。"},
     ]
   },
   {
-    symbol:'/z/', name:'浊摩擦音 z', desc:'发音方式同/s/，但振动声带，是/s/的浊音版', rhyme:'兹（浊音）',
+    symbol:"/ʃ/",
+    name:"清摩擦音 sh",
+    desc:"舌前部隆起接近上颚，嘴唇略向前，气流摩擦，不振动声带",
+    rhyme:"虚（送气）",
     words:[
-      {en:'analyze', sym:'/ˈænəlaɪz/', zh:'分析', rhyme:'案乃莱兹'},
-      {en:'authorize', sym:'/ˈɔːθəraɪz/', zh:'授权'},
-      {en:'optimize', sym:'/ˈɒptɪmaɪz/', zh:'优化', rhyme:'哦普提迈斯'},
+      {en:"schedule", sym:"/ˈskedʒuəl/", zh:"调度", rhyme:"斯开举"},
+      {en:"dashboard", sym:"/ˈdæʃbɔːrd/", zh:"看板"},
+      {en:"refresh", sym:"/rɪˈfreʃ/", zh:"刷新"},
     ],
     sentences:[
-      {en:'Optimize the query to reduce run time.', zh:'优化查询以减少运行时间。'},
-      {en:'Authorize the analyst to access the table.', zh:'授权分析师访问该表。'},
+      {en:"The dashboard refreshes on schedule.", zh:"看板按计划刷新。"},
+      {en:"Check the schedule for the next refresh.", zh:"查看下次刷新的调度计划。"},
     ]
   },
   {
-    symbol:'/ʃ/', name:'清摩擦音 sh', desc:'舌前部隆起接近上颚，嘴唇略向前，气流摩擦，不振动声带', rhyme:'虚（送气）',
+    symbol:"/ʒ/",
+    name:"浊摩擦音 zh",
+    desc:"发音同/ʃ/但振动声带，类似\"日\"去掉前面的辅音，英语中少见",
+    rhyme:"日（弱化）",
     words:[
-      {en:'schedule', sym:'/ˈskedʒuəl/', zh:'调度', rhyme:'斯开举'},
-      {en:'dashboard', sym:'/ˈdæʃbɔːrd/', zh:'看板'},
-      {en:'refresh', sym:'/rɪˈfreʃ/', zh:'刷新'},
+      {en:"measure", sym:"/ˈmeʒər/", zh:"度量", rhyme:"目熟"},
+      {en:"version", sym:"/ˈvɜːrʒn/", zh:"版本"},
+      {en:"decision", sym:"/dɪˈsɪʒn/", zh:"决策"},
     ],
     sentences:[
-      {en:'The dashboard refreshes on schedule.', zh:'看板按计划刷新。'},
-      {en:'Check the schedule for the next refresh.', zh:'查看下次刷新的调度计划。'},
+      {en:"The new version includes a key measure fix.", zh:"新版本包含一个关键度量修复。"},
+      {en:"Make a decision based on the data.", zh:"根据数据做出决策。"},
     ]
   },
   {
-    symbol:'/ʒ/', name:'浊摩擦音 zh', desc:'发音同/ʃ/但振动声带，类似"日"去掉前面的辅音，英语中少见', rhyme:'日（弱化）',
+    symbol:"/θ/",
+    name:"清音 th",
+    desc:"舌尖轻触上齿背，气流从两侧送出，不振动声带",
+    rhyme:"思（咬舌）",
     words:[
-      {en:'measure', sym:'/ˈmeʒər/', zh:'度量', rhyme:'目熟'},
-      {en:'version', sym:'/ˈvɜːrʒn/', zh:'版本'},
-      {en:'decision', sym:'/dɪˈsɪʒn/', zh:'决策'},
+      {en:"threshold", sym:"/ˈθreʃhoʊld/", zh:"阈值", rhyme:"斯瑞斯侯德"},
+      {en:"throughput", sym:"/ˈθruːpʊt/", zh:"吞吐量", rhyme:"斯如普特"},
+      {en:"method", sym:"/ˈmeθəd/", zh:"方法"},
     ],
     sentences:[
-      {en:'The new version includes a key measure fix.', zh:'新版本包含一个关键度量修复。'},
-      {en:'Make a decision based on the data.', zh:'根据数据做出决策。'},
+      {en:"The throughput exceeds the threshold.", zh:"吞吐量超过了阈值。"},
+      {en:"We need a better method to solve this.", zh:"我们需要更好的方法来解决这个问题。"},
     ]
   },
   {
-    symbol:'/h/', name:'清摩擦音 h', desc:'声门处气流通过，轻发"哈"，不振动声带', rhyme:'哈（轻声）',
+    symbol:"/ð/",
+    name:"浊摩擦音 th",
+    desc:"舌尖轻触上齿背，气流摩擦，振动声带，是/θ/的浊音版",
+    rhyme:"则（咬舌）",
     words:[
-      {en:'hotfix', sym:'/ˈhɒtfɪks/', zh:'紧急修复', rhyme:'哈特菲克斯'},
-      {en:'handle', sym:'/ˈhændl/', zh:'处理'},
-      {en:'history', sym:'/ˈhɪstri/', zh:'历史记录'},
+      {en:"the", sym:"/ðə/", zh:"（定冠词）", rhyme:"地(弱)/滴(强)"},
+      {en:"this", sym:"/ðɪs/", zh:"这个", rhyme:"底斯"},
+      {en:"other", sym:"/ˈʌðər/", zh:"其他"},
     ],
     sentences:[
-      {en:'We need a hotfix to handle this error.', zh:'我们需要紧急修复来处理这个错误。'},
-      {en:'Check the history table for past records.', zh:'检查历史表中的历史记录。'},
+      {en:"This table stores the reconciliation result.", zh:"这张表存储对账结果。"},
+      {en:"The other system has a different cutoff.", zh:"另一个系统有不同的截止时间。"},
     ]
   },
   {
-    symbol:'/tʃ/', name:'塞擦音 ch', desc:'先/t/后/ʃ/，舌尖抵上齿龈后快速摩擦，不振动声带', rhyme:'差（不送气）',
+    symbol:"/h/",
+    name:"清摩擦音 h",
+    desc:"声门处气流通过，轻发\"哈\"，不振动声带",
+    rhyme:"哈（轻声）",
     words:[
-      {en:'check', sym:'/tʃek/', zh:'检查'},
-      {en:'batch', sym:'/bætʃ/', zh:'批次', rhyme:'拜趣'},
-      {en:'patch', sym:'/pætʃ/', zh:'补丁'},
+      {en:"hotfix", sym:"/ˈhɒtfɪks/", zh:"紧急修复", rhyme:"哈特菲克斯"},
+      {en:"handle", sym:"/ˈhændl/", zh:"处理"},
+      {en:"history", sym:"/ˈhɪstri/", zh:"历史记录"},
     ],
     sentences:[
-      {en:'Check the batch job status each morning.', zh:'每天早上检查批处理任务状态。'},
-      {en:'Apply the patch and rerun the pipeline.', zh:'打上补丁后重新运行管道。'},
+      {en:"We need a hotfix to handle this error.", zh:"我们需要紧急修复来处理这个错误。"},
+      {en:"Check the history table for past records.", zh:"检查历史表中的历史记录。"},
     ]
   },
   {
-    symbol:'/ð/', name:'浊摩擦音 th', desc:'舌尖轻触上齿背，气流摩擦，振动声带，是/θ/的浊音版', rhyme:'则（咬舌）',
+    symbol:"/tʃ/",
+    name:"塞擦音 ch",
+    desc:"先/t/后/ʃ/，舌尖抵上齿龈后快速摩擦，不振动声带",
+    rhyme:"差（不送气）",
     words:[
-      {en:'the', sym:'/ðə/', zh:'（定冠词）', rhyme:'地(弱)/滴(强)'},
-      {en:'this', sym:'/ðɪs/', zh:'这个', rhyme:'底斯'},
-      {en:'other', sym:'/ˈʌðər/', zh:'其他'},
+      {en:"check", sym:"/tʃek/", zh:"检查"},
+      {en:"batch", sym:"/bætʃ/", zh:"批次", rhyme:"拜趣"},
+      {en:"patch", sym:"/pætʃ/", zh:"补丁"},
     ],
     sentences:[
-      {en:'This table stores the reconciliation result.', zh:'这张表存储对账结果。'},
-      {en:'The other system has a different cutoff.', zh:'另一个系统有不同的截止时间。'},
+      {en:"Check the batch job status each morning.", zh:"每天早上检查批处理任务状态。"},
+      {en:"Apply the patch and rerun the pipeline.", zh:"打上补丁后重新运行管道。"},
     ]
   },
   {
-    symbol:'/m/', name:'鼻音 m', desc:'双唇闭合，气流从鼻腔通过，振动声带', rhyme:'嗯（闭唇）',
+    symbol:"/dʒ/",
+    name:"塞擦音 j",
+    desc:"类似中文\"只\"，但舌位更前，嘴唇不圆",
+    rhyme:"知（浊音）",
     words:[
-      {en:'mapping', sym:'/ˈmæpɪŋ/', zh:'映射', rhyme:'买平'},
-      {en:'monitor', sym:'/ˈmɒnɪtər/', zh:'监控', rhyme:'马尼特'},
-      {en:'merge', sym:'/mɜːrdʒ/', zh:'合并', rhyme:'目杰'},
+      {en:"job", sym:"/dʒɒb/", zh:"作业/任务", rhyme:"贾博"},
+      {en:"join", sym:"/dʒɔɪn/", zh:"关联", rhyme:"贾因"},
+      {en:"adjustment", sym:"/əˈdʒʌstmənt/", zh:"调整"},
     ],
     sentences:[
-      {en:'Monitor the job and merge the results.', zh:'监控任务并合并结果。'},
-      {en:'The mapping file is missing a code.', zh:'映射文件缺少一个代码。'},
+      {en:"The batch job runs every night.", zh:"批处理作业每晚运行。"},
+      {en:"Join the two tables on order ID.", zh:"通过订单ID关联这两张表。"},
     ]
   },
   {
-    symbol:'/n/', name:'鼻音 n', desc:'舌尖抵上齿龈，气流从鼻腔通过，振动声带', rhyme:'嗯（抵齿）',
+    symbol:"/m/",
+    name:"鼻音 m",
+    desc:"双唇闭合，气流从鼻腔通过，振动声带",
+    rhyme:"嗯（闭唇）",
     words:[
-      {en:'null', sym:'/nʌl/', zh:'空值', rhyme:'那'},
-      {en:'node', sym:'/nəʊd/', zh:'节点', rhyme:'弄德'},
-      {en:'notify', sym:'/ˈnəʊtɪfaɪ/', zh:'通知'},
+      {en:"mapping", sym:"/ˈmæpɪŋ/", zh:"映射", rhyme:"买平"},
+      {en:"monitor", sym:"/ˈmɒnɪtər/", zh:"监控", rhyme:"马尼特"},
+      {en:"merge", sym:"/mɜːrdʒ/", zh:"合并", rhyme:"目杰"},
     ],
     sentences:[
-      {en:'Notify the team if the node returns null.', zh:'如果节点返回空值，通知团队。'},
-      {en:'Check for null values in the key columns.', zh:'检查关键列中的空值。'},
+      {en:"Monitor the job and merge the results.", zh:"监控任务并合并结果。"},
+      {en:"The mapping file is missing a code.", zh:"映射文件缺少一个代码。"},
     ]
   },
   {
-    symbol:'/ŋ/', name:'鼻音 ng', desc:'舌后部抵软颚，气流从鼻腔通过，振动声带，只出现在词尾或音节末', rhyme:'昂（鼻腔）',
+    symbol:"/n/",
+    name:"鼻音 n",
+    desc:"舌尖抵上齿龈，气流从鼻腔通过，振动声带",
+    rhyme:"嗯（抵齿）",
     words:[
-      {en:'loading', sym:'/ˈloʊdɪŋ/', zh:'加载中'},
-      {en:'mapping', sym:'/ˈmæpɪŋ/', zh:'映射', rhyme:'买平'},
-      {en:'monitoring', sym:'/ˈmɒnɪtərɪŋ/', zh:'监控中'},
+      {en:"null", sym:"/nʌl/", zh:"空值", rhyme:"那"},
+      {en:"node", sym:"/nəʊd/", zh:"节点", rhyme:"弄德"},
+      {en:"notify", sym:"/ˈnəʊtɪfaɪ/", zh:"通知"},
     ],
     sentences:[
-      {en:'The loading and mapping are still running.', zh:'加载和映射任务还在运行中。'},
-      {en:'Monitoring is critical for data quality.', zh:'监控对于数据质量至关重要。'},
+      {en:"Notify the team if the node returns null.", zh:"如果节点返回空值，通知团队。"},
+      {en:"Check for null values in the key columns.", zh:"检查关键列中的空值。"},
     ]
   },
   {
-    symbol:'/l/', name:'边音 l', desc:'舌尖抵上齿龈，气流从舌两侧通过，振动声带', rhyme:'了（舌抵齿）',
+    symbol:"/ŋ/",
+    name:"鼻音 ng",
+    desc:"舌后部抵软颚，气流从鼻腔通过，振动声带，只出现在词尾或音节末",
+    rhyme:"昂（鼻腔）",
     words:[
-      {en:'lineage', sym:'/ˈlɪniɪdʒ/', zh:'血缘', rhyme:'来尼啊杰'},
-      {en:'log', sym:'/lɒɡ/', zh:'日志', rhyme:'咯格'},
-      {en:'latency', sym:'/ˈleɪtənsi/', zh:'延迟', rhyme:'来丁西'},
+      {en:"loading", sym:"/ˈloʊdɪŋ/", zh:"加载中"},
+      {en:"mapping", sym:"/ˈmæpɪŋ/", zh:"映射", rhyme:"买平"},
+      {en:"monitoring", sym:"/ˈmɒnɪtərɪŋ/", zh:"监控中"},
     ],
     sentences:[
-      {en:'Check the log to trace the data lineage.', zh:'查看日志追踪数据血缘。'},
-      {en:'Reduce latency by optimizing the query.', zh:'通过优化查询来降低延迟。'},
+      {en:"The loading and mapping are still running.", zh:"加载和映射任务还在运行中。"},
+      {en:"Monitoring is critical for data quality.", zh:"监控对于数据质量至关重要。"},
     ]
   },
   {
-    symbol:'/j/', name:'半元音 y', desc:'舌前部抬向硬颚，快速滑向后面的元音，类似"伊"但更短', rhyme:'伊（快速）',
+    symbol:"/l/",
+    name:"边音 l",
+    desc:"舌尖抵上齿龈，气流从舌两侧通过，振动声带",
+    rhyme:"了（舌抵齿）",
     words:[
-      {en:'year', sym:'/jɪər/', zh:'年', rhyme:'意'},
-      {en:'yet', sym:'/jet/', zh:'还没'},
-      {en:'yield', sym:'/jiːld/', zh:'产出/返回'},
+      {en:"lineage", sym:"/ˈlɪniɪdʒ/", zh:"血缘", rhyme:"来尼啊杰"},
+      {en:"log", sym:"/lɒɡ/", zh:"日志", rhyme:"咯格"},
+      {en:"latency", sym:"/ˈleɪtənsi/", zh:"延迟", rhyme:"来丁西"},
     ],
     sentences:[
-      {en:'The query has not yet returned a result.', zh:'查询还没有返回结果。'},
-      {en:'The report yields year-over-year comparison.', zh:'报表提供同比对比数据。'},
+      {en:"Check the log to trace the data lineage.", zh:"查看日志追踪数据血缘。"},
+      {en:"Reduce latency by optimizing the query.", zh:"通过优化查询来降低延迟。"},
     ]
   },
   {
-    symbol:'/ɜː/', name:'长音 er', desc:'嘴微张居中，舌位居中，发长"呃"，美式常带卷舌', rhyme:'呃（拉长卷舌）',
+    symbol:"/r/",
+    name:"美式 r",
+    desc:"舌尖不碰上颚，向后卷起，嘴唇略圆，是中文里没有的音",
+    rhyme:"儿（卷舌）",
     words:[
-      {en:'merge', sym:'/mɜːrdʒ/', zh:'合并', rhyme:'目杰'},
-      {en:'service', sym:'/ˈsɜːrvɪs/', zh:'服务', rhyme:'搜维斯'},
-      {en:'alert', sym:'/əˈlɜːrt/', zh:'告警'},
+      {en:"reconciliation", sym:"/ˌrekənsɪliˈeɪʃn/", zh:"对账"},
+      {en:"retry", sym:"/ˌriːˈtraɪ/", zh:"重试", rhyme:"瑞追"},
+      {en:"report", sym:"/rɪˈpɔːrt/", zh:"报表", rhyme:"瑞破特"},
     ],
     sentences:[
-      {en:'Merge the data and trigger an alert if gaps remain.', zh:'合并数据，如有差距则触发告警。'},
-      {en:'The service returned an error.', zh:'服务返回了一个错误。'},
+      {en:"Run the reconciliation report every month-end.", zh:"每月末运行对账报表。"},
+      {en:"Set the retry count to three.", zh:"把重试次数设为三次。"},
     ]
   },
   {
-    symbol:'/ts/', name:'辅音组合 ts', desc:'先/t/后/s/，连读成一个音，类似中文"次"，出现在词尾', rhyme:'次',
+    symbol:"/j/",
+    name:"半元音 y",
+    desc:"舌前部抬向硬颚，快速滑向后面的元音，类似\"伊\"但更短",
+    rhyme:"伊（快速）",
     words:[
-      {en:'formats', sym:'/ˈfɔːrmæts/', zh:'格式（复数）'},
-      {en:'results', sym:'/rɪˈzʌlts/', zh:'结果（复数）', rhyme:'瑞柔次'},
-      {en:'alerts', sym:'/əˈlɜːrts/', zh:'告警（复数）'},
+      {en:"year", sym:"/jɪər/", zh:"年", rhyme:"意"},
+      {en:"yet", sym:"/jet/", zh:"还没"},
+      {en:"yield", sym:"/jiːld/", zh:"产出/返回"},
     ],
     sentences:[
-      {en:'The pipeline supports multiple data formats.', zh:'管道支持多种数据格式。'},
-      {en:'Set up alerts for abnormal results.', zh:'为异常结果设置告警。'},
+      {en:"The query has not yet returned a result.", zh:"查询还没有返回结果。"},
+      {en:"The report yields year-over-year comparison.", zh:"报表提供同比对比数据。"},
     ]
   },
   {
-    symbol:'/dz/', name:'辅音组合 dz', desc:'先/d/后/z/，连读成一个音，类似中文"兹"，出现在词尾', rhyme:'兹（浊音）',
+    symbol:"/w/",
+    name:"半元音 w",
+    desc:"嘴唇圆拢，快速滑向后面的元音，类似中文\"乌\"但更短",
+    rhyme:"乌（快速）",
     words:[
-      {en:'fields', sym:'/fiːldz/', zh:'字段（复数）', rhyme:'菲尔兹'},
-      {en:'records', sym:'/ˈrekərdz/', zh:'记录（复数）', rhyme:'锐可兹'},
-      {en:'loads', sym:'/ləʊdz/', zh:'加载（复数）', rhyme:'咯兹'},
+      {en:"workflow", sym:"/ˈwɜːrkfloʊ/", zh:"工作流", rhyme:"我可夫劳"},
+      {en:"warehouse", sym:"/ˈwerhaʊs/", zh:"仓库", rhyme:"我偶好斯"},
+      {en:"workaround", sym:"/ˈwɜːrkaraʊnd/", zh:"临时方案", rhyme:"我可鹰冉"},
     ],
     sentences:[
-      {en:'Check all the fields and records after loading.', zh:'加载后检查所有字段和记录。'},
-      {en:'The incremental loads run every hour.', zh:'增量加载每小时运行一次。'},
+      {en:"The workflow runs every weekday.", zh:"工作流每个工作日运行。"},
+      {en:"This is a workaround, not a real fix.", zh:"这是临时方案，不是真正的修复。"},
     ]
   },
   {
-    symbol:'/tr/', name:'辅音组合 tr', desc:'先/t/后/r/，/t/快速过渡到美式卷舌/r/，类似"踹"的起始', rhyme:'踹（起始音）',
+    symbol:"/ts/",
+    name:"辅音组合 ts",
+    desc:"先/t/后/s/，连读成一个音，类似中文\"次\"，出现在词尾",
+    rhyme:"次",
     words:[
-      {en:'transform', sym:'/trænsˈfɔːrm/', zh:'转换', rhyme:'踹恩斯佛姆'},
-      {en:'track', sym:'/træk/', zh:'追踪', rhyme:'踹克'},
-      {en:'trigger', sym:'/ˈtrɪɡər/', zh:'触发', rhyme:'踹格'},
+      {en:"formats", sym:"/ˈfɔːrmæts/", zh:"格式（复数）"},
+      {en:"results", sym:"/rɪˈzʌlts/", zh:"结果（复数）", rhyme:"瑞柔次"},
+      {en:"alerts", sym:"/əˈlɜːrts/", zh:"告警（复数）"},
     ],
     sentences:[
-      {en:'Transform and track all changes in the pipeline.', zh:'在管道中转换并追踪所有变更。'},
-      {en:'Trigger the job when the upstream task finishes.', zh:'上游任务完成后触发该作业。'},
+      {en:"The pipeline supports multiple data formats.", zh:"管道支持多种数据格式。"},
+      {en:"Set up alerts for abnormal results.", zh:"为异常结果设置告警。"},
     ]
   },
   {
-    symbol:'/dr/', name:'辅音组合 dr', desc:'先/d/后/r/，/d/快速过渡到卷舌/r/，类似"追"的起始，是/tr/的浊音版', rhyme:'追（起始音）',
+    symbol:"/dz/",
+    name:"辅音组合 dz",
+    desc:"先/d/后/z/，连读成一个音，类似中文\"兹\"，出现在词尾",
+    rhyme:"兹（浊音）",
     words:[
-      {en:'drop', sym:'/drɒp/', zh:'删除/丢弃', rhyme:'追阿普'},
-      {en:'drive', sym:'/draɪv/', zh:'驱动', rhyme:'追夫'},
-      {en:'drill down', sym:'/drɪl daʊn/', zh:'下钻', rhyme:'追欧当'},
+      {en:"fields", sym:"/fiːldz/", zh:"字段（复数）", rhyme:"菲尔兹"},
+      {en:"records", sym:"/ˈrekərdz/", zh:"记录（复数）", rhyme:"锐可兹"},
+      {en:"loads", sym:"/ləʊdz/", zh:"加载（复数）", rhyme:"咯兹"},
     ],
     sentences:[
-      {en:'Drill down to find the root cause of the drop.', zh:'下钻找到数据下降的根本原因。'},
-      {en:'Do not drop the table in the production database.', zh:'不要删除生产数据库中的表。'},
+      {en:"Check all the fields and records after loading.", zh:"加载后检查所有字段和记录。"},
+      {en:"The incremental loads run every hour.", zh:"增量加载每小时运行一次。"},
     ]
   },
-];
+  {
+    symbol:"/tr/",
+    name:"辅音组合 tr",
+    desc:"先/t/后/r/，/t/快速过渡到美式卷舌/r/，类似\"踹\"的起始",
+    rhyme:"踹（起始音）",
+    words:[
+      {en:"transform", sym:"/trænsˈfɔːrm/", zh:"转换", rhyme:"踹恩斯佛姆"},
+      {en:"track", sym:"/træk/", zh:"追踪", rhyme:"踹克"},
+      {en:"trigger", sym:"/ˈtrɪɡər/", zh:"触发", rhyme:"踹格"},
+    ],
+    sentences:[
+      {en:"Transform and track all changes in the pipeline.", zh:"在管道中转换并追踪所有变更。"},
+      {en:"Trigger the job when the upstream task finishes.", zh:"上游任务完成后触发该作业。"},
+    ]
+  },
+  {
+    symbol:"/dr/",
+    name:"辅音组合 dr",
+    desc:"先/d/后/r/，/d/快速过渡到卷舌/r/，类似\"追\"的起始，是/tr/的浊音版",
+    rhyme:"追（起始音）",
+    words:[
+      {en:"drop", sym:"/drɒp/", zh:"删除/丢弃", rhyme:"追阿普"},
+      {en:"drive", sym:"/draɪv/", zh:"驱动", rhyme:"追夫"},
+      {en:"drill down", sym:"/drɪl daʊn/", zh:"下钻", rhyme:"追欧当"},
+    ],
+    sentences:[
+      {en:"Drill down to find the root cause of the drop.", zh:"下钻找到数据下降的根本原因。"},
+      {en:"Do not drop the table in the production database.", zh:"不要删除生产数据库中的表。"},
+    ]
+  }
+]
 
 let currentPhonicsIdx = 0;
 let phonicsMicMap = {};
@@ -1863,9 +2007,19 @@ function renderPhonics(idx) {
   currentPhonicsIdx = idx;
   phonicsMicMap = {};
   const sidebar = document.getElementById('phoneticsSidebar');
-  sidebar.innerHTML = PHONICS.map((p,i) =>
-    `<button class="phonics-cat-btn${i===idx?' active':''}" onclick="renderPhonics(${i})">${p.symbol} ${p.name}</button>`
-  ).join('');
+  sidebar.innerHTML = PHONICS.map((p,i) => {
+    const groups = {
+      0:  '<div class="ph-grp-hdr" style="color:#4a90d9">🔵 元音（20个）</div><div class="ph-grp-sub">— 单元音（12个）—</div>',
+      12: '<div class="ph-grp-sub" style="margin-top:4px">— 双元音（8个）—</div>',
+      20: '<div class="ph-grp-hdr" style="color:#e05d2b;margin-top:8px">🔴 辅音（28个）</div><div class="ph-grp-sub">— 塞音（爆破音）p/b/t/d/k/g —</div>',
+      26: '<div class="ph-grp-sub">— 摩擦音 f/v/s/z/ʃ/ʒ/θ/ð/h —</div>',
+      35: '<div class="ph-grp-sub">— 塞擦音 tʃ/dʒ —</div>',
+      37: '<div class="ph-grp-sub">— 鼻音 m/n/ŋ —</div>',
+      40: '<div class="ph-grp-sub">— 边音/半元音 l/r/j/w —</div>',
+      44: '<div class="ph-grp-sub">— 辅音组合 ts/dz/tr/dr —</div>',
+    };
+    return (groups[i]||'') + `<button class="phonics-cat-btn${i===idx?' active':''}" onclick="renderPhonics(${i})">${p.symbol} ${p.name}</button>`;
+  }).join('');
 
   const p = PHONICS[idx];
   const main = document.getElementById('phoneticsMain');
