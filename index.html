@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>英语口语练习 – 职场场景</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4f8;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
+h1{font-size:1.4rem;color:#1a202c;margin-bottom:16px}
+.scenes{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;max-width:600px;margin-bottom:20px}
+.scene-btn{padding:14px;border:2px solid #e2e8f0;border-radius:10px;background:#fff;cursor:pointer;text-align:left;transition:.15s}
+.scene-btn:hover{border-color:#4a90d9;background:#ebf4ff}
+.scene-btn.active{border-color:#4a90d9;background:#ebf4ff}
+.scene-btn .icon{font-size:1.4rem}
+.scene-btn .label{font-size:.85rem;font-weight:600;color:#2d3748;margin-top:4px}
+.scene-btn .desc{font-size:.75rem;color:#718096;margin-top:2px}
+.chat-box{width:100%;max-width:600px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;flex-direction:column;height:480px}
+.messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:78%;padding:10px 14px;border-radius:14px;font-size:.9rem;line-height:1.5}
+.msg.bot{background:#f0f4f8;color:#2d3748;align-self:flex-start;border-bottom-left-radius:4px}
+.msg.user{background:#4a90d9;color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.msg.hint{background:#fffbeb;color:#92400e;align-self:flex-start;font-size:.8rem;border:1px solid #fde68a;border-radius:8px}
+.msg.bot .speak-btn{background:none;border:none;cursor:pointer;font-size:.85rem;padding:0 0 0 4px;opacity:.5;vertical-align:middle}
+.msg.bot .speak-btn:hover{opacity:1}
+.msg.bot .zh{font-size:.78rem;color:#718096;margin-top:5px;padding-top:5px;border-top:1px solid #d1d9e0}
+.input-area{padding:12px;border-top:1px solid #e2e8f0;display:flex;gap:8px;align-items:flex-end}
+textarea{flex:1;border:1px solid #cbd5e0;border-radius:8px;padding:8px 12px;font-size:.9rem;resize:none;outline:none;height:42px;max-height:100px}
+textarea:focus{border-color:#4a90d9}
+.send-btn{padding:10px 18px;background:#4a90d9;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:.9rem;white-space:nowrap;height:42px}
+.send-btn:hover{background:#357abd}
+.hint-btn{padding:6px 12px;background:#fef9c3;border:1px solid #fde047;border-radius:6px;font-size:.78rem;cursor:pointer;color:#854d0e}
+.hint-btn:hover{background:#fef08a}
+.toolbar{padding:6px 12px;border-top:1px solid #f0f4f8;display:flex;gap:8px;align-items:center}
+.toolbar span{font-size:.75rem;color:#a0aec0}
+.restart-btn{margin-left:auto;padding:4px 10px;font-size:.75rem;background:none;border:1px solid #cbd5e0;border-radius:6px;cursor:pointer;color:#718096}
+.restart-btn:hover{background:#f7fafc}
+</style>
+</head>
+<body>
+<h1>💬 职场英语口语练习</h1>
+<div class="scenes" id="scenes"></div>
+<div class="chat-box" id="chatBox" style="display:none">
+  <div class="messages" id="messages"></div>
+  <div class="toolbar">
+    <span id="sceneName"></span>
+    <button class="hint-btn" onclick="showHint()">💡 查看提示</button>
+    <button class="restart-btn" onclick="restartScene()">↺ 重新开始</button>
+  </div>
+  <div class="input-area">
+    <textarea id="input" placeholder="输入你的英文回复..." onkeydown="handleKey(event)" rows="1" oninput="autoResize(this)"></textarea>
+    <button class="send-btn" onclick="sendMsg()">发送</button>
+  </div>
+</div>
+<script>
+const SCENES = [
+  {
+    id:'standup', icon:'🗓️', label:'每日站会', desc:'进度同步 & 阻塞汇报',
+    turns:[
+      {bot:"Good morning! Let's start our standup. What did you work on yesterday?", zh:"早上好！我们开始站会吧。你昨天做了什么？", hints:["Yesterday I worked on...", "I finished implementing the X feature.", "I spent most of yesterday on bug fixing for..."], hintsZh:["昨天我做的是……", "我完成了X功能的开发。", "昨天大部分时间都在修……的bug。"]},
+      {bot:"Got it. What are you planning to do today?", zh:"明白了。你今天计划做什么？", hints:["Today I'm going to...", "My plan for today is to...", "I'll be focusing on..."], hintsZh:["今天我打算……", "我今天的计划是……", "我今天会重点做……"]},
+      {bot:"Any blockers or things you need help with?", zh:"有什么阻塞点或者需要帮助的吗？", hints:["I'm blocked on...", "I need some clarification on...", "No blockers, everything is on track."], hintsZh:["我被……阻塞了。", "我需要确认一下……", "没有阻塞，一切进展顺利。"]},
+      {bot:"Thanks for the update! One question — when do you think the X feature will be ready?", zh:"谢谢更新！问一下，你觉得X功能大概什么时候能好？", hints:["I expect it to be done by...", "It should be ready by end of the week.", "I need one more day to complete it."], hintsZh:["我预计……之前完成。", "本周末应该能好。", "我还需要一天完成它。"]},
+      {bot:"Great, that works. Let's sync again if anything comes up. See you tomorrow!", zh:"好的，没问题。有情况随时同步。明天见！", hints:["Sounds good, will do!", "Sure, I'll reach out if I need help.", "Thanks, see you tomorrow!"], hintsZh:["好的，没问题！", "好的，需要帮助我会来找你。", "谢谢，明天见！"]}
+    ]
+  },
+  {
+    id:'review', icon:'📋', label:'需求评审', desc:'讨论 & 确认需求',
+    turns:[
+      {bot:"Hey, I wanted to walk you through the new requirements for FC-1234. Do you have 10 minutes?", zh:"嘿，我想给你讲一下FC-1234的新需求。你有10分钟吗？", hints:["Sure, go ahead!", "Of course, I'm all ears.", "Yes, let me pull it up."], hintsZh:["当然，请说！", "没问题，我在听。", "好的，我打开一下。"]},
+      {bot:"The feature is about adding inventory reconciliation for transfer orders. Does that scope make sense to you?", zh:"这个功能是关于调拨单的库存对账。这个范围你理解吗？", hints:["Yes, that makes sense. Could you clarify...", "I understand the scope, but I have a question about...", "Sounds clear. Will this cover both inbound and outbound?"], hintsZh:["明白，能说一下……吗？", "范围我懂，但我有个问题关于……", "清楚了。入库和出库都包含吗？"]},
+      {bot:"Good question. It covers inbound only for now. Can you give me a rough estimate?", zh:"好问题。目前只涉及入库。你能给个大概的工期估算吗？", hints:["I'd estimate around 3 days for development.", "It depends on the data volume, but roughly...", "I need to check the existing code first, maybe 2-3 days."], hintsZh:["我估计开发需要3天左右。", "取决于数据量，大概……", "我需要先看一下现有代码，大概2-3天。"]},
+      {bot:"That sounds reasonable. Are there any edge cases we should consider?", zh:"听起来合理。有什么边界情况需要考虑吗？", hints:["We should consider what happens when...", "One edge case is if the order is partially received.", "I'll need to check if there are any null value scenarios."], hintsZh:["我们需要考虑……的情况。", "一个边界情况是订单部分收货。", "我需要看一下是否有空值的场景。"]},
+      {bot:"Good points. Please add those to the ticket. Anything else you need from my side?", zh:"说得好。请把这些加到ticket里。你还需要我提供什么吗？", hints:["No, I think I have enough to start.", "Could you share the sample data?", "I'll start coding and let you know if I have questions."], hintsZh:["不用了，信息够了，我可以开始了。", "能分享一下样本数据吗？", "我先开始写代码，有问题再来找你。"]}
+    ]
+  },
+  {
+    id:'debug', icon:'🐛', label:'问题排查', desc:'描述问题 & 讨论方案',
+    turns:[
+      {bot:"Hey, I saw your message about the data mismatch issue. Can you explain what's happening?", zh:"嘿，我看到你说数据对不上的问题了。能说说是什么情况吗？", hints:["Sure. The problem is that...", "So basically, the numbers in table A don't match table B.", "The issue is in the reconciliation logic where..."], hintsZh:["好的，问题是……", "简单来说，A表和B表的数字对不上。", "问题出在对账逻辑里……"]},
+      {bot:"I see. When did this start happening? Is it all dates or specific ones?", zh:"明白了。这个问题什么时候开始出现的？是所有日期都有还是特定日期？", hints:["It started appearing from last Monday.", "It only affects data after the cutoff date.", "It seems to be happening for all dates in March."], hintsZh:["上周一开始出现的。", "只影响截止日期之后的数据。", "3月份的所有日期好像都有问题。"]},
+      {bot:"Interesting. Do you have a hypothesis on the root cause?", zh:"有意思。你有关于根本原因的假设吗？", hints:["I think the issue might be caused by...", "My guess is that there's a join condition that's filtering out some records.", "I suspect the timestamp format difference is causing the mismatch."], hintsZh:["我认为问题可能是由……引起的。", "我猜是某个join条件过滤掉了一些记录。", "我怀疑时间戳格式不一致导致了数据错位。"]},
+      {bot:"That makes sense. Have you tried anything to fix it yet?", zh:"说得通。你有没有尝试过什么修复方法？", hints:["I tried adjusting the filter condition, but it didn't work.", "I've already tested a fix locally, it looks promising.", "Not yet, I wanted to align with you first before making changes."], hintsZh:["我试过调整过滤条件，但没用。", "我已经在本地测试了一个修复方案，看起来有效。", "还没有，我想先和你对齐再改。"]},
+      {bot:"Good thinking. Let's test your fix in staging first. Can you create a PR today?", zh:"想得很周全。我们先在测试环境验证一下。你今天能提PR吗？", hints:["Yes, I'll have the PR ready by end of day.", "Sure, I'll push it shortly.", "I need a bit more time, maybe tomorrow morning?"], hintsZh:["好的，今天下班前PR会好。", "好的，我很快就push。", "我还需要点时间，明天早上可以吗？"]}
+    ]
+  },
+  {
+    id:'general', icon:'💼', label:'日常沟通', desc:'邮件、消息 & 闲聊',
+    turns:[
+      {bot:"Hi! I just want to check — did you receive my email about the deployment schedule?", zh:"嗨！我想确认一下，你收到我发的部署计划邮件了吗？", hints:["Yes, I got it, thanks!", "I did, I was just about to reply.", "Sorry, I haven't had a chance to check it yet."], hintsZh:["收到了，谢谢！", "收到了，我正准备回复。", "抱歉，我还没来得及看。"]},
+      {bot:"No worries. So the plan is to deploy on Friday evening. Does that work for your team?", zh:"没关系。部署计划是周五晚上，你们团队方便吗？", hints:["That works for us.", "Friday should be fine. We'll be on standby.", "Could we move it to Saturday? Friday is a bit tight."], hintsZh:["我们这边没问题。", "周五应该没问题，我们会待命。", "能改到周六吗？周五有点赶。"]},
+      {bot:"Understood. We'll move it to Saturday then. Can you make sure your team is available?", zh:"明白了，那就改到周六。你能确认一下你们团队当天有人值守吗？", hints:["Absolutely, I'll inform the team right away.", "Sure, I'll send a meeting invite.", "Yes, I'll confirm with everyone and get back to you."], hintsZh:["没问题，我马上通知团队。", "好的，我发一个会议邀请。", "好的，我跟大家确认后回你。"]},
+      {bot:"Perfect. Also, I wanted to say your presentation yesterday was really clear. Great job!", zh:"太好了。另外，我想说你昨天的演讲非常清晰。干得漂亮！", hints:["Thank you, I appreciate that!", "Thanks! I'm glad it was helpful.", "That means a lot, thank you for the feedback."], hintsZh:["谢谢，非常感谢！", "谢谢！很高兴对大家有帮助。", "这对我很重要，感谢你的反馈。"]},
+      {bot:"Alright, let's stay in touch. Ping me if anything comes up before the deployment!", zh:"好的，保持联系。部署前有什么情况随时ping我！", hints:["Will do, thanks!", "Sure, I'll keep you posted.", "Sounds good, talk to you later!"], hintsZh:["好的，会的！谢谢！", "好的，有进展我会通知你的。", "没问题，回头见！"]}
+    ]
+  }
+];
+
+let currentScene = null;
+let turnIndex = 0;
+let hintShown = false;
+
+function renderScenes() {
+  const c = document.getElementById('scenes');
+  c.innerHTML = SCENES.map(s =>
+    `<button class="scene-btn" onclick="startScene('${s.id}')">
+      <div class="icon">${s.icon}</div>
+      <div class="label">${s.label}</div>
+      <div class="desc">${s.desc}</div>
+    </button>`
+  ).join('');
+}
+
+function startScene(id) {
+  currentScene = SCENES.find(s => s.id === id);
+  turnIndex = 0;
+  hintShown = false;
+  document.querySelectorAll('.scene-btn').forEach(b => b.classList.toggle('active', b.onclick.toString().includes(`'${id}'`)));
+  document.getElementById('chatBox').style.display = 'flex';
+  document.getElementById('sceneName').textContent = currentScene.icon + ' ' + currentScene.label;
+  const msgs = document.getElementById('messages');
+  msgs.innerHTML = '';
+  addMsg('bot', currentScene.turns[0].bot, currentScene.turns[0].zh);
+}
+
+function speak(text) {
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US';
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+function addMsg(role, text, zh) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  div.textContent = text;
+  if (role === 'bot') {
+    const btn = document.createElement('button');
+    btn.className = 'speak-btn';
+    btn.textContent = '🔊';
+    btn.onclick = () => speak(text);
+    div.appendChild(btn);
+  }
+  if (zh && role === 'bot') {
+    const sub = document.createElement('div');
+    sub.className = 'zh';
+    sub.textContent = zh;
+    div.appendChild(sub);
+  }
+  const msgs = document.getElementById('messages');
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showHint() {
+  if (!currentScene) return;
+  const turn = currentScene.turns[turnIndex];
+  if (!turn) return;
+  const div = document.createElement('div');
+  div.className = 'msg hint';
+  div.innerHTML = '💡 参考说法：<br>' + turn.hints.map((h,i) =>
+    `• ${h}<br><span style="font-size:.72rem;color:#a16207;opacity:.85">　${turn.hintsZh[i]}</span>`
+  ).join('<br>');
+  const msgs = document.getElementById('messages');
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  hintShown = true;
+}
+
+function sendMsg() {
+  const input = document.getElementById('input');
+  const text = input.value.trim();
+  if (!text || !currentScene) return;
+  addMsg('user', text);
+  input.value = '';
+  input.style.height = '42px';
+  turnIndex++;
+  hintShown = false;
+  setTimeout(() => {
+    const next = currentScene.turns[turnIndex];
+    if (next) {
+      addMsg('bot', next.bot, next.zh);
+    } else {
+      addMsg('bot', '✅ 太棒了！你已完成本场景练习。点击上方场景卡片继续练习，或点击 ↺ 重新开始。');
+    }
+  }, 400);
+}
+
+function restartScene() {
+  if (currentScene) startScene(currentScene.id);
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+}
+
+function autoResize(el) {
+  el.style.height = '42px';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+renderScenes();
+</script>
+</body>
+</html>
