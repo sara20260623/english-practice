@@ -8,14 +8,14 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4f8;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
 h1{font-size:1.4rem;color:#1a202c;margin-bottom:16px}
-.scenes{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;max-width:600px;margin-bottom:20px}
+.scenes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:700px;margin-bottom:20px}
 .scene-btn{padding:14px;border:2px solid #e2e8f0;border-radius:10px;background:#fff;cursor:pointer;text-align:left;transition:.15s}
 .scene-btn:hover{border-color:#4a90d9;background:#ebf4ff}
 .scene-btn.active{border-color:#4a90d9;background:#ebf4ff}
 .scene-btn .icon{font-size:1.4rem}
 .scene-btn .label{font-size:.85rem;font-weight:600;color:#2d3748;margin-top:4px}
 .scene-btn .desc{font-size:.75rem;color:#718096;margin-top:2px}
-.chat-box{width:100%;max-width:600px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;flex-direction:column;height:480px}
+.chat-box{width:100%;max-width:700px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;flex-direction:column;height:480px}
 .messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
 .msg{max-width:78%;padding:10px 14px;border-radius:14px;font-size:.9rem;line-height:1.5}
 .msg.bot{background:#f0f4f8;color:#2d3748;align-self:flex-start;border-bottom-left-radius:4px}
@@ -31,14 +31,101 @@ textarea:focus{border-color:#4a90d9}
 .send-btn:hover{background:#357abd}
 .hint-btn{padding:6px 12px;background:#fef9c3;border:1px solid #fde047;border-radius:6px;font-size:.78rem;cursor:pointer;color:#854d0e}
 .hint-btn:hover{background:#fef08a}
+.mic-btn{padding:10px 14px;background:#fff;border:1px solid #cbd5e0;border-radius:8px;cursor:pointer;font-size:1rem;height:42px}
+.mic-btn:hover{background:#f7fafc}
+.mic-btn.recording{background:#fee2e2;border-color:#f87171;animation:pulse .8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 .toolbar{padding:6px 12px;border-top:1px solid #f0f4f8;display:flex;gap:8px;align-items:center}
 .toolbar span{font-size:.75rem;color:#a0aec0}
 .restart-btn{margin-left:auto;padding:4px 10px;font-size:.75rem;background:none;border:1px solid #cbd5e0;border-radius:6px;cursor:pointer;color:#718096}
 .restart-btn:hover{background:#f7fafc}
+.tab-bar{display:flex;gap:8px;width:100%;max-width:700px;margin-bottom:12px;flex-wrap:wrap}
+.tab-btn{padding:8px 16px;border:2px solid #e2e8f0;border-radius:8px;background:#fff;cursor:pointer;font-size:.85rem;color:#4a5568}
+.tab-btn.active{border-color:#4a90d9;background:#ebf4ff;color:#2b6cb0;font-weight:600}
+.panel{width:100%;max-width:700px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:16px;display:none}
+.panel.visible{display:block}
+.vocab-toolbar{display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap}
+.vocab-search{flex:1;min-width:120px;border:1px solid #cbd5e0;border-radius:8px;padding:7px 12px;font-size:.85rem;outline:none}
+.vocab-search:focus{border-color:#4a90d9}
+.cat-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.cat-btn{padding:4px 10px;border:1px solid #e2e8f0;border-radius:20px;background:#f7fafc;cursor:pointer;font-size:.75rem;color:#4a5568;white-space:nowrap}
+.cat-btn.active{border-color:#4a90d9;background:#ebf4ff;color:#2b6cb0;font-weight:600}
+/* 测验模式 */
+.quiz-box{max-width:700px;width:100%;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:24px;text-align:center}
+.quiz-zh{font-size:1.5rem;font-weight:700;color:#1a202c;margin-bottom:24px}
+.quiz-input{width:100%;border:2px solid #cbd5e0;border-radius:8px;padding:10px 14px;font-size:1rem;outline:none;margin-bottom:12px}
+.quiz-input:focus{border-color:#4a90d9}
+.quiz-result{font-size:1.1rem;font-weight:600;margin:12px 0}
+.quiz-answer{font-size:.9rem;color:#718096;margin-bottom:16px}
+.quiz-btn{padding:10px 24px;background:#4a90d9;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:.95rem;margin:4px}
+.quiz-btn:hover{background:#357abd}
+.quiz-btn.secondary{background:#f7fafc;color:#4a5568;border:1px solid #cbd5e0}
+.quiz-btn.secondary:hover{background:#e2e8f0}
+/* 跟读模式 */
+.repeat-card{max-width:700px;width:100%;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:24px;text-align:center}
+.repeat-en{font-size:1.3rem;font-weight:700;color:#1a202c;margin-bottom:6px}
+.repeat-zh{font-size:.9rem;color:#718096;margin-bottom:16px}
+.repeat-eg{font-size:.85rem;color:#4a90d9;font-style:italic;margin-bottom:20px}
+.repeat-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.repeat-result{font-size:1rem;font-weight:600;padding:10px 16px;border-radius:8px;margin-top:8px;display:none}
+.repeat-result.good{background:#dcfce7;color:#166534}
+.repeat-result.ok{background:#fef9c3;color:#854d0e}
+.repeat-result.bad{background:#fee2e2;color:#991b1b}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.vocab-section{grid-column:1/-1;font-size:.8rem;font-weight:700;color:#4a5568;padding:8px 4px 2px;border-bottom:2px solid #e2e8f0;margin-top:6px}
+.vocab-card{border:1px solid #e2e8f0;border-radius:8px;padding:12px;cursor:pointer;transition:.15s}
+.vocab-card:hover{border-color:#4a90d9;background:#f7fbff}
+.vocab-card .en{font-weight:600;color:#1a202c;font-size:.9rem}
+.vocab-card .zh{font-size:.78rem;color:#718096;margin-top:2px}
+.vocab-card .eg{font-size:.75rem;color:#4a90d9;margin-top:4px;font-style:italic}
+.wordbook{display:flex;flex-direction:column;gap:8px}
+.wordbook-item{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f7fafc;border-radius:8px;font-size:.85rem}
+.wordbook-item .del-btn{background:none;border:none;cursor:pointer;color:#e53e3e;font-size:.8rem}
+.history-list{display:flex;flex-direction:column;gap:6px}
+.history-item{padding:8px 12px;background:#f7fafc;border-radius:8px;font-size:.82rem;color:#4a5568}
+.history-item .score{font-weight:600;margin-right:6px}
+.history-item.good .score{color:#166534}
+.history-item.ok .score{color:#854d0e}
+.history-item.bad .score{color:#991b1b}
+.save-word-btn{background:none;border:1px solid #cbd5e0;border-radius:4px;padding:2px 6px;font-size:.72rem;cursor:pointer;color:#718096;margin-left:6px}
+.save-word-btn:hover{background:#ebf4ff;border-color:#4a90d9;color:#2b6cb0}
+/* 音标学习 */
+.phonics-layout{display:flex;gap:12px;flex-wrap:wrap}
+.phonics-sidebar{width:200px;min-width:140px;display:flex;flex-direction:column;gap:6px;max-height:560px;overflow-y:auto}
+.phonics-main{flex:1;min-width:260px}
+.phonics-cat-btn{padding:7px 10px;border:1px solid #e2e8f0;border-radius:8px;background:#f7fafc;cursor:pointer;font-size:.82rem;text-align:left;color:#4a5568}
+.phonics-cat-btn.active{border-color:#4a90d9;background:#ebf4ff;color:#2b6cb0;font-weight:600}
+.phonics-card{background:#f7fafc;border-radius:12px;padding:16px;margin-bottom:12px}
+.phonics-symbol{font-size:2.2rem;font-weight:800;color:#2b6cb0;display:inline-block;margin-right:8px}
+.phonics-name{font-size:.85rem;color:#718096}
+.phonics-desc{font-size:.85rem;color:#4a5568;margin:6px 0 10px}
+.phonics-words{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.phonics-word{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;font-size:.85rem}
+.phonics-word .pw-en{font-weight:700;color:#1a202c}
+.phonics-word .pw-sym{font-size:.75rem;color:#4a90d9}
+.phonics-word .pw-zh{font-size:.75rem;color:#718096}
+.phonics-sentences{display:flex;flex-direction:column;gap:8px}
+.phonics-sent{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;font-size:.85rem}
+.phonics-sent .ps-en{font-weight:600;color:#1a202c;margin-bottom:2px}
+.phonics-sent .ps-zh{font-size:.78rem;color:#718096;margin-bottom:6px}
+.phonics-result{font-size:.82rem;font-weight:600;padding:4px 8px;border-radius:6px;margin-top:4px;display:none}
+.phonics-result.good{background:#dcfce7;color:#166534}
+.phonics-result.ok{background:#fef9c3;color:#854d0e}
+.phonics-result.bad{background:#fee2e2;color:#991b1b}
 </style>
 </head>
 <body>
 <h1>💬 职场英语口语练习</h1>
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('practice')">🗣️ 口语练习</button>
+  <button class="tab-btn" onclick="switchTab('vocab')">📚 词汇卡片</button>
+  <button class="tab-btn" onclick="switchTab('quiz')">🧠 测验</button>
+  <button class="tab-btn" onclick="switchTab('repeat')">🎙️ 跟读</button>
+  <button class="tab-btn" onclick="switchTab('phonics')">🔤 音标</button>
+  <button class="tab-btn" onclick="switchTab('wordbook')">⭐ 单词本</button>
+  <button class="tab-btn" onclick="switchTab('history')">📈 练习记录</button>
+</div>
+<div id="tab-practice">
 <div class="scenes" id="scenes"></div>
 <div class="chat-box" id="chatBox" style="display:none">
   <div class="messages" id="messages"></div>
@@ -49,8 +136,35 @@ textarea:focus{border-color:#4a90d9}
   </div>
   <div class="input-area">
     <textarea id="input" placeholder="输入你的英文回复..." onkeydown="handleKey(event)" rows="1" oninput="autoResize(this)"></textarea>
+    <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="按住说话">🎤</button>
     <button class="send-btn" onclick="sendMsg()">发送</button>
   </div>
+</div>
+</div>
+<div id="tab-vocab" class="panel">
+  <div class="vocab-toolbar">
+    <input class="vocab-search" id="vocabSearch" placeholder="🔍 搜索单词或中文..." oninput="renderVocab()">
+  </div>
+  <div class="cat-filter" id="catFilter"></div>
+  <div class="vocab-grid" id="vocabGrid"></div>
+</div>
+<div id="tab-quiz" class="panel">
+  <div class="quiz-box" id="quizBox"></div>
+</div>
+<div id="tab-repeat" class="panel">
+  <div class="repeat-card" id="repeatCard"></div>
+</div>
+<div id="tab-phonics" class="panel">
+  <div class="phonics-layout">
+    <div class="phonics-sidebar" id="phoneticsSidebar"></div>
+    <div class="phonics-main" id="phoneticsMain"></div>
+  </div>
+</div>
+<div id="tab-wordbook" class="panel">
+  <div class="wordbook" id="wordbookList"></div>
+</div>
+<div id="tab-history" class="panel">
+  <div class="history-list" id="historyList"></div>
 </div>
 <script>
 const SCENES = [
@@ -93,10 +207,71 @@ const SCENES = [
       {bot:"Perfect. Also, I wanted to say your presentation yesterday was really clear. Great job!", zh:"太好了。另外，我想说你昨天的演讲非常清晰。干得漂亮！", hints:["Thank you, I appreciate that!", "Thanks! I'm glad it was helpful.", "That means a lot, thank you for the feedback."], hintsZh:["谢谢，非常感谢！", "谢谢！很高兴对大家有帮助。", "这对我很重要，感谢你的反馈。"]},
       {bot:"Alright, let's stay in touch. Ping me if anything comes up before the deployment!", zh:"好的，保持联系。部署前有什么情况随时ping我！", hints:["Will do, thanks!", "Sure, I'll keep you posted.", "Sounds good, talk to you later!"], hintsZh:["好的，会的！谢谢！", "好的，有进展我会通知你的。", "没问题，回头见！"]}
     ]
+  },
+  {
+    id:'codereview', icon:'🔍', label:'Code Review', desc:'SQL逻辑讨论 & 字段确认',
+    turns:[
+      {bot:"Hey, I left some comments on your SQL PR. Do you have a moment to go through them?", zh:"嘿，我在你的SQL PR上留了一些评论。你有时间过一下吗？", hints:["Sure, let me pull up the PR.", "Of course, which part do you want to start with?", "Yes, I saw your comments. Let me explain my logic."], hintsZh:["好的，我打开PR看一下。", "当然，你想从哪部分开始？", "好的，我看到你的评论了，我来解释一下逻辑。"]},
+      {bot:"In the JOIN condition, why are you filtering by partition date instead of business date?", zh:"在JOIN条件里，你为什么用分区日期过滤而不是业务日期？", hints:["Good catch. The partition date here is actually aligned with the business date.", "I used partition date for performance, but I can switch if needed.", "You're right, that should be business date. I'll fix it."], hintsZh:["说得好。这里的分区日期其实和业务日期是对齐的。", "我用分区日期是为了性能，如果需要可以改。", "你说得对，应该用业务日期，我来改。"]},
+      {bot:"Also, what does the field reconciliation_flag represent exactly?", zh:"另外，reconciliation_flag这个字段具体代表什么？", hints:["It's a flag indicating whether the record has been matched.", "It's 1 if the inventory count matches, 0 if there's a discrepancy.", "It marks records that need manual review due to data gaps."], hintsZh:["这是一个标志位，表示该记录是否已经匹配。", "库存数量一致时为1，有差异时为0。", "它标记了因数据缺口需要人工审核的记录。"]},
+      {bot:"Got it. One more thing — this subquery looks like it could be replaced with a CTE for readability.", zh:"明白了。还有一点——这个子查询看起来可以用CTE替换，可读性更好。", hints:["That's a good suggestion, I'll refactor it with a WITH clause.", "Agreed, CTEs make it much cleaner. I'll update the PR.", "I can do that. Should I also add comments to explain each CTE?"], hintsZh:["好建议，我用WITH子句重构一下。", "同意，CTE更清晰。我来更新PR。", "我可以改。每个CTE要加注释说明吗？"]},
+      {bot:"Yes, comments would be great. Overall it looks good — just those few changes and it's ready to merge!", zh:"好的，加注释很好。整体看起来不错——就那几处改动，改完就可以合并了！", hints:["Thanks for the review! I'll update it today.", "Appreciated! I'll address all comments and request a re-review.", "Great, I'll push the changes shortly."], hintsZh:["感谢Review！今天我来更新。", "谢谢！我处理所有评论后重新请求Review。", "好的，我马上push修改。"]}
+    ]
+  },
+  {
+    id:'datareport', icon:'📊', label:'数据汇报', desc:'差异说明 & 结果汇报',
+    turns:[
+      {bot:"Hi, can you give us an update on the inventory reconciliation results for last month?", zh:"嗨，你能给我们介绍一下上个月库存对账的结果吗？", hints:["Sure. Overall the reconciliation rate is 98.5%.", "The results look good. Most discrepancies have been resolved.", "Happy to. We identified 3 unknown differences totaling about 200 units."], hintsZh:["好的，整体对账率是98.5%。", "结果看起来不错，大部分差异已经解决了。", "当然。我们识别出3处未知差异，合计约200个单位。"]},
+      {bot:"What are the main reasons for the discrepancies?", zh:"差异的主要原因是什么？", hints:["The main cause is timing differences between the WMS and ERP systems.", "Most gaps are due to in-transit inventory not yet received.", "There are two root causes: a cutoff date issue and a missing mapping."], hintsZh:["主要原因是WMS和ERP系统之间的时间差。", "大部分差距是因为在途库存还没入账。", "有两个根本原因：截止日期问题和映射缺失。"]},
+      {bot:"Is there any data that's still unresolved?", zh:"还有没有解决的数据吗？", hints:["Yes, there are still 50 units marked as unknown pending investigation.", "All items have been resolved as of yesterday.", "We have a small delta of 12 records that need business confirmation."], hintsZh:["有，还有50个单位标记为未知，待排查。", "截至昨天，所有条目都已解决。", "有12条记录的小差异需要业务确认。"]},
+      {bot:"What's the action plan to close those gaps?", zh:"关闭这些差异的行动计划是什么？", hints:["We'll align with the business team to confirm the root cause by Friday.", "I'll run a backfill script and re-check the numbers tomorrow.", "The plan is to fix the upstream data issue and rerun the reconciliation job."], hintsZh:["我们会在周五前和业务团队对齐，确认根本原因。", "我明天会跑一个回填脚本并重新核对数字。", "计划是修复上游数据问题，然后重新跑对账任务。"]},
+      {bot:"Sounds good. Please send a summary email after it's resolved. Thanks!", zh:"听起来不错。解决后请发一封汇总邮件。谢谢！", hints:["Will do, I'll send it by end of day Friday.", "Sure, I'll include the root cause and final numbers.", "No problem, I'll CC you and the team on the email."], hintsZh:["好的，我周五下班前发。", "好的，我会包含根本原因和最终数据。", "没问题，我会抄送你和团队。"]}
+    ]
+  },
+  {
+    id:'interview', icon:'🎯', label:'面试模拟', desc:'资深数据开发岗位面试',
+    turns:[
+      {bot:"Hi, welcome! Can you briefly introduce yourself and your experience in data development?", zh:"你好！能简单介绍一下你自己和数据开发方面的经验吗？", hints:["I have experience in both e-commerce and banking. In e-commerce I built inventory reconciliation systems, and in banking I worked on transaction data pipelines and compliance reporting.", "My background spans two industries — e-commerce and banking. I've handled high-volume ETL, data warehouse modeling, and data quality frameworks in both.", "I've worked as a senior data developer in e-commerce and banking. In e-commerce I focused on supply chain data, and in banking on core transaction and risk data."], hintsZh:["我在电商和银行都有经验。电商主要做库存对账系统，银行做交易数据管道和合规报表。", "我的背景横跨电商和银行两个行业，在两者都做过高吞吐ETL、数仓建模和数据质量框架。", "我是资深数据开发，电商主要负责供应链数据，银行主要做核心交易和风险数据。"]},
+      {bot:"Can you explain the layered architecture of a data warehouse and how you apply it in practice?", zh:"你能解释一下数据仓库的分层架构，以及实际怎么应用的吗？", hints:["We follow ODS, DWD, DWS, and ADS layers. In e-commerce ODS ingests WMS and ERP data, while in banking it captures core banking system feeds.", "In practice, I design DWD at the transaction level. In banking this means one row per transaction with debit/credit flags; in e-commerce it's one row per order line.", "I use a star schema in DWS with conformed dimensions — for example, a shared date dimension used by both e-commerce order reports and banking daily settlement reports."], hintsZh:["我们遵循ODS、DWD、DWS、ADS分层。电商ODS接入WMS和ERP，银行ODS接入核心银行系统。", "DWD做到事务粒度：银行是每笔交易一行带借贷标志，电商是每个订单行一行。", "DWS用星型模型加一致维度，比如日期维度在电商订单报表和银行日结报表中共用。"]},
+      {bot:"How do you handle data quality issues in your pipelines? Give me a specific example.", zh:"你在数据管道中如何处理数据质量问题？能举个具体例子吗？", hints:["In banking, I once caught a reconciliation break where transaction amounts were off by 0.01 due to a currency rounding bug. I added a tolerance check and fixed the upstream calculation.", "In e-commerce, I caught a 10% null rate spike in the warehouse code field caused by an upstream WMS schema change. I added an automated alert and a fallback mapping.", "I build automated alerts for anomalies in both industries. In banking, a deviation in daily settlement totals triggers an immediate escalation. In e-commerce it's row count checks per warehouse."], hintsZh:["在银行，我发现过因货币取整bug导致交易金额差0.01的对账断裂，加了容差检查并修复了上游计算。", "在电商，我发现WMS表结构变更导致仓库编码字段10%空值率突增，加了自动告警和兜底映射。", "两个行业都建了异常自动告警：银行日结总额偏差立即升级，电商每仓行数检查。"]},
+      {bot:"What's your experience with data reconciliation? How do you investigate unknown differences?", zh:"你有数据对账的经验吗？如何排查未知差异？", hints:["Yes. In e-commerce I built WMS-vs-ERP inventory reconciliation. In banking I worked on inter-system balance reconciliation between the core system and the data warehouse.", "My approach is to lock one date and one node, then trace layer by layer from the output table back to the source. This works in both e-commerce and banking.", "In banking, unknown differences often come from timing — transactions posted after cutoff. In e-commerce they're usually due to in-transit inventory or code mapping gaps."], hintsZh:["有。电商做过WMS和ERP库存对账，银行做过核心系统与数仓之间的余额对账。", "我的方法是锁定一个日期一个节点，从结果表逐层向上追溯到来源表，电商和银行都适用。", "银行未知差异多来自时效问题——截止时间后才入账；电商多来自在途库存或编码映射缺失。"]},
+      {bot:"How do you optimize a slow SQL query? Walk me through your approach.", zh:"你如何优化慢查询？说说你的思路。", hints:["First I check the execution plan for full table scans or large shuffles. In banking queries I often find missing partition pruning on transaction date; in e-commerce it's usually a missing warehouse filter.", "My checklist: add partition filter, rewrite subqueries as CTEs, push filters early, and broadcast small dimension tables to reduce shuffle.", "In banking I also watch for skew on account_id — high-value accounts have far more rows. I use salting to distribute the load evenly."], hintsZh:["先看执行计划找全表扫描或大shuffle。银行查询常见缺交易日期分区裁剪，电商常见缺仓库过滤。", "检查清单：加分区过滤、子查询改CTE、尽早下推过滤条件、小维度表广播减少shuffle。", "银行还要注意account_id数据倾斜——大客户行数远多于普通客户，用加盐方式打散。"]},
+      {bot:"What's the difference between incremental load and full refresh? When do you choose each?", zh:"增量加载和全量刷新有什么区别？你什么时候选哪个？", hints:["Incremental load processes only new or changed records — it's faster and cheaper but requires a reliable change detection mechanism like CDC or a watermark column.", "Full refresh reloads all data — simpler but expensive for large tables. I use it for small dimension tables or when the source doesn't support CDC.", "In banking I use CDC for transaction tables due to volume. In e-commerce I use full refresh for small lookup tables like warehouse codes, and incremental for order facts."], hintsZh:["增量只处理新增或变更记录——更快更省，但需要可靠的变更检测机制，如CDC或水位线字段。", "全量刷新重新加载所有数据——简单但大表成本高。我用于小维度表或源端不支持CDC的情况。", "银行交易表用CDC（数据量大），电商码值表用全量，订单事实表用增量。"]},
+      {bot:"How do you design a partitioning strategy for a large fact table?", zh:"你如何为大事实表设计分区策略？", hints:["I partition by business date first since most queries filter on date. For very large tables I add a secondary partition by region or warehouse to further limit scan scope.", "In banking, I partition transaction tables by transaction_date and sub-partition by product_type, since compliance reports always filter on both.", "The key is to match partition keys to the most common query filter pattern. Wrong partition keys mean every query still does a full scan."], hintsZh:["主要按业务日期分区，因为大多数查询都按日期过滤。超大表再加地区或仓库二级分区缩小扫描范围。", "银行交易表按transaction_date分区、按product_type二级分区，因为合规报表总是同时过滤这两个。", "关键是分区键要和最常见的查询过滤模式匹配，否则每次查询还是全表扫描。"]},
+      {bot:"Tell me about a time a data pipeline failed in production. How did you handle it?", zh:"说一个生产环境数据管道故障的经历，你是怎么处理的？", hints:["In banking, a daily settlement job failed at 3am due to an upstream schema change. I identified the root cause from logs, applied a hotfix, reran the job, and added a schema validation check to prevent recurrence.", "In e-commerce, a Spark job ran out of memory during peak season. I tuned the executor memory, enabled dynamic allocation, and added a job monitoring alert.", "I always follow three steps: identify the root cause from logs, apply a targeted fix rather than a workaround, and add monitoring to catch the same issue earlier next time."], hintsZh:["银行日结任务因上游表结构变更在凌晨3点失败。我从日志定位根因，打了热修复，重跑任务，并加了表结构校验防止复发。", "电商大促期间Spark任务内存溢出，我调整了executor内存配置，开启动态分配，并加了任务监控告警。", "我固定三步：从日志定位根因、打针对性修复而非临时方案、加监控让下次更早发现同样问题。"]},
+      {bot:"How do you manage data lineage and table dependencies in a large warehouse?", zh:"你如何在大型数仓中管理数据血缘和表依赖关系？", hints:["I maintain a lineage map that tracks which tables each job reads from and writes to. When a source table changes, I can quickly identify all downstream impact.", "We use Airflow DAGs to define task dependencies explicitly. Combined with a metadata catalog, anyone can trace where a field originates.", "In banking, lineage is critical for compliance — regulators want to know exactly where a reported number comes from. I document lineage down to the field level for key reports."], hintsZh:["我维护血缘地图，记录每个任务的来源表和目标表。源表变更时，能快速识别所有下游影响。", "用Airflow DAG显式定义任务依赖，结合元数据目录，任何人都能追溯字段来源。", "银行血缘管理是合规要求——监管机构要知道报表数字从哪来。我对关键报表做到字段级血缘文档。"]},
+      {bot:"What's your approach to communicating with business stakeholders when data is delayed or incorrect?", zh:"数据延误或不准确时，你如何与业务方沟通？", hints:["I proactively send a heads-up as soon as I detect an issue — before they notice. I include the scope of impact, the root cause, and the expected fix time.", "I never say 'the data is wrong' without context. I explain what happened, how it affects their reports, and what we're doing to fix it.", "I follow up with a post-incident summary after resolution — root cause, fix applied, and steps taken to prevent recurrence. This builds trust over time."], hintsZh:["发现问题后立即主动告知——在业务方发现之前。我说明影响范围、根因和预计修复时间。", "我不会只说'数据有问题'，我会解释发生了什么、影响了哪些报表、我们正在怎么修。", "修复后发一封事后总结——根因、修复方案、防止复发的措施，这样能建立长期信任。"]},
+      {bot:"Star schema vs snowflake schema — which do you prefer and why?", zh:"星型模型和雪花模型，你更倾向哪个？为什么？", hints:["I prefer star schema for analytics workloads. Denormalized dimensions mean fewer joins, faster queries, and easier for business users to understand.", "Snowflake schema works better when dimension tables are very large or have complex hierarchies — it saves storage and reduces redundancy.", "In e-commerce I use star schema for order analytics. In banking I've seen snowflake used for product hierarchies where there are many levels of classification."], hintsZh:["分析型场景我更偏向星型模型。反范式维度减少join，查询更快，业务用户也更容易理解。", "雪花模型适合维度表很大或有复杂层级的情况——节省存储减少冗余。", "电商订单分析用星型，银行产品层级分类复杂，见过用雪花处理多层分类结构的。"]},
+      {bot:"How do you handle slowly changing dimensions (SCD)? What types have you used?", zh:"你如何处理缓慢变化维（SCD）？用过哪些类型？", hints:["SCD Type 1 overwrites old values — simple but loses history. I use it for non-critical fields like phone numbers.", "SCD Type 2 adds a new row with effective dates — it preserves full history. I use it for customer addresses and product pricing in banking.", "In e-commerce, I used SCD Type 2 for the warehouse dimension when warehouses changed their region assignment, so historical orders still map to the correct region."], hintsZh:["SCD Type 1直接覆盖旧值——简单但丢历史，用于电话号码等非关键字段。", "SCD Type 2新增一行并记录有效期——保留完整历史，用于银行的客户地址和产品定价。", "电商中，仓库更换所属大区时用SCD Type 2，确保历史订单仍映射到正确大区。"]},
+      {bot:"How do you ensure data security and access control in your work?", zh:"在工作中你如何保障数据安全和权限控制？", hints:["I follow the principle of least privilege — each user or service account only gets access to the tables they actually need.", "In banking, all access requests go through a formal approval process. I never grant access directly; it always goes through the governance team.", "For sensitive data like customer PII or transaction amounts, I apply column-level masking so analysts can query without seeing raw values."], hintsZh:["我遵循最小权限原则——每个用户或服务账号只获得实际需要的表的权限。", "银行所有授权申请都要走正式审批流程，我不直接授权，必须通过治理团队。", "客户PII或交易金额等敏感数据，我做列级脱敏，让分析师可以查询但看不到原始值。"]},
+      {bot:"What's the most challenging problem you've ever faced at work? Tell me about it.", zh:"你工作中遇到过最难、印象最深的问题是什么？说说看。", hints:["The hardest case was in banking — a daily settlement reconciliation broke silently for 3 days before anyone noticed. The root cause was a timezone conversion bug that only affected transactions near midnight. It took 2 days to trace through 5 systems to find it.", "In e-commerce, the toughest challenge was a data skew issue during peak season that caused Spark jobs to run 10x slower. Fixing it required redesigning the partition strategy and salting the join keys — while keeping the pipeline running in production.", "The most memorable was tracking down an unknown difference of 200 units in inventory that persisted for weeks. It turned out to be caused by a combination of a cutoff date mismatch and a code mapping gap in two separate systems — neither alone was the cause."], hintsZh:["最难的是银行日结对账，数据差异持续了3天才被发现。根因是时区转换bug，只影响午夜前后的交易，花了2天追溯5个系统才找到。", "电商大促期间遇到严重数据倾斜，Spark任务慢了10倍。修复需要重新设计分区策略并对join键加盐，同时还要保证生产管道不停。", "最印象深刻的是一个持续几周200件的库存未知差异。最终发现是截止日期不一致和两个系统各自的编码映射缺失叠加导致的——单独任何一个都不是根因。"]},
+      {bot:"Tell me about a time you had a disagreement with a colleague or business stakeholder. How did you resolve it?", zh:"说一次你和同事或业务方有分歧的经历，你是怎么解决的？", hints:["A business analyst insisted a number was wrong, but after investigation it turned out the report logic was correct and their expectation was based on a misunderstood definition. I walked them through the calculation step by step until we were on the same page.", "My colleague and I disagreed on whether to use full refresh or incremental for a large table. I prepared a comparison with actual run times and storage costs, and we aligned on incremental with a weekly full refresh as a safety net.", "In banking, the finance team wanted a field calculated differently from the agreed definition. I looped in the data governance team, documented both interpretations, and we held a formal alignment meeting to settle it."], hintsZh:["业务分析师坚持认为数据有误，但排查后发现报表逻辑正确，是他们对指标定义理解有偏差。我逐步拆解计算过程，直到双方对齐。", "我和同事对一张大表选全量还是增量有分歧。我准备了实际运行时间和存储成本对比，最终对齐为增量加每周全量兜底。", "银行财务团队想要的字段计算口径和既定定义不同。我拉上数据治理团队，把两种口径都文档化，召开正式对齐会议来确定。"]},
+      {bot:"How do you prioritize when you have multiple urgent tasks at the same time?", zh:"同时有多个紧急任务时，你如何排优先级？", hints:["I assess impact first — which issue affects the most users or has a regulatory deadline. In banking, compliance reports always take highest priority.", "I communicate immediately with all stakeholders, give each an ETA, and start with the one with the earliest business impact. I also ask if any can be temporarily unblocked by a workaround.", "I use a simple matrix: urgency vs. impact. High impact and high urgency go first. I also flag if I need additional resource to avoid missing any deadline."], hintsZh:["我先评估影响范围——哪个问题影响用户最多或有监管截止时间。银行合规报表永远最优先。", "我立即和所有相关方沟通，分别给出ETA，从业务影响最早的开始做，同时问是否有临时方案可以先解除阻塞。", "我用一个简单矩阵：紧急度 vs 影响度，高影响+高紧急优先。如果资源不够我会提前说，避免任何截止时间被错过。"]},
+      {bot:"Have you ever pushed back on a requirement you thought was technically wrong or risky? How did you handle it?", zh:"你有没有反驳过你认为技术上有问题或有风险的需求？你是怎么处理的？", hints:["Yes. In banking, a PM wanted to add a direct delete on a production fact table to fix a data issue. I pushed back and proposed a soft-delete flag plus a reprocessing job instead — safer and auditable.", "In e-commerce, a stakeholder wanted a real-time dashboard from a table that was only updated daily. I explained the limitation, proposed an alternative with a clearly labeled 'last updated' timestamp, and they agreed.", "I always push back with data, not just opinion. I document the risk, propose an alternative, and escalate if the stakeholder insists on a risky approach — especially in a regulated environment like banking."], hintsZh:["有。银行有个PM想直接在生产事实表上delete来修数，我反驳了，提议用软删除标志加重处理任务替代——更安全且有审计记录。", "电商有个需求方想要实时看板，但数据表只是每天更新。我说明了限制，提议用带明确'最后更新时间'标签的方案，对方同意了。", "我总是用数据而不只是观点来反驳。我记录风险、提出替代方案，如果对方坚持危险做法就升级——在银行这种受监管环境中尤其如此。"]},
+      {bot:"Last question — where do you see yourself in 3 years? What are your career goals?", zh:"最后——你对自己3年后有什么规划？职业目标是什么？", hints:["I'd like to leverage my cross-industry experience in e-commerce and banking to take on a technical lead role, driving data architecture decisions for complex business domains.", "My goal is to build more sophisticated real-time data systems — combining the high-volume demands of e-commerce with the accuracy requirements of banking.", "I want to grow into a data engineering lead who can define standards, mentor the team, and drive end-to-end data product delivery across industries."], hintsZh:["我希望利用电商和银行的跨行业经验，担任技术负责人，主导复杂业务域的数据架构决策。", "我的目标是搭建更完善的实时数据系统，结合电商的高吞吐要求和银行的精准性要求。", "我想成长为数据工程负责人，能制定规范、带团队、跨行业推动端到端数据产品交付。"]}
+    ]
+  },
+  {
+    id:'anomaly', icon:'🚨', label:'数据异常上报', desc:'发现问题 & 快速上报',
+    turns:[
+      {bot:"Hi, I noticed some unusual numbers in the dashboard. Do you have a moment to take a look?", zh:"嗨，我注意到看板上的数字有点异常。你有时间看一下吗？", hints:["Sure, what did you find?", "Of course, which table are you referring to?", "Yes, send me the details."], hintsZh:["当然，你发现了什么？", "当然，是哪张表？", "好的，把详情发给我。"]},
+      {bot:"The inventory count in WMS is 500 units higher than in ERP. This started from yesterday's batch job.", zh:"WMS里的库存数量比ERP高了500个，从昨天的批处理任务开始出现的。", hints:["That's a significant gap. Let me check the job log first.", "Got it. Is it affecting all warehouses or just one?", "I see. Did any upstream data change yesterday?"], hintsZh:["差距不小，我先看一下任务日志。", "明白，是所有仓库都有还是只有一个？", "明白了，昨天有上游数据变化吗？"]},
+      {bot:"It's only affecting warehouse B. The job log shows a connection timeout at 2am.", zh:"只影响B仓库。任务日志显示凌晨2点有连接超时。", hints:["That explains it. The data might not have been fully loaded due to the timeout.", "A timeout can cause partial data ingestion. I'll check if we need to rerun the job.", "We should escalate this to the ops team and rerun the affected batch."], hintsZh:["原因找到了，超时可能导致数据没完全加载。", "超时会导致部分数据接入，我看一下是否需要重跑任务。", "我们应该上报给运维团队，重跑受影响的批次。"]},
+      {bot:"Makes sense. Should we rerun the job now, or wait for off-peak hours?", zh:"有道理。我们现在重跑，还是等到业务低峰期？", hints:["Let's wait for off-peak hours to avoid impacting other jobs.", "I think we can rerun now since it's a read-only fix.", "We should run it now — the business team needs accurate data by EOD."], hintsZh:["等低峰期吧，避免影响其他任务。", "我觉得现在可以重跑，因为只是只读修复。", "现在就跑——业务团队今天结束前需要准确数据。"]},
+      {bot:"Agreed. I'll trigger the rerun and monitor it. Can you notify the business team about the delay?", zh:"同意。我来触发重跑并监控。你能通知业务团队说明延误情况吗？", hints:["Sure, I'll send them a heads up right now.", "No problem, I'll email them with the ETA.", "Of course, I'll keep them posted until the data is corrected."], hintsZh:["好的，我马上给他们发一个提前告知。", "没问题，我发邮件给他们说明预计完成时间。", "当然，我会持续通知他们直到数据修正完成。"]}
+    ]
+  },
+  {
+    id:'golive', icon:'🚀', label:'上线前确认', desc:'发布前沟通 & 风险确认',
+    turns:[
+      {bot:"Hey, we're planning to deploy the new reconciliation logic tonight. Are you ready on your side?", zh:"嗨，我们计划今晚部署新的对账逻辑。你那边准备好了吗？", hints:["Yes, all checks passed on my side.", "Almost ready — I'm doing the final review now.", "Not yet, I found a small issue in the test environment."], hintsZh:["好的，我这边所有检查都通过了。", "快了，我现在在做最终复查。", "还没，我在测试环境发现了一个小问题。"]},
+      {bot:"Good to hear. Did you complete the data validation in staging?", zh:"很好。你在测试环境完成数据验证了吗？", hints:["Yes, I ran a full comparison and the numbers match.", "I validated the row count and key fields — all good.", "The staging results look clean. No discrepancies found."], hintsZh:["是的，我做了全量比对，数字一致。", "我验证了行数和关键字段，都没问题。", "测试环境结果很干净，没发现差异。"]},
+      {bot:"Great. What's the rollback plan if something goes wrong after deployment?", zh:"很好。如果部署后出现问题，回滚方案是什么？", hints:["We can rollback by reverting the SQL script and rerunning the previous version.", "I've kept the old job config — rollback would take about 15 minutes.", "We'll switch the flag back in the config and rerun the last stable batch."], hintsZh:["可以通过还原SQL脚本并重跑上一个版本来回滚。", "我保留了旧的任务配置，回滚大概需要15分钟。", "在配置里把开关改回去，重跑上一个稳定批次。"]},
+      {bot:"Understood. Who's on call tonight in case issues arise?", zh:"明白了。今晚如果出问题，谁在值班？", hints:["I'll be on call from 8pm to midnight.", "Tom is on call — I've already briefed him on the deployment.", "I can cover it. Please ping me on Slack if anything comes up."], hintsZh:["我晚上8点到午夜值班。", "Tom在值班，我已经给他讲过部署情况了。", "我可以负责，如果有情况在Slack上ping我。"]},
+      {bot:"Perfect. Let's do a quick sync at 9pm before the deployment window. Sound good?", zh:"好的。我们在部署窗口前晚上9点快速同步一下。可以吗？", hints:["Works for me, I'll send a calendar invite.", "Sounds good, I'll be ready.", "Sure, I'll prepare a checklist to go through together."], hintsZh:["我这边可以，我发个日历邀请。", "没问题，我会准备好的。", "当然，我准备一个检查清单一起过一遍。"]}
+    ]
   }
 ];
-
-let currentScene = null;
 let turnIndex = 0;
 let hintShown = false;
 
@@ -199,7 +374,1346 @@ function autoResize(el) {
   el.style.height = Math.min(el.scrollHeight, 100) + 'px';
 }
 
+// 语音识别
+let recognition = null;
+let isRecording = false;
+
+function toggleMic() {
+  if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    alert('你的浏览器不支持语音识别，请使用 Chrome 或 Safari。');
+    return;
+  }
+  if (isRecording) {
+    recognition.stop();
+    return;
+  }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = 'en-US';
+  recognition.interimResults = false;
+  recognition.onstart = () => {
+    isRecording = true;
+    document.getElementById('micBtn').classList.add('recording');
+    document.getElementById('micBtn').textContent = '⏹️';
+  };
+  recognition.onresult = (e) => {
+    const text = e.results[0][0].transcript;
+    const input = document.getElementById('input');
+    input.value = text;
+    autoResize(input);
+    showSimilarity(text);
+  };
+  recognition.onend = () => {
+    isRecording = false;
+    document.getElementById('micBtn').classList.remove('recording');
+    document.getElementById('micBtn').textContent = '🎤';
+  };
+  recognition.onerror = () => {
+    isRecording = false;
+    document.getElementById('micBtn').classList.remove('recording');
+    document.getElementById('micBtn').textContent = '🎤';
+  };
+  recognition.start();
+}
+
+function similarity(a, b) {
+  a = a.toLowerCase().replace(/[^a-z0-9 ]/g, '');
+  b = b.toLowerCase().replace(/[^a-z0-9 ]/g, '');
+  const wa = new Set(a.split(' ').filter(Boolean));
+  const wb = new Set(b.split(' ').filter(Boolean));
+  let common = 0;
+  wa.forEach(w => { if (wb.has(w)) common++; });
+  return common / Math.max(wa.size, wb.size, 1);
+}
+
+function showSimilarity(userText) {
+  if (!currentScene) return;
+  const turn = currentScene.turns[turnIndex];
+  if (!turn) return;
+  const best = Math.max(...turn.hints.map(h => similarity(userText, h)));
+  let label, color;
+  if (best >= 0.6) { label = '✅ 很接近！说得不错'; color = '#166534'; }
+  else if (best >= 0.3) { label = '🟡 差一点，再试试'; color = '#854d0e'; }
+  else { label = '🔴 差得有点多，参考一下提示'; color = '#991b1b'; }
+  const div = document.createElement('div');
+  div.className = 'msg hint';
+  div.style.cssText = 'background:#f8fafc;border-color:#cbd5e0;color:' + color;
+  div.textContent = label;
+  const msgs = document.getElementById('messages');
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  saveHistory(currentScene.label, best, userText);
+}
+
 renderScenes();
+
+// ── tab 切换 ──
+function switchTab(tab) {
+  const allTabs = ['practice','vocab','quiz','repeat','phonics','wordbook','history'];
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    b.classList.toggle('active', allTabs[i] === tab);
+  });
+  allTabs.forEach(t => {
+    const el = document.getElementById('tab-' + t);
+    if (t === 'practice') { el.style.display = tab === 'practice' ? '' : 'none'; }
+    else { el.classList.toggle('visible', t === tab); }
+  });
+  if (tab === 'wordbook') renderWordbook();
+  if (tab === 'history') renderHistory();
+  if (tab === 'vocab') renderVocab();
+  if (tab === 'quiz') startQuiz();
+  if (tab === 'repeat') startRepeat();
+  if (tab === 'phonics') renderPhonics(0);
+}
+
+// ── 词汇卡片数据 ──
+const VOCAB_GROUPS = [
+  {
+    title:'📊 数据对账 & 差异分析',
+    items:[
+      {en:'reconciliation', zh:'对账 / 数据核对', eg:'The inventory reconciliation failed.'},
+      {en:'discrepancy', zh:'差异 / 数据不一致', eg:'There is a discrepancy in the numbers.'},
+      {en:'delta', zh:'差值 / 变化量', eg:'The delta between S1 and S2 is 150 units.'},
+      {en:'unknown difference', zh:'未知差异', eg:'We found 3 unknown differences in the report.'},
+      {en:'known difference', zh:'已知差异', eg:'This is a known difference caused by timing.'},
+      {en:'net difference', zh:'净差异', eg:'The net difference after offset is zero.'},
+      {en:'offset', zh:'抵消 / 冲销', eg:'These two entries offset each other.'},
+      {en:'mismatch', zh:'数据不匹配', eg:'There is a mismatch between WMS and ERP.'},
+      {en:'gap', zh:'缺口 / 数据差距', eg:'We need to close the gap before month-end.'},
+      {en:'variance', zh:'偏差', eg:'The variance exceeds the acceptable threshold.'},
+      {en:'threshold', zh:'阈值 / 临界值', eg:'The difference exceeds the threshold.'},
+      {en:'baseline', zh:'基准值', eg:'Compare the results against the baseline.'},
+      {en:'reconciliation rate', zh:'对账率', eg:'The reconciliation rate is 98.5%.'},
+    ]
+  },
+  {
+    title:'🗃️ 基础通用词汇',
+    items:[
+      {en:'data', zh:'数据', eg:'The data looks correct after the fix.'},
+      {en:'database', zh:'数据库', eg:'The database is MySQL.'},
+      {en:'table', zh:'表', eg:'Check the table structure first.'},
+      {en:'column', zh:'列 / 字段', eg:'Add a new column to the table.'},
+      {en:'row', zh:'行 / 记录', eg:'There are 1000 rows in this table.'},
+      {en:'field', zh:'字段', eg:'The field is missing in the source.'},
+      {en:'schema', zh:'模式 / 结构', eg:'The schema changed last week.'},
+      {en:'metadata', zh:'元数据', eg:'Check the metadata for this table.'},
+      {en:'source', zh:'来源', eg:'The source data is from WMS.'},
+      {en:'target', zh:'目标', eg:'Write the result to the target table.'},
+      {en:'entity', zh:'实体', eg:'The order is the main entity here.'},
+      {en:'dataset', zh:'数据集', eg:'Load the dataset into memory.'},
+      {en:'catalog', zh:'数据目录', eg:'Search in the data catalog.'},
+      {en:'instance', zh:'实例', eg:'Connect to the correct database instance.'},
+    ]
+  },
+  {
+    title:'🔍 SQL & 查询',
+    items:[
+      {en:'query', zh:'查询', eg:'Run the query to check the result.'},
+      {en:'select', zh:'查询（SELECT）', eg:'Select all columns from the table.'},
+      {en:'insert', zh:'插入', eg:'Insert the missing records.'},
+      {en:'update', zh:'更新', eg:'Update the status to completed.'},
+      {en:'delete', zh:'删除', eg:'Delete records older than 1 year.'},
+      {en:'truncate', zh:'清空表', eg:'Truncate the staging table before reload.'},
+      {en:'join', zh:'关联', eg:'Join the two tables on order_id.'},
+      {en:'inner join', zh:'内连接', eg:'Use inner join to get matched records only.'},
+      {en:'left join', zh:'左连接', eg:'Use a left join to keep all records.'},
+      {en:'CTE', zh:'公共表表达式（WITH子句）', eg:'Refactor the subquery into a CTE.'},
+      {en:'subquery', zh:'子查询', eg:'This subquery is hard to read.'},
+      {en:'join condition', zh:'关联条件', eg:'Check the join condition carefully.'},
+      {en:'where', zh:'条件过滤', eg:'Add a WHERE clause for the date range.'},
+      {en:'group by', zh:'分组', eg:'Group by region and product type.'},
+      {en:'order by', zh:'排序', eg:'Order by date descending.'},
+      {en:'having', zh:'分组后过滤', eg:'Use HAVING to filter aggregated results.'},
+      {en:'distinct', zh:'去重', eg:'Use DISTINCT to remove duplicates.'},
+      {en:'union all', zh:'全量合并（不去重）', eg:'Use UNION ALL to combine the two sets.'},
+      {en:'view', zh:'视图', eg:'Create a view for the report query.'},
+      {en:'index', zh:'索引', eg:'Adding an index will speed up the query.'},
+      {en:'filter', zh:'过滤条件', eg:'Add a filter for the business date.'},
+      {en:'aggregation', zh:'聚合 / 汇总', eg:'The aggregation logic looks correct.'},
+      {en:'granularity', zh:'数据粒度', eg:'The granularity is at the order line level.'},
+      {en:'stored procedure', zh:'存储过程', eg:'The job calls a stored procedure to update data.'},
+      {en:'UDF', zh:'用户自定义函数', eg:'We wrote a UDF to handle the custom logic.'},
+    ]
+  },
+  {
+    title:'🗂️ 数据处理 & 表结构',
+    items:[
+      {en:'upstream table', zh:'上游表', eg:'Check the upstream table for missing data.'},
+      {en:'downstream table', zh:'下游表', eg:'The fix will propagate to all downstream tables.'},
+      {en:'source table', zh:'来源表', eg:'Verify the data in the source table first.'},
+      {en:'base table', zh:'基础表', eg:'The base table is updated daily.'},
+      {en:'fact table', zh:'事实表', eg:'This is the main fact table for orders.'},
+      {en:'dimension table', zh:'维度表', eg:'Join with the dimension table to get the label.'},
+      {en:'wide table', zh:'宽表', eg:'We use a wide table to simplify the query.'},
+      {en:'summary table', zh:'汇总表', eg:'The summary table is refreshed daily.'},
+      {en:'lookup table', zh:'码值表 / 映射表', eg:'Check the lookup table for the correct code.'},
+      {en:'partition', zh:'分区（数据表分区）', eg:'Filter by the correct partition date.'},
+      {en:'cutoff date', zh:'截止日期', eg:'Data after the cutoff date is excluded.'},
+      {en:'business date', zh:'业务日期', eg:'Use business date, not partition date here.'},
+      {en:'snapshot', zh:'快照（某时间点的数据）', eg:'This is a daily snapshot of inventory.'},
+      {en:'backfill', zh:'回填数据', eg:'We need to backfill the missing records.'},
+      {en:'incremental load', zh:'增量加载', eg:'We use incremental load to reduce run time.'},
+      {en:'full refresh', zh:'全量刷新', eg:'A full refresh is scheduled for Sunday.'},
+      {en:'data lineage', zh:'数据血缘 / 来源追踪', eg:'We need to trace the data lineage.'},
+      {en:'mapping', zh:'映射关系', eg:'The code mapping is missing for this item.'},
+      {en:'duplicate', zh:'重复数据', eg:'There are duplicates in the result set.'},
+      {en:'deduplication', zh:'去重', eg:'We need to add a deduplication step.'},
+      {en:'NULL value', zh:'空值', eg:'Watch out for NULL values in the join.'},
+      {en:'primary key', zh:'主键', eg:'The primary key must be unique.'},
+      {en:'foreign key', zh:'外键', eg:'Add a foreign key constraint.'},
+    ]
+  },
+  {
+    title:'🏗️ 数据仓库分层',
+    items:[
+      {en:'data warehouse', zh:'数据仓库（DW）', eg:'This is stored in the data warehouse.'},
+      {en:'ODS', zh:'操作数据层（原始接入层）', eg:'Raw data lands in the ODS layer.'},
+      {en:'DWD', zh:'明细数据层', eg:'DWD stores cleaned detail records.'},
+      {en:'DWS', zh:'汇总数据层', eg:'DWS aggregates by subject area.'},
+      {en:'ADS', zh:'应用数据层', eg:'ADS serves reports and dashboards.'},
+      {en:'DIM', zh:'维表层', eg:'DIM stores all dimension tables.'},
+      {en:'star schema', zh:'星型模型', eg:'We use a star schema for this data mart.'},
+      {en:'snowflake schema', zh:'雪花模型', eg:'The snowflake schema is more normalized.'},
+      {en:'subject area', zh:'主题域', eg:'The order subject area is owned by our team.'},
+      {en:'data mart', zh:'数据集市', eg:'The finance team has their own data mart.'},
+      {en:'slowly changing dimension', zh:'缓慢变化维（SCD）', eg:'Customer address uses SCD type 2.'},
+      {en:'conformed dimension', zh:'一致维度', eg:'Date is a conformed dimension.'},
+    ]
+  },
+  {
+    title:'⚙️ ETL / 调度 / 运维',
+    items:[
+      {en:'ETL pipeline', zh:'数据处理流程', eg:'The ETL pipeline runs at midnight.'},
+      {en:'ELT', zh:'抽取-加载-转换', eg:'We switched to ELT on the cloud warehouse.'},
+      {en:'pipeline', zh:'数据管道', eg:'The pipeline failed at the transform step.'},
+      {en:'task', zh:'任务', eg:'The task is scheduled for 2am.'},
+      {en:'job', zh:'作业', eg:'The batch job runs every hour.'},
+      {en:'workflow', zh:'工作流', eg:'Set up the workflow in the scheduler.'},
+      {en:'schedule', zh:'调度', eg:'The schedule is set to daily at midnight.'},
+      {en:'dependency', zh:'依赖项', eg:'This task has a dependency on the upstream fix.'},
+      {en:'backfill', zh:'补数 / 回填', eg:'We need to backfill 3 months of data.'},
+      {en:'retry', zh:'重试', eg:'Set the retry count to 3.'},
+      {en:'checkpoint', zh:'检查点', eg:'The job failed after the last checkpoint.'},
+      {en:'orchestration', zh:'任务编排', eg:'Use Airflow for orchestration.'},
+      {en:'DAG', zh:'有向无环图（任务依赖图）', eg:'Define the DAG in Airflow.'},
+      {en:'incremental', zh:'增量', eg:'Run incremental instead of full refresh.'},
+      {en:'batch', zh:'批处理', eg:'This is a batch job, not real-time.'},
+      {en:'streaming', zh:'流处理', eg:'We use Flink for streaming jobs.'},
+      {en:'real-time', zh:'实时', eg:'The dashboard shows real-time data.'},
+      {en:'latency', zh:'延迟', eg:'The latency is under 5 seconds.'},
+      {en:'throughput', zh:'吞吐量', eg:'Increase throughput by adding partitions.'},
+      {en:'CDC', zh:'变更数据捕获', eg:'We use CDC to sync changes from MySQL.'},
+    ]
+  },
+  {
+    title:'✅ 数据质量',
+    items:[
+      {en:'data quality', zh:'数据质量', eg:'We need to improve data quality.'},
+      {en:'completeness', zh:'完整性', eg:'Check the completeness of the data.'},
+      {en:'accuracy', zh:'准确性', eg:'The accuracy of the report is 99%.'},
+      {en:'consistency', zh:'一致性', eg:'Ensure consistency across all systems.'},
+      {en:'timeliness', zh:'时效性', eg:'The data must meet timeliness requirements.'},
+      {en:'uniqueness', zh:'唯一性', eg:'Validate the uniqueness of the primary key.'},
+      {en:'validate', zh:'校验', eg:'Validate the data before loading.'},
+      {en:'anomaly', zh:'异常', eg:'An anomaly was detected in the daily count.'},
+      {en:'missing value', zh:'缺失值', eg:'Fill in missing values with the default.'},
+      {en:'invalid', zh:'无效数据', eg:'Filter out invalid records.'},
+      {en:'monitor', zh:'监控', eg:'Monitor the data quality daily.'},
+      {en:'alert', zh:'告警', eg:'Set up an alert for null rate > 5%.'},
+      {en:'rule', zh:'规则', eg:'Define quality rules for each field.'},
+    ]
+  },
+  {
+    title:'📈 指标与分析',
+    items:[
+      {en:'metric', zh:'指标', eg:'The key metric is the reconciliation rate.'},
+      {en:'KPI', zh:'关键绩效指标', eg:'This KPI is tracked weekly.'},
+      {en:'dimension', zh:'维度', eg:'We need to add a date dimension to the query.'},
+      {en:'measure', zh:'度量', eg:'The measure is total sales amount.'},
+      {en:'report', zh:'报表', eg:'The report runs every Monday morning.'},
+      {en:'dashboard', zh:'看板 / 数据大屏', eg:'Check the dashboard for the latest numbers.'},
+      {en:'drill down', zh:'下钻', eg:'Drill down to see the order-level detail.'},
+      {en:'roll up', zh:'上卷', eg:'Roll up to the monthly view.'},
+      {en:'trend', zh:'趋势', eg:'The trend shows a steady increase.'},
+      {en:'retention', zh:'留存', eg:'Calculate the 7-day retention rate.'},
+      {en:'conversion', zh:'转化', eg:'The conversion rate dropped last week.'},
+      {en:'funnel', zh:'漏斗', eg:'Build a funnel for the checkout flow.'},
+      {en:'attribution', zh:'归因', eg:'Attribution is complex with multiple channels.'},
+      {en:'segment', zh:'分群', eg:'Segment users by purchase frequency.'},
+      {en:'comparison', zh:'对比（同比/环比）', eg:'Run a year-over-year comparison.'},
+    ]
+  },
+  {
+    title:'🖥️ 系统 & 环境',
+    items:[
+      {en:'WMS', zh:'仓库管理系统', eg:'The WMS data shows a higher count.'},
+      {en:'ERP', zh:'企业资源计划系统', eg:'ERP has a different cutoff time.'},
+      {en:'API', zh:'应用程序接口', eg:'Call the API to fetch the latest data.'},
+      {en:'Kafka', zh:'消息队列（流数据传输）', eg:'Data flows through Kafka in real time.'},
+      {en:'Spark', zh:'分布式计算引擎', eg:'The Spark job runs in 10 minutes.'},
+      {en:'Hive', zh:'数据仓库查询工具', eg:'Write Hive SQL to query the table.'},
+      {en:'HDFS', zh:'分布式文件系统', eg:'The file is stored in HDFS.'},
+      {en:'cluster', zh:'集群', eg:'The cluster has 20 nodes.'},
+      {en:'staging environment', zh:'测试环境', eg:'Test your fix in staging first.'},
+      {en:'production environment', zh:'生产环境', eg:'Never run this directly in production.'},
+      {en:'deployment', zh:'部署 / 上线', eg:'The deployment is scheduled for Friday.'},
+      {en:'rollback', zh:'回滚', eg:'We may need to rollback the deployment.'},
+      {en:'hotfix', zh:'紧急修复', eg:'We need a hotfix for this bug.'},
+      {en:'configuration', zh:'配置', eg:'Check the configuration file.'},
+      {en:'parameter', zh:'参数', eg:'Pass the date as a parameter.'},
+      {en:'log', zh:'日志', eg:'Check the log for the error message.'},
+      {en:'timeout', zh:'超时', eg:'The job failed due to timeout.'},
+      {en:'SLA', zh:'服务等级协议', eg:'We missed the SLA by 30 minutes.'},
+    ]
+  },
+  {
+    title:'🔐 权限与治理',
+    items:[
+      {en:'permission', zh:'权限', eg:'I need read permission on this table.'},
+      {en:'access', zh:'访问权限', eg:'Request access to the database.'},
+      {en:'role', zh:'角色', eg:'Assign the analyst role to this user.'},
+      {en:'authentication', zh:'认证', eg:'Authentication failed — check your token.'},
+      {en:'authorization', zh:'授权', eg:'Authorization is required for this table.'},
+      {en:'audit', zh:'审计', eg:'All queries are logged for audit.'},
+      {en:'lineage', zh:'数据血缘', eg:'Trace the lineage to find the source.'},
+      {en:'governance', zh:'数据治理', eg:'We follow the data governance policy.'},
+      {en:'ownership', zh:'数据归属', eg:'Who is the ownership of this table?'},
+      {en:'sensitive data', zh:'敏感数据', eg:'Mask all sensitive data before sharing.'},
+      {en:'masking', zh:'脱敏', eg:'Apply masking to phone numbers.'},
+      {en:'compliance', zh:'合规', eg:'This change must pass compliance review.'},
+      {en:'encryption', zh:'加密', eg:'All data at rest is encrypted.'},
+    ]
+  },
+  {
+    title:'🛠️ 开发与运维动词',
+    items:[
+      {en:'collect', zh:'采集', eg:'Collect data from the source system.'},
+      {en:'ingest', zh:'接入', eg:'Ingest raw logs into the ODS layer.'},
+      {en:'extract', zh:'抽取', eg:'Extract data from the MySQL table.'},
+      {en:'transform', zh:'转换', eg:'Transform the raw data into the standard format.'},
+      {en:'clean', zh:'清洗', eg:'Clean the null and invalid values.'},
+      {en:'aggregate', zh:'聚合', eg:'Aggregate by day and region.'},
+      {en:'synchronize', zh:'同步', eg:'Synchronize the data every 10 minutes.'},
+      {en:'parse', zh:'解析', eg:'Parse the JSON field.'},
+      {en:'validate', zh:'校验', eg:'Validate the record count after loading.'},
+      {en:'optimize', zh:'优化', eg:'Optimize the query to reduce run time.'},
+      {en:'troubleshoot', zh:'排障 / 排查', eg:'Let me troubleshoot the job failure.'},
+      {en:'deploy', zh:'部署', eg:'Deploy the new version tonight.'},
+      {en:'maintain', zh:'维护', eg:'Maintain the table partitions regularly.'},
+      {en:'archive', zh:'归档', eg:'Archive data older than 2 years.'},
+      {en:'debug', zh:'调试', eg:'Debug the SQL to find the issue.'},
+      {en:'commit', zh:'提交（代码）', eg:'Commit your changes and push.'},
+      {en:'merge', zh:'合并', eg:'Merge the PR after review.'},
+      {en:'rollback', zh:'回滚', eg:'Rollback the deployment if it fails.'},
+    ]
+  },
+  {
+    title:'📋 常用缩写',
+    items:[
+      {en:'SQL', zh:'结构化查询语言', eg:'Write a SQL query to check the data.'},
+      {en:'BI', zh:'商业智能', eg:'The BI team needs this data by Monday.'},
+      {en:'OLAP', zh:'联机分析处理', eg:'This is an OLAP query, not OLTP.'},
+      {en:'DDL', zh:'数据定义语言（建表/改表）', eg:'Run the DDL to add the new column.'},
+      {en:'DML', zh:'数据操作语言（增删改查）', eg:'The DML includes INSERT and UPDATE.'},
+      {en:'SLA', zh:'服务等级协议', eg:'We must meet the SLA for this report.'},
+      {en:'CDC', zh:'变更数据捕获', eg:'We use CDC to sync changes in real time.'},
+      {en:'DAG', zh:'有向无环图（任务依赖图）', eg:'Define the DAG in Airflow.'},
+      {en:'UDF', zh:'用户自定义函数', eg:'Write a UDF to handle the custom logic.'},
+      {en:'QPS', zh:'每秒查询数', eg:'The QPS is too high for this cluster.'},
+      {en:'TTL', zh:'生存时间（数据保留时长）', eg:'Set the TTL to 90 days.'},
+      {en:'API', zh:'应用程序接口', eg:'Call the API to get the latest status.'},
+    ]
+  },
+  {
+    title:'📝 高频短语',
+    items:[
+      {en:'data ingestion', zh:'数据接入', eg:'Data ingestion happens every 15 minutes.'},
+      {en:'source system', zh:'源系统', eg:'The source system is the WMS.'},
+      {en:'target table', zh:'目标表', eg:'Write the result to the target table.'},
+      {en:'business logic', zh:'业务逻辑', eg:'The business logic is in the transform step.'},
+      {en:'partition strategy', zh:'分区策略', eg:'Choose a partition strategy based on query pattern.'},
+      {en:'task failure', zh:'任务失败', eg:'Investigate the task failure immediately.'},
+      {en:'rerun task', zh:'重跑任务', eg:'Rerun the task for the missing dates.'},
+      {en:'dependency check', zh:'依赖检查', eg:'Run a dependency check before deployment.'},
+      {en:'job monitoring', zh:'作业监控', eg:'Set up job monitoring alerts.'},
+      {en:'null value check', zh:'空值检查', eg:'Add a null value check to the pipeline.'},
+      {en:'duplicate check', zh:'重复检查', eg:'Run a duplicate check on the key fields.'},
+      {en:'anomaly detection', zh:'异常检测', eg:'Anomaly detection flagged a spike yesterday.'},
+      {en:'data reconciliation', zh:'数据对账', eg:'Run data reconciliation every month-end.'},
+      {en:'resource allocation', zh:'资源分配', eg:'Increase resource allocation for this job.'},
+      {en:'table design', zh:'表设计', eg:'Review the table design before coding.'},
+    ]
+  },
+  {
+    title:'💬 沟通协作',
+    items:[
+      {en:'align', zh:'对齐 / 达成共识', eg:'Let\'s align on the requirements first.'},
+      {en:'sync up', zh:'同步进展', eg:'Can we sync up on this tomorrow?'},
+      {en:'follow up', zh:'跟进', eg:'I\'ll follow up with you by Friday.'},
+      {en:'loop in', zh:'把某人加入沟通', eg:'Please loop in the PM on this thread.'},
+      {en:'ping', zh:'联系 / 发消息', eg:'Ping me when it\'s ready.'},
+      {en:'heads up', zh:'提前告知 / 预警', eg:'Just a heads up — the data will be delayed.'},
+      {en:'action item', zh:'待办事项 / 行动点', eg:'The action item is assigned to me.'},
+      {en:'on the same page', zh:'达成共识 / 理解一致', eg:'Are we all on the same page?'},
+      {en:'touch base', zh:'简短沟通 / 保持联系', eg:'Let\'s touch base before the deadline.'},
+      {en:'circle back', zh:'回头再讨论', eg:'Let\'s circle back on this after the meeting.'},
+      {en:'bandwidth', zh:'时间/精力余量', eg:'I don\'t have bandwidth for this right now.'},
+      {en:'take offline', zh:'私下讨论', eg:'Let\'s take this offline.'},
+    ]
+  },
+  {
+    title:'🚨 常见报错 & 错误信息',
+    items:[
+      {en:'Table or view not found', zh:'表或视图不存在', eg:'Error: Table or view not found: dw.order_detail.'},
+      {en:'Column not found', zh:'字段不存在', eg:'Error: Column not found: order_id.'},
+      {en:'Ambiguous column name', zh:'字段名模糊（多表同名未加表别名）', eg:'Error: Ambiguous column name: status.'},
+      {en:'Syntax error', zh:'SQL语法错误', eg:'Error: Syntax error at or near "FORM".'},
+      {en:'Null value in NOT NULL column', zh:'非空字段写入了空值', eg:'Error: Null value in NOT NULL column: product_code.'},
+      {en:'Duplicate key value', zh:'主键/唯一键重复', eg:'Error: Duplicate key value violates unique constraint.'},
+      {en:'Division by zero', zh:'除以零', eg:'Error: Division by zero encountered.'},
+      {en:'Data type mismatch', zh:'数据类型不匹配', eg:'Error: Data type mismatch — expected INT, got STRING.'},
+      {en:'Out of memory', zh:'内存溢出', eg:'Error: Out of memory — reduce the query size.'},
+      {en:'Query timeout', zh:'查询超时', eg:'Error: Query timeout exceeded 300 seconds.'},
+      {en:'Permission denied', zh:'权限不足', eg:'Error: Permission denied for table finance.salary.'},
+      {en:'No such file or directory', zh:'文件路径不存在', eg:'Error: No such file or directory: /data/input.csv.'},
+      {en:'Connection refused', zh:'数据库连接被拒', eg:'Error: Connection refused — check the host and port.'},
+      {en:'Partition not found', zh:'分区不存在', eg:'Error: Partition not found: dt=2024-01-01.'},
+      {en:'Job failed', zh:'任务执行失败', eg:'Error: Job failed at step 3 — check the logs.'},
+      {en:'Task dependency not met', zh:'上游任务未完成', eg:'Error: Task dependency not met — upstream job still running.'},
+      {en:'Insufficient resources', zh:'资源不足', eg:'Error: Insufficient resources to run the Spark job.'},
+      {en:'Row count mismatch', zh:'行数不一致', eg:'Error: Row count mismatch — expected 5000, got 4978.'},
+      {en:'Schema mismatch', zh:'表结构不一致', eg:'Error: Schema mismatch — column order_no is missing.'},
+      {en:'Invalid date format', zh:'日期格式不正确', eg:'Error: Invalid date format — use YYYY-MM-DD.'},
+    ]
+  },
+  {
+    title:'📌 项目管理',
+    items:[
+      {en:'on track', zh:'进展顺利', eg:'Everything is on track for the deadline.'},
+      {en:'blocker', zh:'阻塞点', eg:'I have a blocker on the data access.'},
+      {en:'root cause', zh:'根本原因', eg:'Have you identified the root cause?'},
+      {en:'ETA', zh:'预计完成时间', eg:'What\'s the ETA for this fix?'},
+      {en:'scope', zh:'范围 / 需求边界', eg:'This is out of scope for this sprint.'},
+      {en:'milestone', zh:'里程碑', eg:'We hit the first milestone on time.'},
+      {en:'workaround', zh:'临时解决方案', eg:'This is a workaround, not a real fix.'},
+      {en:'trade-off', zh:'权衡取舍', eg:'There\'s a trade-off between speed and accuracy.'},
+      {en:'sign off', zh:'审批通过 / 确认', eg:'Please sign off on the design doc.'},
+      {en:'spike', zh:'技术预研', eg:'Let\'s do a spike before committing.'},
+      {en:'hotfix', zh:'紧急修复', eg:'We need a hotfix for this bug.'},
+      {en:'rollback', zh:'回滚', eg:'We may need to rollback the deployment.'},
+    ]
+  },
+];
+
+let activeCat = '';
+
+function renderVocab() {
+  // 分类筛选按钮（只渲染一次）
+  const catFilter = document.getElementById('catFilter');
+  if (!catFilter.children.length) {
+    const btns = ['全部', ...VOCAB_GROUPS.map(g => g.title)].map(t =>
+      `<button class="cat-btn${t==='全部'&&activeCat===''?' active':t===activeCat?' active':''}" onclick="setCat('${t}')">${t}</button>`
+    ).join('');
+    catFilter.innerHTML = btns;
+  }
+
+  const q = (document.getElementById('vocabSearch')?.value || '').toLowerCase();
+  const groups = activeCat && activeCat !== '全部'
+    ? VOCAB_GROUPS.filter(g => g.title === activeCat)
+    : VOCAB_GROUPS;
+
+  document.getElementById('vocabGrid').innerHTML = groups.map(g => {
+    const items = g.items.filter(v =>
+      !q || v.en.toLowerCase().includes(q) || v.zh.includes(q)
+    );
+    if (!items.length) return '';
+    return `<div class="vocab-section">${g.title}</div>` +
+      items.map(v =>
+        `<div class="vocab-card" onclick="speak('${v.en.replace(/'/g,"\\'")}')">
+          <div class="en">${v.en} <button onclick="event.stopPropagation();speak('${v.en.replace(/'/g,"\\'")}')  " style="background:none;border:none;cursor:pointer;font-size:.8rem;opacity:.5">🔊</button>
+            <button class="save-word-btn" onclick="event.stopPropagation();saveWord('${v.en.replace(/'/g,"\\'")}','${v.zh.replace(/'/g,"\\'")}')">+ 单词本</button>
+          </div>
+          <div class="zh">${v.zh}</div>
+          <div class="eg">"${v.eg}"</div>
+        </div>`
+      ).join('');
+  }).join('');
+}
+
+function setCat(cat) {
+  activeCat = cat === '全部' ? '' : cat;
+  document.getElementById('catFilter').innerHTML = '';
+  renderVocab();
+}
+
+// ── 测验模式 ──
+let quizList = [], quizIdx = 0, quizAnswered = false;
+
+function getAllVocabItems() {
+  return VOCAB_GROUPS.flatMap(g => g.items);
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  quizList = shuffle(getAllVocabItems());
+  quizIdx = 0;
+  quizAnswered = false;
+  renderQuiz();
+}
+
+function renderQuiz() {
+  const item = quizList[quizIdx];
+  const box = document.getElementById('quizBox');
+  box.innerHTML = `
+    <div style="font-size:.8rem;color:#a0aec0;margin-bottom:12px">${quizIdx+1} / ${quizList.length}</div>
+    <div class="quiz-zh">看中文，写英文：</div>
+    <div style="font-size:1.6rem;font-weight:800;color:#2b6cb0;margin-bottom:20px">${item.zh}</div>
+    <input class="quiz-input" id="quizInput" placeholder="输入英文..." onkeydown="if(event.key==='Enter')checkQuiz()">
+    <br>
+    <button class="quiz-btn" onclick="checkQuiz()">确认</button>
+    <button class="quiz-btn secondary" onclick="skipQuiz()">跳过</button>
+    <div id="quizResult"></div>
+  `;
+  setTimeout(() => document.getElementById('quizInput')?.focus(), 50);
+}
+
+function checkQuiz() {
+  if (quizAnswered) return;
+  const item = quizList[quizIdx];
+  const val = (document.getElementById('quizInput')?.value || '').trim().toLowerCase();
+  const correct = item.en.toLowerCase();
+  const score = similarity(val, correct);
+  quizAnswered = true;
+  const res = document.getElementById('quizResult');
+  if (score >= 0.7) {
+    res.innerHTML = `<div class="quiz-result" style="color:#166534">✅ 正确！</div><div class="quiz-answer">参考：${item.en} <button onclick="speak('${item.en.replace(/'/g,"\\'")}')">🔊</button></div><button class="quiz-btn" onclick="nextQuiz()">下一题</button>`;
+  } else {
+    res.innerHTML = `<div class="quiz-result" style="color:#991b1b">❌ 答案是：${item.en} <button onclick="speak('${item.en.replace(/'/g,"\\'")}')">🔊</button></div><div class="quiz-answer" style="color:#718096">${item.zh}</div><button class="quiz-btn" onclick="nextQuiz()">下一题</button>`;
+  }
+}
+
+function skipQuiz() {
+  const item = quizList[quizIdx];
+  const res = document.getElementById('quizResult') || document.getElementById('quizBox');
+  document.getElementById('quizBox').innerHTML = document.getElementById('quizBox').innerHTML;
+  nextQuiz();
+}
+
+function nextQuiz() {
+  quizIdx++;
+  quizAnswered = false;
+  if (quizIdx >= quizList.length) {
+    document.getElementById('quizBox').innerHTML = `<div style="font-size:1.2rem;font-weight:700;margin-bottom:16px">🎉 测验完成！共 ${quizList.length} 题</div><button class="quiz-btn" onclick="startQuiz()">再来一遍</button>`;
+    return;
+  }
+  renderQuiz();
+}
+
+// ── 跟读模式 ──
+let repeatList = [], repeatIdx = 0;
+
+function startRepeat() {
+  repeatList = shuffle(getAllVocabItems());
+  repeatIdx = 0;
+  renderRepeat();
+}
+
+function renderRepeat() {
+  const item = repeatList[repeatIdx];
+  const card = document.getElementById('repeatCard');
+  card.innerHTML = `
+    <div style="font-size:.8rem;color:#a0aec0;margin-bottom:12px">${repeatIdx+1} / ${repeatList.length}</div>
+    <div class="repeat-en">${item.en}</div>
+    <div class="repeat-zh">${item.zh}</div>
+    <div class="repeat-eg">"${item.eg}"</div>
+    <div class="repeat-btns">
+      <button class="quiz-btn secondary" onclick="speak('${item.en.replace(/'/g,"\\'")}')">🔊 听发音</button>
+      <button class="quiz-btn" id="repeatMicBtn" onclick="startRepeatMic('${item.en.replace(/'/g,"\\'")}')">🎤 开始跟读</button>
+    </div>
+    <div class="repeat-result" id="repeatResult"></div>
+    <div style="margin-top:16px">
+      <button class="quiz-btn secondary" onclick="prevRepeat()">← 上一个</button>
+      <button class="quiz-btn secondary" onclick="nextRepeat()">下一个 →</button>
+    </div>
+  `;
+  speak(item.en);
+}
+
+function prevRepeat() {
+  if (repeatIdx > 0) { repeatIdx--; renderRepeat(); }
+}
+function nextRepeat() {
+  repeatIdx = (repeatIdx + 1) % repeatList.length;
+  renderRepeat();
+}
+
+let repeatRecognition = null;
+function startRepeatMic(targetEn) {
+  if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    alert('你的浏览器不支持语音识别，请使用 Chrome 或 Safari。');
+    return;
+  }
+  const btn = document.getElementById('repeatMicBtn');
+  if (repeatRecognition) { repeatRecognition.stop(); return; }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  repeatRecognition = new SR();
+  repeatRecognition.lang = 'en-US';
+  repeatRecognition.interimResults = false;
+  btn.textContent = '⏹️ 停止';
+  btn.style.background = '#fee2e2';
+  repeatRecognition.onresult = (e) => {
+    const said = e.results[0][0].transcript;
+    const score = similarity(said, targetEn);
+    const res = document.getElementById('repeatResult');
+    res.style.display = 'block';
+    if (score >= 0.7) {
+      res.className = 'repeat-result good';
+      res.textContent = '✅ 发音很准！说的是："' + said + '"';
+    } else if (score >= 0.4) {
+      res.className = 'repeat-result ok';
+      res.textContent = '🟡 差不多，继续练！说的是："' + said + '"';
+    } else {
+      res.className = 'repeat-result bad';
+      res.textContent = '🔴 再试一次！说的是："' + said + '"（目标：' + targetEn + '）';
+    }
+  };
+  repeatRecognition.onend = () => {
+    repeatRecognition = null;
+    if (btn) { btn.textContent = '🎤 再次跟读'; btn.style.background = ''; }
+  };
+  repeatRecognition.onerror = () => {
+    repeatRecognition = null;
+    if (btn) { btn.textContent = '🎤 开始跟读'; btn.style.background = ''; }
+  };
+  repeatRecognition.start();
+}
+
+// ── 单词本（localStorage）──
+function saveWord(en, zh) {
+  const book = JSON.parse(localStorage.getItem('wordbook') || '[]');
+  if (!book.find(w => w.en === en)) {
+    book.push({en, zh, date: new Date().toLocaleDateString()});
+    localStorage.setItem('wordbook', JSON.stringify(book));
+    alert('已加入单词本：' + en);
+  } else {
+    alert('已在单词本中：' + en);
+  }
+}
+
+function renderWordbook() {
+  const book = JSON.parse(localStorage.getItem('wordbook') || '[]');
+  const el = document.getElementById('wordbookList');
+  if (!book.length) { el.innerHTML = '<div style="color:#a0aec0;font-size:.85rem;padding:12px">单词本是空的，在词汇卡片中点「+ 单词本」添加</div>'; return; }
+  el.innerHTML = book.map((w,i) =>
+    `<div class="wordbook-item">
+      <span><b>${w.en}</b> — ${w.zh}</span>
+      <span>
+        <button onclick="speak('${w.en}')" style="background:none;border:none;cursor:pointer;font-size:.85rem;opacity:.6">🔊</button>
+        <button class="del-btn" onclick="delWord(${i})">删除</button>
+      </span>
+    </div>`
+  ).join('');
+}
+
+function delWord(i) {
+  const book = JSON.parse(localStorage.getItem('wordbook') || '[]');
+  book.splice(i, 1);
+  localStorage.setItem('wordbook', JSON.stringify(book));
+  renderWordbook();
+}
+
+// ── 练习历史记录 ──
+function saveHistory(scene, score, text) {
+  const hist = JSON.parse(localStorage.getItem('history') || '[]');
+  hist.unshift({scene, score, text, date: new Date().toLocaleString()});
+  if (hist.length > 50) hist.pop();
+  localStorage.setItem('history', JSON.stringify(hist));
+}
+
+function renderHistory() {
+  const hist = JSON.parse(localStorage.getItem('history') || '[]');
+  const el = document.getElementById('historyList');
+  if (!hist.length) { el.innerHTML = '<div style="color:#a0aec0;font-size:.85rem;padding:12px">还没有练习记录，先去口语练习试试吧</div>'; return; }
+  el.innerHTML = hist.map(h => {
+    const cls = h.score >= 0.6 ? 'good' : h.score >= 0.3 ? 'ok' : 'bad';
+    const lbl = h.score >= 0.6 ? '✅ 很接近' : h.score >= 0.3 ? '🟡 差一点' : '🔴 差得多';
+    return `<div class="history-item ${cls}"><span class="score">${lbl}</span>${h.scene} · "${h.text}" <span style="color:#a0aec0;font-size:.72rem;margin-left:4px">${h.date}</span></div>`;
+  }).join('');
+}
+
+// ── 音标学习 ──
+const PHONICS = [
+  {
+    symbol:'/iː/', name:'长音 ee', desc:'嘴角向两边咧开，发长"衣"音，嘴型不变',
+    words:[
+      {en:'data', sym:'/ˈdeɪtə/', zh:'数据'},
+      {en:'team', sym:'/tiːm/', zh:'团队'},
+      {en:'feature', sym:'/ˈfiːtʃər/', zh:'功能'},
+    ],
+    sentences:[
+      {en:'The team reviewed the data.', zh:'团队审查了数据。'},
+      {en:'This feature needs to be fixed immediately.', zh:'这个功能需要立即修复。'},
+    ]
+  },
+  {
+    symbol:'/ɪ/', name:'短音 i', desc:'嘴微张，舌位居中偏高，快速发"衣"，比/iː/短促',
+    words:[
+      {en:'fix', sym:'/fɪks/', zh:'修复'},
+      {en:'pipeline', sym:'/ˈpaɪplaɪn/', zh:'数据管道'},
+      {en:'incremental', sym:'/ˌɪnkrəˈmentl/', zh:'增量的'},
+    ],
+    sentences:[
+      {en:'Can you fix the pipeline issue?', zh:'你能修复管道问题吗？'},
+      {en:'We use incremental load to reduce run time.', zh:'我们用增量加载来减少运行时间。'},
+    ]
+  },
+  {
+    symbol:'/æ/', name:'短音 a', desc:'嘴大张，舌头低平，发介于"啊"和"哎"之间的音',
+    words:[
+      {en:'batch', sym:'/bætʃ/', zh:'批次'},
+      {en:'backfill', sym:'/ˈbækfɪl/', zh:'回填'},
+      {en:'transaction', sym:'/trænˈzækʃn/', zh:'交易'},
+    ],
+    sentences:[
+      {en:'The batch job failed last night.', zh:'批处理任务昨晚失败了。'},
+      {en:'We need to backfill the transaction data.', zh:'我们需要回填交易数据。'},
+    ]
+  },
+  {
+    symbol:'/ɑː/', name:'长音 ar', desc:'嘴大张，舌头低平后缩，发长"啊"音',
+    words:[
+      {en:'schema', sym:'/ˈskiːmə/', zh:'结构/模式'},
+      {en:'archive', sym:'/ˈɑːkaɪv/', zh:'归档'},
+      {en:'target', sym:'/ˈtɑːɡɪt/', zh:'目标'},
+    ],
+    sentences:[
+      {en:'Archive the old data to reduce storage cost.', zh:'归档旧数据以降低存储成本。'},
+      {en:'Write the result to the target table.', zh:'把结果写入目标表。'},
+    ]
+  },
+  {
+    symbol:'/ɔː/', name:'长音 or', desc:'嘴圆唇向前突出，发长"奥"音',
+    words:[
+      {en:'source', sym:'/sɔːrs/', zh:'来源'},
+      {en:'report', sym:'/rɪˈpɔːrt/', zh:'报表'},
+      {en:'transform', sym:'/trænsˈfɔːrm/', zh:'转换'},
+    ],
+    sentences:[
+      {en:'Check the source table first.', zh:'先检查来源表。'},
+      {en:'The report is generated every morning.', zh:'报表每天早上生成。'},
+    ]
+  },
+  {
+    symbol:'/uː/', name:'长音 oo', desc:'嘴唇向前圆拢，发长"乌"音',
+    words:[
+      {en:'tool', sym:'/tuːl/', zh:'工具'},
+      {en:'loop', sym:'/luːp/', zh:'循环'},
+      {en:'remove', sym:'/rɪˈmuːv/', zh:'移除'},
+    ],
+    sentences:[
+      {en:'Use this tool to remove duplicates.', zh:'用这个工具来去重。'},
+      {en:'The loop runs until all records are processed.', zh:'循环一直运行直到所有记录处理完。'},
+    ]
+  },
+  {
+    symbol:'/ə/', name:'弱读音 schwa', desc:'最常见的英语音，嘴放松，轻发"呃"，出现在非重读音节',
+    words:[
+      {en:'data', sym:'/ˈdeɪtə/', zh:'数据'},
+      {en:'database', sym:'/ˈdeɪtəbeɪs/', zh:'数据库'},
+      {en:'schedule', sym:'/ˈskedʒuəl/', zh:'调度'},
+    ],
+    sentences:[
+      {en:'The database schedule runs at midnight.', zh:'数据库调度在午夜执行。'},
+      {en:'Check the data before loading.', zh:'加载前先检查数据。'},
+    ]
+  },
+  {
+    symbol:'/θ/', name:'清音 th', desc:'舌尖轻触上齿背，气流从两侧送出，不振动声带',
+    words:[
+      {en:'threshold', sym:'/ˈθreʃhoʊld/', zh:'阈值'},
+      {en:'throughput', sym:'/ˈθruːpʊt/', zh:'吞吐量'},
+      {en:'method', sym:'/ˈmeθəd/', zh:'方法'},
+    ],
+    sentences:[
+      {en:'The throughput exceeds the threshold.', zh:'吞吐量超过了阈值。'},
+      {en:'We need a better method to solve this.', zh:'我们需要更好的方法来解决这个问题。'},
+    ]
+  },
+  {
+    symbol:'/v/', name:'摩擦音 v', desc:'上齿轻触下唇，振动声带，中文里没有对应音',
+    words:[
+      {en:'validate', sym:'/ˈvælɪdeɪt/', zh:'验证'},
+      {en:'variance', sym:'/ˈveriəns/', zh:'偏差'},
+      {en:'volume', sym:'/ˈvɒljuːm/', zh:'数据量'},
+    ],
+    sentences:[
+      {en:'Validate the data before writing to the target.', zh:'在写入目标表前先验证数据。'},
+      {en:'The variance exceeds the acceptable range.', zh:'偏差超出了可接受范围。'},
+    ]
+  },
+  {
+    symbol:'/r/', name:'美式 r', desc:'舌尖不碰上颚，向后卷起，嘴唇略圆，是中文里没有的音',
+    words:[
+      {en:'reconciliation', sym:'/ˌrekənsɪliˈeɪʃn/', zh:'对账'},
+      {en:'retry', sym:'/ˌriːˈtraɪ/', zh:'重试'},
+      {en:'report', sym:'/rɪˈpɔːrt/', zh:'报表'},
+    ],
+    sentences:[
+      {en:'Run the reconciliation report every month-end.', zh:'每月末运行对账报表。'},
+      {en:'Set the retry count to three.', zh:'把重试次数设为三次。'},
+    ]
+  },
+  {
+    symbol:'/w/', name:'半元音 w', desc:'嘴唇圆拢，快速滑向后面的元音，类似中文"乌"但更短',
+    words:[
+      {en:'workflow', sym:'/ˈwɜːrkfloʊ/', zh:'工作流'},
+      {en:'warehouse', sym:'/ˈwerhaʊs/', zh:'仓库'},
+      {en:'workaround', sym:'/ˈwɜːrkaraʊnd/', zh:'临时方案'},
+    ],
+    sentences:[
+      {en:'The workflow runs every weekday.', zh:'工作流每个工作日运行。'},
+      {en:'This is a workaround, not a real fix.', zh:'这是临时方案，不是真正的修复。'},
+    ]
+  },
+  {
+    symbol:'/dʒ/', name:'塞擦音 j', desc:'类似中文"只"，但舌位更前，嘴唇不圆',
+    words:[
+      {en:'job', sym:'/dʒɒb/', zh:'作业/任务'},
+      {en:'join', sym:'/dʒɔɪn/', zh:'关联'},
+      {en:'adjustment', sym:'/əˈdʒʌstmənt/', zh:'调整'},
+    ],
+    sentences:[
+      {en:'The batch job runs every night.', zh:'批处理作业每晚运行。'},
+      {en:'Join the two tables on order ID.', zh:'通过订单ID关联这两张表。'},
+    ]
+  },
+  // ── 其余元音 ──
+  {
+    symbol:'/e/', name:'短音 e', desc:'嘴微张，舌位中等，发短促的"哎"，比/æ/嘴张得小',
+    words:[
+      {en:'check', sym:'/tʃek/', zh:'检查'},
+      {en:'test', sym:'/test/', zh:'测试'},
+      {en:'error', sym:'/ˈerər/', zh:'错误'},
+    ],
+    sentences:[
+      {en:'Check the error log for details.', zh:'查看错误日志了解详情。'},
+      {en:'Run the test before deployment.', zh:'部署前先跑测试。'},
+    ]
+  },
+  {
+    symbol:'/ʌ/', name:'短音 u', desc:'嘴微张居中，发短促"啊"，比/ɑː/更短更轻',
+    words:[
+      {en:'run', sym:'/rʌn/', zh:'运行'},
+      {en:'debug', sym:'/ˌdiːˈbʌɡ/', zh:'调试'},
+      {en:'cluster', sym:'/ˈklʌstər/', zh:'集群'},
+    ],
+    sentences:[
+      {en:'Run the job and check the result.', zh:'运行任务并检查结果。'},
+      {en:'Debug the query to find the issue.', zh:'调试查询找到问题所在。'},
+    ]
+  },
+  {
+    symbol:'/ʊ/', name:'短音 oo', desc:'嘴唇稍圆，比/uː/更短更放松，发短促"乌"',
+    words:[
+      {en:'put', sym:'/pʊt/', zh:'放入'},
+      {en:'full', sym:'/fʊl/', zh:'全量'},
+      {en:'push', sym:'/pʊʃ/', zh:'推送'},
+    ],
+    sentences:[
+      {en:'Push the full dataset to the target.', zh:'把完整数据集推送到目标端。'},
+      {en:'Put the result into the summary table.', zh:'把结果放入汇总表。'},
+    ]
+  },
+  {
+    symbol:'/ɒ/', name:'短音 o（英式）', desc:'嘴大张唇略圆，发短促"哦"，美式中常变为/ɑː/',
+    words:[
+      {en:'job', sym:'/dʒɒb/', zh:'作业'},
+      {en:'log', sym:'/lɒɡ/', zh:'日志'},
+      {en:'drop', sym:'/drɒp/', zh:'删除/丢弃'},
+    ],
+    sentences:[
+      {en:'Check the log file for the error.', zh:'查看日志文件中的错误。'},
+      {en:'Do not drop the production table.', zh:'不要删除生产表。'},
+    ]
+  },
+  {
+    symbol:'/eɪ/', name:'双元音 ay', desc:'从/e/滑向/ɪ/，嘴先微张再向两侧咧，类似"哎"',
+    words:[
+      {en:'data', sym:'/ˈdeɪtə/', zh:'数据'},
+      {en:'table', sym:'/ˈteɪbl/', zh:'表'},
+      {en:'statement', sym:'/ˈsteɪtmənt/', zh:'语句'},
+    ],
+    sentences:[
+      {en:'The data in the table looks correct.', zh:'表中的数据看起来是正确的。'},
+      {en:'Review the SQL statement carefully.', zh:'仔细检查SQL语句。'},
+    ]
+  },
+  {
+    symbol:'/aɪ/', name:'双元音 i/y', desc:'从/ɑː/滑向/ɪ/，嘴先大张再咧向两侧，类似"爱"',
+    words:[
+      {en:'pipeline', sym:'/ˈpaɪplaɪn/', zh:'数据管道'},
+      {en:'type', sym:'/taɪp/', zh:'类型'},
+      {en:'align', sym:'/əˈlaɪn/', zh:'对齐'},
+    ],
+    sentences:[
+      {en:'Align on the data type before coding.', zh:'编码前先对齐数据类型。'},
+      {en:'The pipeline runs on a nightly schedule.', zh:'管道按夜间计划运行。'},
+    ]
+  },
+  {
+    symbol:'/ɔɪ/', name:'双元音 oy', desc:'从/ɔː/滑向/ɪ/，嘴先圆唇再咧开，类似"噢伊"',
+    words:[
+      {en:'join', sym:'/dʒɔɪn/', zh:'关联'},
+      {en:'avoid', sym:'/əˈvɔɪd/', zh:'避免'},
+      {en:'deploy', sym:'/dɪˈplɔɪ/', zh:'部署'},
+    ],
+    sentences:[
+      {en:'Join the fact and dimension tables.', zh:'关联事实表和维度表。'},
+      {en:'Avoid deploying on Friday afternoon.', zh:'避免在周五下午部署。'},
+    ]
+  },
+  {
+    symbol:'/aʊ/', name:'双元音 ow', desc:'从/ɑː/滑向/ʊ/，嘴先大张再圆拢，类似"啊乌"',
+    words:[
+      {en:'output', sym:'/ˈaʊtpʊt/', zh:'输出'},
+      {en:'account', sym:'/əˈkaʊnt/', zh:'账户'},
+      {en:'download', sym:'/ˈdaʊnloʊd/', zh:'下载'},
+    ],
+    sentences:[
+      {en:'Check the output after the job finishes.', zh:'任务完成后检查输出。'},
+      {en:'Download the report and review it.', zh:'下载报表并审核。'},
+    ]
+  },
+  {
+    symbol:'/əʊ/', name:'双元音 o（英式）', desc:'从/ə/滑向/ʊ/，嘴从放松到圆拢，类似"哦乌"',
+    words:[
+      {en:'flow', sym:'/fləʊ/', zh:'流程/数据流'},
+      {en:'load', sym:'/ləʊd/', zh:'加载'},
+      {en:'node', sym:'/nəʊd/', zh:'节点'},
+    ],
+    sentences:[
+      {en:'The data flow is blocked at this node.', zh:'数据流在这个节点被阻塞了。'},
+      {en:'Load the data incrementally to save time.', zh:'增量加载数据以节省时间。'},
+    ]
+  },
+  {
+    symbol:'/ɪə/', name:'双元音 ear', desc:'从/ɪ/滑向/ə/，嘴先咧再放松，类似"咦呃"',
+    words:[
+      {en:'query', sym:'/ˈkwɪəri/', zh:'查询'},
+      {en:'clear', sym:'/klɪər/', zh:'清晰的'},
+      {en:'near', sym:'/nɪər/', zh:'接近'},
+    ],
+    sentences:[
+      {en:'The query result is near the expected value.', zh:'查询结果接近预期值。'},
+      {en:'Make the logic clear before writing the code.', zh:'写代码前先把逻辑理清楚。'},
+    ]
+  },
+  {
+    symbol:'/eə/', name:'双元音 air', desc:'从/e/滑向/ə/，嘴先微张再放松，类似"哎呃"',
+    words:[
+      {en:'compare', sym:'/kəmˈpeər/', zh:'对比'},
+      {en:'declare', sym:'/dɪˈkleər/', zh:'声明'},
+      {en:'aware', sym:'/əˈweər/', zh:'了解/注意'},
+    ],
+    sentences:[
+      {en:'Compare the two tables and find the difference.', zh:'对比两张表找出差异。'},
+      {en:'Be aware of the cutoff date when querying.', zh:'查询时注意截止日期。'},
+    ]
+  },
+  {
+    symbol:'/ʊə/', name:'双元音 ure', desc:'从/ʊ/滑向/ə/，嘴先圆再放松，类似"乌呃"',
+    words:[
+      {en:'ensure', sym:'/ɪnˈʃʊər/', zh:'确保'},
+      {en:'secure', sym:'/sɪˈkjʊər/', zh:'安全的'},
+      {en:'mature', sym:'/məˈtjʊər/', zh:'成熟的'},
+    ],
+    sentences:[
+      {en:'Ensure the data is correct before sending the report.', zh:'发送报表前确保数据正确。'},
+      {en:'Secure access to sensitive data tables.', zh:'确保敏感数据表的访问安全。'},
+    ]
+  },
+  // ── 其余辅音 ──
+  {
+    symbol:'/p/', name:'清塞音 p', desc:'双唇闭合，积气后突然爆破，不振动声带',
+    words:[
+      {en:'pipeline', sym:'/ˈpaɪplaɪn/', zh:'数据管道'},
+      {en:'partition', sym:'/pɑːˈtɪʃn/', zh:'分区'},
+      {en:'parse', sym:'/pɑːrz/', zh:'解析'},
+    ],
+    sentences:[
+      {en:'Parse the JSON field in the pipeline.', zh:'在管道中解析JSON字段。'},
+      {en:'Filter by the correct partition date.', zh:'按正确的分区日期过滤。'},
+    ]
+  },
+  {
+    symbol:'/b/', name:'浊塞音 b', desc:'双唇闭合，积气后突然爆破，振动声带，是/p/的浊音版',
+    words:[
+      {en:'backfill', sym:'/ˈbækfɪl/', zh:'回填'},
+      {en:'batch', sym:'/bætʃ/', zh:'批次'},
+      {en:'baseline', sym:'/ˈbeɪslaɪn/', zh:'基准值'},
+    ],
+    sentences:[
+      {en:'Backfill the missing batch data.', zh:'回填缺失的批次数据。'},
+      {en:'Compare against the baseline.', zh:'与基准值对比。'},
+    ]
+  },
+  {
+    symbol:'/t/', name:'清塞音 t', desc:'舌尖抵上齿龈，积气后爆破，不振动声带',
+    words:[
+      {en:'table', sym:'/ˈteɪbl/', zh:'表'},
+      {en:'task', sym:'/tæsk/', zh:'任务'},
+      {en:'timeout', sym:'/ˈtaɪmaʊt/', zh:'超时'},
+    ],
+    sentences:[
+      {en:'The task failed due to a timeout.', zh:'任务因超时而失败。'},
+      {en:'Truncate the staging table before reload.', zh:'重新加载前清空暂存表。'},
+    ]
+  },
+  {
+    symbol:'/d/', name:'浊塞音 d', desc:'舌尖抵上齿龈，积气后爆破，振动声带，是/t/的浊音版',
+    words:[
+      {en:'data', sym:'/ˈdeɪtə/', zh:'数据'},
+      {en:'debug', sym:'/ˌdiːˈbʌɡ/', zh:'调试'},
+      {en:'dependency', sym:'/dɪˈpendənsi/', zh:'依赖'},
+    ],
+    sentences:[
+      {en:'Debug the query to find the root cause.', zh:'调试查询找到根本原因。'},
+      {en:'This task has a dependency on the upstream job.', zh:'这个任务依赖上游作业。'},
+    ]
+  },
+  {
+    symbol:'/k/', name:'清塞音 k/c', desc:'舌后部抵软颚，积气后爆破，不振动声带',
+    words:[
+      {en:'cluster', sym:'/ˈklʌstər/', zh:'集群'},
+      {en:'column', sym:'/ˈkɒləm/', zh:'列'},
+      {en:'compliance', sym:'/kəmˈplaɪəns/', zh:'合规'},
+    ],
+    sentences:[
+      {en:'The cluster has insufficient resources.', zh:'集群资源不足。'},
+      {en:'Check the compliance requirement before release.', zh:'发布前检查合规要求。'},
+    ]
+  },
+  {
+    symbol:'/ɡ/', name:'浊塞音 g', desc:'舌后部抵软颚，积气后爆破，振动声带，是/k/的浊音版',
+    words:[
+      {en:'gap', sym:'/ɡæp/', zh:'差距'},
+      {en:'granularity', sym:'/ˌɡrænjuˈlærɪti/', zh:'粒度'},
+      {en:'governance', sym:'/ˈɡʌvənəns/', zh:'治理'},
+    ],
+    sentences:[
+      {en:'Close the gap before month-end reporting.', zh:'在月末报表前关闭差距。'},
+      {en:'Data governance ensures data quality.', zh:'数据治理确保数据质量。'},
+    ]
+  },
+  {
+    symbol:'/f/', name:'清摩擦音 f', desc:'上齿轻触下唇，气流从两侧摩擦，不振动声带',
+    words:[
+      {en:'filter', sym:'/ˈfɪltər/', zh:'过滤'},
+      {en:'field', sym:'/fiːld/', zh:'字段'},
+      {en:'full refresh', sym:'/fʊl rɪˈfreʃ/', zh:'全量刷新'},
+    ],
+    sentences:[
+      {en:'Add a filter for the business date field.', zh:'为业务日期字段添加过滤条件。'},
+      {en:'A full refresh runs every Sunday.', zh:'全量刷新每周日运行。'},
+    ]
+  },
+  {
+    symbol:'/s/', name:'清摩擦音 s', desc:'舌尖接近上齿龈，气流从中间摩擦，不振动声带',
+    words:[
+      {en:'source', sym:'/sɔːrs/', zh:'来源'},
+      {en:'schema', sym:'/ˈskiːmə/', zh:'结构'},
+      {en:'sync', sym:'/sɪŋk/', zh:'同步'},
+    ],
+    sentences:[
+      {en:'Sync the source data every 10 minutes.', zh:'每10分钟同步一次来源数据。'},
+      {en:'The schema changed and broke the pipeline.', zh:'表结构变更导致管道中断。'},
+    ]
+  },
+  {
+    symbol:'/z/', name:'浊摩擦音 z', desc:'发音方式同/s/，但振动声带，是/s/的浊音版',
+    words:[
+      {en:'analyze', sym:'/ˈænəlaɪz/', zh:'分析'},
+      {en:'authorize', sym:'/ˈɔːθəraɪz/', zh:'授权'},
+      {en:'optimize', sym:'/ˈɒptɪmaɪz/', zh:'优化'},
+    ],
+    sentences:[
+      {en:'Optimize the query to reduce run time.', zh:'优化查询以减少运行时间。'},
+      {en:'Authorize the analyst to access the table.', zh:'授权分析师访问该表。'},
+    ]
+  },
+  {
+    symbol:'/ʃ/', name:'清摩擦音 sh', desc:'舌前部隆起接近上颚，嘴唇略向前，气流摩擦，不振动声带',
+    words:[
+      {en:'schedule', sym:'/ˈskedʒuəl/', zh:'调度'},
+      {en:'dashboard', sym:'/ˈdæʃbɔːrd/', zh:'看板'},
+      {en:'refresh', sym:'/rɪˈfreʃ/', zh:'刷新'},
+    ],
+    sentences:[
+      {en:'The dashboard refreshes on schedule.', zh:'看板按计划刷新。'},
+      {en:'Check the schedule for the next refresh.', zh:'查看下次刷新的调度计划。'},
+    ]
+  },
+  {
+    symbol:'/ʒ/', name:'浊摩擦音 zh', desc:'发音同/ʃ/但振动声带，类似"日"去掉前面的辅音，英语中少见',
+    words:[
+      {en:'measure', sym:'/ˈmeʒər/', zh:'度量'},
+      {en:'version', sym:'/ˈvɜːrʒn/', zh:'版本'},
+      {en:'decision', sym:'/dɪˈsɪʒn/', zh:'决策'},
+    ],
+    sentences:[
+      {en:'The new version includes a key measure fix.', zh:'新版本包含一个关键度量修复。'},
+      {en:'Make a decision based on the data.', zh:'根据数据做出决策。'},
+    ]
+  },
+  {
+    symbol:'/h/', name:'清摩擦音 h', desc:'声门处气流通过，轻发"哈"，不振动声带',
+    words:[
+      {en:'hotfix', sym:'/ˈhɒtfɪks/', zh:'紧急修复'},
+      {en:'handle', sym:'/ˈhændl/', zh:'处理'},
+      {en:'history', sym:'/ˈhɪstri/', zh:'历史记录'},
+    ],
+    sentences:[
+      {en:'We need a hotfix to handle this error.', zh:'我们需要紧急修复来处理这个错误。'},
+      {en:'Check the history table for past records.', zh:'检查历史表中的历史记录。'},
+    ]
+  },
+  {
+    symbol:'/tʃ/', name:'塞擦音 ch', desc:'先/t/后/ʃ/，舌尖抵上齿龈后快速摩擦，不振动声带',
+    words:[
+      {en:'check', sym:'/tʃek/', zh:'检查'},
+      {en:'batch', sym:'/bætʃ/', zh:'批次'},
+      {en:'patch', sym:'/pætʃ/', zh:'补丁'},
+    ],
+    sentences:[
+      {en:'Check the batch job status each morning.', zh:'每天早上检查批处理任务状态。'},
+      {en:'Apply the patch and rerun the pipeline.', zh:'打上补丁后重新运行管道。'},
+    ]
+  },
+  {
+    symbol:'/ð/', name:'浊摩擦音 th', desc:'舌尖轻触上齿背，气流摩擦，振动声带，是/θ/的浊音版',
+    words:[
+      {en:'the', sym:'/ðə/', zh:'（定冠词）'},
+      {en:'this', sym:'/ðɪs/', zh:'这个'},
+      {en:'other', sym:'/ˈʌðər/', zh:'其他'},
+    ],
+    sentences:[
+      {en:'This table stores the reconciliation result.', zh:'这张表存储对账结果。'},
+      {en:'The other system has a different cutoff.', zh:'另一个系统有不同的截止时间。'},
+    ]
+  },
+  {
+    symbol:'/m/', name:'鼻音 m', desc:'双唇闭合，气流从鼻腔通过，振动声带',
+    words:[
+      {en:'mapping', sym:'/ˈmæpɪŋ/', zh:'映射'},
+      {en:'monitor', sym:'/ˈmɒnɪtər/', zh:'监控'},
+      {en:'merge', sym:'/mɜːrdʒ/', zh:'合并'},
+    ],
+    sentences:[
+      {en:'Monitor the job and merge the results.', zh:'监控任务并合并结果。'},
+      {en:'The mapping file is missing a code.', zh:'映射文件缺少一个代码。'},
+    ]
+  },
+  {
+    symbol:'/n/', name:'鼻音 n', desc:'舌尖抵上齿龈，气流从鼻腔通过，振动声带',
+    words:[
+      {en:'null', sym:'/nʌl/', zh:'空值'},
+      {en:'node', sym:'/nəʊd/', zh:'节点'},
+      {en:'notify', sym:'/ˈnəʊtɪfaɪ/', zh:'通知'},
+    ],
+    sentences:[
+      {en:'Notify the team if the node returns null.', zh:'如果节点返回空值，通知团队。'},
+      {en:'Check for null values in the key columns.', zh:'检查关键列中的空值。'},
+    ]
+  },
+  {
+    symbol:'/ŋ/', name:'鼻音 ng', desc:'舌后部抵软颚，气流从鼻腔通过，振动声带，只出现在词尾或音节末',
+    words:[
+      {en:'loading', sym:'/ˈloʊdɪŋ/', zh:'加载中'},
+      {en:'mapping', sym:'/ˈmæpɪŋ/', zh:'映射'},
+      {en:'monitoring', sym:'/ˈmɒnɪtərɪŋ/', zh:'监控中'},
+    ],
+    sentences:[
+      {en:'The loading and mapping are still running.', zh:'加载和映射任务还在运行中。'},
+      {en:'Monitoring is critical for data quality.', zh:'监控对于数据质量至关重要。'},
+    ]
+  },
+  {
+    symbol:'/l/', name:'边音 l', desc:'舌尖抵上齿龈，气流从舌两侧通过，振动声带',
+    words:[
+      {en:'lineage', sym:'/ˈlɪniɪdʒ/', zh:'血缘'},
+      {en:'log', sym:'/lɒɡ/', zh:'日志'},
+      {en:'latency', sym:'/ˈleɪtənsi/', zh:'延迟'},
+    ],
+    sentences:[
+      {en:'Check the log to trace the data lineage.', zh:'查看日志追踪数据血缘。'},
+      {en:'Reduce latency by optimizing the query.', zh:'通过优化查询来降低延迟。'},
+    ]
+  },
+  {
+    symbol:'/j/', name:'半元音 y', desc:'舌前部抬向硬颚，快速滑向后面的元音，类似"伊"但更短',
+    words:[
+      {en:'year', sym:'/jɪər/', zh:'年'},
+      {en:'yet', sym:'/jet/', zh:'还没'},
+      {en:'yield', sym:'/jiːld/', zh:'产出/返回'},
+    ],
+    sentences:[
+      {en:'The query has not yet returned a result.', zh:'查询还没有返回结果。'},
+      {en:'The report yields year-over-year comparison.', zh:'报表提供同比对比数据。'},
+    ]
+  },
+  {
+    symbol:'/ɜː/', name:'长音 er', desc:'嘴微张居中，舌位居中，发长"呃"，美式常带卷舌',
+    words:[
+      {en:'merge', sym:'/mɜːrdʒ/', zh:'合并'},
+      {en:'service', sym:'/ˈsɜːrvɪs/', zh:'服务'},
+      {en:'alert', sym:'/əˈlɜːrt/', zh:'告警'},
+    ],
+    sentences:[
+      {en:'Merge the data and trigger an alert if gaps remain.', zh:'合并数据，如有差距则触发告警。'},
+      {en:'The service returned an error.', zh:'服务返回了一个错误。'},
+    ]
+  },
+  {
+    symbol:'/ts/', name:'辅音组合 ts', desc:'先/t/后/s/，连读成一个音，类似中文"次"，出现在词尾',
+    words:[
+      {en:'formats', sym:'/ˈfɔːrmæts/', zh:'格式（复数）'},
+      {en:'results', sym:'/rɪˈzʌlts/', zh:'结果（复数）'},
+      {en:'alerts', sym:'/əˈlɜːrts/', zh:'告警（复数）'},
+    ],
+    sentences:[
+      {en:'The pipeline supports multiple data formats.', zh:'管道支持多种数据格式。'},
+      {en:'Set up alerts for abnormal results.', zh:'为异常结果设置告警。'},
+    ]
+  },
+  {
+    symbol:'/dz/', name:'辅音组合 dz', desc:'先/d/后/z/，连读成一个音，类似中文"兹"，出现在词尾',
+    words:[
+      {en:'fields', sym:'/fiːldz/', zh:'字段（复数）'},
+      {en:'records', sym:'/ˈrekərdz/', zh:'记录（复数）'},
+      {en:'loads', sym:'/ləʊdz/', zh:'加载（复数）'},
+    ],
+    sentences:[
+      {en:'Check all the fields and records after loading.', zh:'加载后检查所有字段和记录。'},
+      {en:'The incremental loads run every hour.', zh:'增量加载每小时运行一次。'},
+    ]
+  },
+  {
+    symbol:'/tr/', name:'辅音组合 tr', desc:'先/t/后/r/，/t/快速过渡到美式卷舌/r/，类似"踹"的起始',
+    words:[
+      {en:'transform', sym:'/trænsˈfɔːrm/', zh:'转换'},
+      {en:'track', sym:'/træk/', zh:'追踪'},
+      {en:'trigger', sym:'/ˈtrɪɡər/', zh:'触发'},
+    ],
+    sentences:[
+      {en:'Transform and track all changes in the pipeline.', zh:'在管道中转换并追踪所有变更。'},
+      {en:'Trigger the job when the upstream task finishes.', zh:'上游任务完成后触发该作业。'},
+    ]
+  },
+  {
+    symbol:'/dr/', name:'辅音组合 dr', desc:'先/d/后/r/，/d/快速过渡到卷舌/r/，类似"追"的起始，是/tr/的浊音版',
+    words:[
+      {en:'drop', sym:'/drɒp/', zh:'删除/丢弃'},
+      {en:'drive', sym:'/draɪv/', zh:'驱动'},
+      {en:'drill down', sym:'/drɪl daʊn/', zh:'下钻'},
+    ],
+    sentences:[
+      {en:'Drill down to find the root cause of the drop.', zh:'下钻找到数据下降的根本原因。'},
+      {en:'Do not drop the table in the production database.', zh:'不要删除生产数据库中的表。'},
+    ]
+  },
+];
+
+let currentPhonicsIdx = 0;
+let phonicsMicMap = {};
+
+function renderPhonics(idx) {
+  currentPhonicsIdx = idx;
+  phonicsMicMap = {};
+  const sidebar = document.getElementById('phoneticsSidebar');
+  sidebar.innerHTML = PHONICS.map((p,i) =>
+    `<button class="phonics-cat-btn${i===idx?' active':''}" onclick="renderPhonics(${i})">${p.symbol} ${p.name}</button>`
+  ).join('');
+
+  const p = PHONICS[idx];
+  const wordsHtml = p.words.map((w,i) => `
+    <div class="phonics-word">
+      <div class="pw-en">${w.en} <button onclick="speak('${w.en}')" style="background:none;border:none;cursor:pointer;opacity:.5;font-size:.8rem">🔊</button></div>
+      <div class="pw-sym">${w.sym}</div>
+      <div class="pw-zh">${w.zh}</div>
+      <button class="quiz-btn" style="margin-top:4px;padding:4px 10px;font-size:.75rem" id="pmicW${idx}_${i}" onclick="startPhonicsMic('word',${idx},${i},'${w.en.replace(/'/g,"\\'")}')">🎤 跟读</button>
+      <div class="phonics-result" id="presW${idx}_${i}"></div>
+    </div>
+  `).join('');
+
+  const sentsHtml = p.sentences.map((s,i) => `
+    <div class="phonics-sent">
+      <div class="ps-en">${s.en} <button onclick="speak('${s.en.replace(/'/g,"\\'")}')  " style="background:none;border:none;cursor:pointer;opacity:.5;font-size:.8rem">🔊</button></div>
+      <div class="ps-zh">${s.zh}</div>
+      <button class="quiz-btn" style="margin-top:4px;padding:4px 10px;font-size:.75rem" id="pmicS${idx}_${i}" onclick="startPhonicsMic('sent',${idx},${i},'${s.en.replace(/'/g,"\\'")}')">🎤 跟读</button>
+      <div class="phonics-result" id="presS${idx}_${i}"></div>
+    </div>
+  `).join('');
+
+  document.getElementById('phoneticsMain').innerHTML = `
+    <div class="phonics-card">
+      <span class="phonics-symbol">${p.symbol}</span><span class="phonics-name">${p.name}</span>
+      <div class="phonics-desc">📌 ${p.desc}</div>
+      <div style="font-size:.8rem;font-weight:700;color:#4a5568;margin-bottom:6px">单词练习</div>
+      <div class="phonics-words">${wordsHtml}</div>
+      <div style="font-size:.8rem;font-weight:700;color:#4a5568;margin:10px 0 6px">句子练习</div>
+      <div class="phonics-sentences">${sentsHtml}</div>
+    </div>
+  `;
+  speak(p.symbol.replace(/\//g,''));
+}
+
+function startPhonicsMic(type, pidx, sidx, target) {
+  if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    alert('你的浏览器不支持语音识别，请使用 Chrome 或 Safari。');
+    return;
+  }
+  const btnId = type==='word' ? `pmicW${pidx}_${sidx}` : `pmicS${pidx}_${sidx}`;
+  const resId = type==='word' ? `presW${pidx}_${sidx}` : `presS${pidx}_${sidx}`;
+  const btn = document.getElementById(btnId);
+  const res = document.getElementById(resId);
+  const key = btnId;
+  if (phonicsMicMap[key]) { phonicsMicMap[key].stop(); return; }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const rec = new SR();
+  rec.lang = 'en-US';
+  rec.interimResults = false;
+  phonicsMicMap[key] = rec;
+  btn.textContent = '⏹️ 停止';
+  btn.style.background = '#fee2e2';
+  rec.onresult = (e) => {
+    const said = e.results[0][0].transcript;
+    const score = similarity(said, target);
+    res.style.display = 'block';
+    if (score >= 0.7) {
+      res.className = 'phonics-result good';
+      res.textContent = '✅ 发音准确！说的是："' + said + '"';
+    } else if (score >= 0.4) {
+      res.className = 'phonics-result ok';
+      res.textContent = '🟡 差不多，再练一次！说的是："' + said + '"';
+    } else {
+      res.className = 'phonics-result bad';
+      res.textContent = '🔴 继续加油！说的是："' + said + '"（目标：' + target + '）';
+    }
+  };
+  rec.onend = rec.onerror = () => {
+    phonicsMicMap[key] = null;
+    if (btn) { btn.textContent = '🎤 再跟读'; btn.style.background = ''; }
+  };
+  rec.start();
+}
 </script>
 </body>
 </html>
