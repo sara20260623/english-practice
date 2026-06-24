@@ -327,6 +327,46 @@ const SCENES = [
     ]
   },
   {
+    id:'airport', icon:'✈️', label:'机场 & 坐飞机', desc:'值机 / 安检 / 登机',
+    turns:[
+      {bot:"Good morning! May I see your passport and booking confirmation, please?", zh:"早上好！请出示护照和预订确认单。", hints:["Here you go.", "Sure, here's my passport.", "Of course, one moment please."], hintsZh:["给您。", "好的，这是我的护照。", "当然，请稍等。"]},
+      {bot:"Would you like a window seat or an aisle seat?", zh:"您想要靠窗还是靠过道的座位？", hints:["A window seat, please.", "I'd prefer an aisle seat.", "Either is fine for me."], hintsZh:["靠窗的，谢谢。", "我想要靠过道的。", "都可以，随意。"]},
+      {bot:"How many bags are you checking in today?", zh:"您今天要托运几件行李？", hints:["Just one bag.", "I have two suitcases.", "No checked bags — just carry-on."], hintsZh:["只有一件。", "我有两个行李箱。", "不托运，只有随身行李。"]},
+      {bot:"Your bag is slightly overweight — it's 23.5 kg. The limit is 23 kg. Would you like to remove something?", zh:"您的行李有点超重——是23.5公斤，限额是23公斤。您想取出一些东西吗？", hints:["Oh, let me move something to my carry-on.", "How much is the overweight fee?", "Can I just pay the excess fee?"], hintsZh:["哦，我把一些东西放到随身行李里。", "超重费是多少？", "我可以付超重费吗？"]},
+      {bot:"Great, all set! Here are your boarding pass and passport. Your gate is B12, boarding at 9:30.", zh:"好了！这是您的登机牌和护照。您的登机口是B12，9:30开始登机。", hints:["Thank you! Which way is gate B12?", "Thanks! Is there a lounge nearby?", "Perfect, thank you so much!"], hintsZh:["谢谢！B12登机口怎么走？", "谢谢！附近有休息室吗？", "太好了，非常感谢！"]}
+    ]
+  },
+  {
+    id:'restaurant', icon:'🍽️', label:'餐厅点餐', desc:'预订 / 点餐 / 结账',
+    turns:[
+      {bot:"Good evening! Do you have a reservation?", zh:"晚上好！您有预订吗？", hints:["Yes, I have a reservation under the name Li.", "No, do you have a table for two?", "No reservation — is it possible to get a table?"], hintsZh:["有，预订名是李。", "没有，你们有两人桌吗？", "没有预订，还有位置吗？"]},
+      {bot:"Of course! Right this way. Here are your menus. Can I get you something to drink first?", zh:"当然！请跟我来。这是菜单。先给您来点什么喝的吗？", hints:["Just water, please.", "I'll have a glass of red wine.", "What do you recommend?"], hintsZh:["就要水，谢谢。", "我要一杯红酒。", "你们有什么推荐的？"]},
+      {bot:"Are you ready to order?", zh:"您准备好点餐了吗？", hints:["Yes! I'll have the grilled salmon.", "Could you give us a few more minutes?", "What's the most popular dish here?"], hintsZh:["好了！我要烤三文鱼。", "能再给我们几分钟吗？", "你们这里最受欢迎的菜是什么？"]},
+      {bot:"Great choice! Any allergies or special requests?", zh:"好的！有过敏食物或特殊要求吗？", hints:["No allergies, thanks.", "I'm allergic to shellfish, please.", "No nuts, please — I'm allergic."], hintsZh:["没有，谢谢。", "我对贝类过敏，请注意。", "不要坚果，我过敏。"]},
+      {bot:"Here is your bill. Was everything okay today?", zh:"这是您的账单。今天一切都满意吗？", hints:["Yes, it was delicious! Can I pay by card?", "Everything was great. Can we split the bill?", "The food was wonderful, thank you!"], hintsZh:["非常好吃！可以刷卡吗？", "很棒！我们可以分开付账吗？", "菜很好吃，谢谢！"]}
+    ]
+  },
+  {
+    id:'hotel', icon:'🏨', label:'酒店入住', desc:'办理入住 / 要求服务',
+    turns:[
+      {bot:"Welcome! Do you have a reservation with us?", zh:"欢迎！您有预订吗？", hints:["Yes, I booked online. My name is Li.", "Yes, I have a reservation for two nights.", "I made a reservation through a travel app."], hintsZh:["有，我在网上订的，我叫李。", "有，订了两晚。", "我通过旅行App订的。"]},
+      {bot:"Perfect. May I see your passport for check-in?", zh:"好的。办理入住需要看一下您的护照。", hints:["Of course, here it is.", "Sure, here you go.", "Here's my passport."], hintsZh:["当然，给您。", "好的，在这里。", "这是我的护照。"]},
+      {bot:"You're in room 508 on the 5th floor. Breakfast is served from 7 to 10am in the restaurant on the ground floor. Do you need help with your luggage?", zh:"您住5楼508房间。早餐在一楼餐厅供应，时间是早7点到10点。需要帮您搬行李吗？", hints:["No thanks, I can manage.", "Yes please, that would be great.", "No, it's fine. What's the Wi-Fi password?"], hintsZh:["不用了，我自己来。", "好的，麻烦了。", "不用，谢谢。Wi-Fi密码是多少？"]},
+      {bot:"Is there anything else you need?", zh:"还需要什么吗？", hints:["Could I get an extra pillow?", "Is there a gym in the hotel?", "What time is late check-out until?"], hintsZh:["能加一个枕头吗？", "酒店有健身房吗？", "最晚可以退房到几点？"]},
+      {bot:"Of course! I'll have that sent up right away. Enjoy your stay!", zh:"当然！我马上让人送上去。祝您入住愉快！", hints:["Thank you so much!", "Thank you! Could you also recommend a good restaurant nearby?", "Great, thanks a lot!"], hintsZh:["非常感谢！", "谢谢！能推荐一下附近好的餐厅吗？", "太好了，谢谢！"]}
+    ]
+  },
+  {
+    id:'shopping', icon:'🛍️', label:'购物 & 砍价', desc:'问价格 / 试穿 / 结账',
+    turns:[
+      {bot:"Hi there! Can I help you find anything today?", zh:"嗨！今天需要找什么吗？", hints:["I'm just browsing, thanks.", "Yes, I'm looking for a jacket.", "I'm looking for a gift for a friend."], hintsZh:["我随便看看，谢谢。", "我在找一件外套。", "我想给朋友买个礼物。"]},
+      {bot:"Sure! We have some great options. What size are you?", zh:"当然！我们有很多选择。您穿几码？", hints:["I'm a medium, I think.", "Can I try a few sizes?", "I'm not sure — could I try it on?"], hintsZh:["我想我穿M码。", "我可以试几个码吗？", "我不确定，可以试穿吗？"]},
+      {bot:"The fitting room is just over there. What do you think — does it fit well?", zh:"试衣间就在那边。您觉得怎么样——合身吗？", hints:["It fits perfectly!", "It's a little tight around the shoulders.", "The sleeves are too long. Do you have a smaller size?"], hintsZh:["非常合身！", "肩膀有点紧。", "袖子太长了，有小一号的吗？"]},
+      {bot:"How about this price — it's 200 yuan today with the promotion.", zh:"这个价格怎么样——今天促销是200元。", hints:["That's a good deal, I'll take it!", "Can you do a bit better? Like 180?", "Hmm, is there any discount for buying two?"], hintsZh:["挺划算的，我要了！", "能便宜一点吗？比如180？", "买两件有折扣吗？"]},
+      {bot:"Alright, 180 it is! Cash or card?", zh:"好的，180就180！现金还是刷卡？", hints:["Card, please.", "I'll pay by WeChat Pay.", "Cash — here you go."], hintsZh:["刷卡。", "我用微信支付。", "现金，给您。"]}
+    ]
+  },
+  {
     id:'golive', icon:'🚀', label:'上线前确认', desc:'发布前沟通 & 风险确认',
     turns:[
       {bot:"Hey, we're planning to deploy the new reconciliation logic tonight. Are you ready on your side?", zh:"嗨，我们计划今晚部署新的对账逻辑。你那边准备好了吗？", hints:["Yes, all checks passed on my side.", "Almost ready — I'm doing the final review now.", "Not yet, I found a small issue in the test environment."], hintsZh:["好的，我这边所有检查都通过了。", "快了，我现在在做最终复查。", "还没，我在测试环境发现了一个小问题。"]},
@@ -889,6 +929,88 @@ const VOCAB_GROUPS = [
       {en:'spike', zh:'技术预研', eg:'Let\'s do a spike before committing.', memo:'钉钉子探探深浅 → 先小范围试探可行性'},
       {en:'hotfix', zh:'紧急修复', eg:'We need a hotfix for this bug.', memo:'hot(烫手)+fix(修) → 烫手的问题赶紧修'},
       {en:'rollback', zh:'回滚', eg:'We may need to rollback the deployment.', memo:'roll(滚)+back(回) → 滚回去 → 恢复到上一个版本'},
+    ]
+  },
+  {
+    title:'🌍 旅游必备 — 打招呼 & 数字',
+    items:[
+      {en:'Hello', zh:'你好', eg:'Hello! Nice to meet you.', memo:'最基础的问候，任何场合都能用'},
+      {en:'Hi', zh:'嗨（非正式）', eg:'Hi, how are you?', memo:'比Hello更随意，朋友间常用'},
+      {en:'Good morning', zh:'早上好', eg:'Good morning! How are you?', memo:'早上（morning）打招呼'},
+      {en:'Good afternoon', zh:'下午好', eg:'Good afternoon, sir.', memo:'下午（afternoon）打招呼'},
+      {en:'Good evening', zh:'晚上好', eg:'Good evening! Welcome.', memo:'晚上（evening）打招呼'},
+      {en:'Thank you', zh:'谢谢', eg:'Thank you so much!', memo:'最常用的感谢'},
+      {en:'Please', zh:'请', eg:'One coffee, please.', memo:'要东西时加please，很礼貌'},
+      {en:'Sorry / Excuse me', zh:'对不起 / 打扰一下', eg:'Excuse me, where is the bathroom?', memo:'Sorry=道歉；Excuse me=打扰/借过'},
+      {en:'Yes / No', zh:'是 / 不是', eg:'Yes, please. / No, thank you.', memo:'最基础的肯定和否定'},
+      {en:'How much?', zh:'多少钱？', eg:'How much is this?', memo:'购物最常用，直接说How much就能问价'},
+      {en:'one two three', zh:'一二三（1 2 3）', eg:'Table for three, please.', memo:'one=1, two=2, three=3'},
+      {en:'four five six', zh:'四五六（4 5 6）', eg:'Room 456.', memo:'four=4, five=5, six=6'},
+      {en:'seven eight nine ten', zh:'七八九十（7 8 9 10）', eg:'Ten minutes, please.', memo:'seven=7, eight=8, nine=9, ten=10'},
+    ]
+  },
+  {
+    title:'✈️ 旅游必备 — 机场 & 交通',
+    items:[
+      {en:'passport', zh:'护照', eg:'May I see your passport?', memo:'pass(通过)+port(港口) → 通关证件'},
+      {en:'boarding pass', zh:'登机牌', eg:'Here is your boarding pass.', memo:'board(登上飞机)+pass(通行证)'},
+      {en:'gate', zh:'登机口', eg:'Your gate is B12.', memo:'gate=大门，机场的登机入口'},
+      {en:'check-in', zh:'值机 / 办理入住', eg:'I need to check in my luggage.', memo:'机场=值机；酒店=办理入住'},
+      {en:'luggage / baggage', zh:'行李', eg:'How many bags are you checking?', memo:'两个词都是行李，baggage美式更常见'},
+      {en:'carry-on', zh:'随身行李', eg:'Just a carry-on, no checked bags.', memo:'carry(携带)+on(在身上) → 带上飞机的包'},
+      {en:'delayed', zh:'延误', eg:'The flight is delayed by 2 hours.', memo:'delay=推迟，delayed=已延误'},
+      {en:'taxi', zh:'出租车', eg:'Can you call a taxi for me?', memo:'直接说taxi就行，全世界通用'},
+      {en:'subway / metro', zh:'地铁', eg:'Where is the nearest subway station?', memo:'subway美式；metro欧洲更常用'},
+      {en:'bus stop', zh:'公交站', eg:'Is there a bus stop nearby?', memo:'bus(公交)+stop(站)'},
+      {en:'ticket', zh:'票', eg:'Two tickets, please.', memo:'机票、车票、门票都叫ticket'},
+      {en:'where is', zh:'在哪里？', eg:'Where is the bathroom?', memo:'问地点最万能的句型：Where is + 地点'},
+    ]
+  },
+  {
+    title:'🍽️ 旅游必备 — 餐厅 & 点餐',
+    items:[
+      {en:'menu', zh:'菜单', eg:'Can I see the menu?', memo:'谐音"美纽" → 菜单'},
+      {en:'order', zh:'点餐 / 订单', eg:'I\'d like to order, please.', memo:'order=命令/命令服务员 → 点餐'},
+      {en:'I\'d like...', zh:'我想要……', eg:'I\'d like the pasta.', memo:'比I want更礼貌的点餐方式'},
+      {en:'What do you recommend?', zh:'你有什么推荐？', eg:'What do you recommend here?', memo:'不知道吃什么时万用句'},
+      {en:'vegetarian', zh:'素食', eg:'Do you have vegetarian options?', memo:'vegeta(蔬菜)+rian → 吃素的人'},
+      {en:'allergic to', zh:'对……过敏', eg:'I\'m allergic to nuts.', memo:'allergic=过敏的，to后面接过敏物'},
+      {en:'bill / check', zh:'账单', eg:'Can I have the bill, please?', memo:'英式叫bill；美式叫check，都是买单'},
+      {en:'tip', zh:'小费', eg:'Is the tip included?', memo:'tip=尖端 → 给小费是"额外"的好意'},
+      {en:'delicious', zh:'好吃 / 美味', eg:'This is delicious!', memo:'di(真的)+licious(好) → 好吃得停不下来'},
+      {en:'spicy', zh:'辣', eg:'Is this dish spicy?', memo:'spice(香料)+y → 有辛辣感的'},
+      {en:'water', zh:'水', eg:'Can I have some water, please?', memo:'最简单，直接说water就行'},
+      {en:'to go / takeaway', zh:'打包', eg:'Can I get this to go?', memo:'to go美式；takeaway英式，外带食物'},
+    ]
+  },
+  {
+    title:'🏨 旅游必备 — 酒店',
+    items:[
+      {en:'reservation', zh:'预订', eg:'I have a reservation.', memo:'reserve(保留)+ation → 提前保留的位置'},
+      {en:'room', zh:'房间', eg:'My room number is 508.', memo:'最基础的词，房间'},
+      {en:'single / double room', zh:'单人间 / 双人间', eg:'I\'d like a double room.', memo:'single=单个；double=两个'},
+      {en:'check out', zh:'退房', eg:'I\'d like to check out, please.', memo:'check in入住；check out退房'},
+      {en:'key card', zh:'房卡', eg:'I lost my key card.', memo:'key(钥匙)+card(卡) → 磁卡钥匙'},
+      {en:'Wi-Fi password', zh:'Wi-Fi密码', eg:'What\'s the Wi-Fi password?', memo:'旅行必问！Wi-Fi全球通用词'},
+      {en:'air conditioning', zh:'空调', eg:'The air conditioning is not working.', memo:'air(空气)+conditioning(调节) → 空调，常缩写为A/C'},
+      {en:'towel', zh:'毛巾', eg:'Can I have more towels?', memo:'浴巾也叫towel，听起来像"桃屋"'},
+      {en:'breakfast included', zh:'含早餐', eg:'Is breakfast included?', memo:'included=包含在内，问早餐是否含在房价里'},
+    ]
+  },
+  {
+    title:'🛍️ 旅游必备 — 购物',
+    items:[
+      {en:'How much is this?', zh:'这个多少钱？', eg:'Excuse me, how much is this?', memo:'购物最万能的一句话'},
+      {en:'expensive', zh:'贵', eg:'That\'s too expensive.', memo:'ex(超出)+pensive(花钱) → 太贵了'},
+      {en:'cheap', zh:'便宜', eg:'Do you have anything cheaper?', memo:'cheap=便宜，形容词直接用'},
+      {en:'discount', zh:'折扣', eg:'Is there a discount?', memo:'dis(去掉)+count(计算) → 减掉价格 → 折扣'},
+      {en:'try on', zh:'试穿', eg:'Can I try this on?', memo:'try(尝试)+on(穿上) → 试穿衣服'},
+      {en:'size', zh:'尺码', eg:'What size do you have?', memo:'size=大小/尺码，S/M/L/XL'},
+      {en:'receipt', zh:'收据', eg:'Can I have a receipt?', memo:'re(再)+ceipt(取) → 拿回来的凭证 → 收据'},
+      {en:'exchange', zh:'换货', eg:'I\'d like to exchange this.', memo:'ex(出)+change(变) → 换一个 → 换货'},
+      {en:'refund', zh:'退款', eg:'Can I get a refund?', memo:'re(退回)+fund(钱) → 退钱 → 退款'},
+      {en:'cash', zh:'现金', eg:'Do you accept cash?', memo:'cash=现金，和card(刷卡)相对'},
+      {en:'credit card', zh:'信用卡', eg:'Can I pay by credit card?', memo:'credit(信用)+card(卡) → 信用卡'},
     ]
   },
 ];
