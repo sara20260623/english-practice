@@ -165,10 +165,31 @@ textarea:focus{border-color:#4a90d9;box-shadow:0 0 0 3px rgba(74,144,217,.12)}
 .review-badge{display:inline-block;background:#ef4444;color:#fff;border-radius:10px;font-size:.65rem;padding:1px 5px;margin-left:4px;vertical-align:middle}
 /* 进步曲线 */
 #chartCanvas{width:100%;max-width:668px;height:160px;display:block;margin-top:12px}
+/* 打卡悬浮条 */
+.ci-bar-wrap{width:100%;max-width:700px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:8px 14px;display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ci-bar-time{font-size:1rem;font-weight:800;color:#2b6cb0;min-width:52px;font-variant-numeric:tabular-nums}
+.ci-bar-track{flex:1;height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden}
+.ci-bar-fill{height:100%;background:#4a90d9;border-radius:4px;transition:width .5s}
+.ci-bar-btn{padding:4px 12px;border:none;border-radius:8px;background:#4a90d9;color:#fff;font-size:.82rem;font-weight:600;cursor:pointer;white-space:nowrap}
+.ci-bar-btn:hover{background:#357abd}
+.ci-bar-done{font-size:.82rem;font-weight:700;color:#166534}.checkin-timer{font-size:3rem;font-weight:800;color:#2b6cb0;text-align:center;margin:12px 0 4px;font-variant-numeric:tabular-nums}
+.checkin-progress{width:100%;height:14px;background:#e2e8f0;border-radius:8px;overflow:hidden;margin-bottom:8px}
+.checkin-progress-bar{height:100%;background:#4a90d9;border-radius:8px;transition:width .5s}
+.checkin-calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px}
+.checkin-day{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:600;background:#f0f4f8;color:#718096}
+.checkin-day.done{background:#4a90d9;color:#fff}
+.checkin-day.today{box-shadow:0 0 0 2px #4a90d9}
+.checkin-streak{text-align:center;font-size:.9rem;color:#2d3748;margin:8px 0}
 </style>
 </head>
 <body>
 <h1>💬 职场英语口语练习</h1>
+<div class="ci-bar-wrap" id="ciBarWrap">
+  <span class="ci-bar-time" id="ciBarTime">00:00</span>
+  <div class="ci-bar-track"><div class="ci-bar-fill" id="ciBarFill" style="width:0%"></div></div>
+  <span class="ci-bar-done" id="ciBarDone" style="display:none">🎉 今日打卡完成</span>
+  <button class="ci-bar-btn" id="ciBarBtn" onclick="toggleCheckinTimer()">▶ 开始</button>
+</div>
 <div class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('practice')">🗣️ 口语练习</button>
   <button class="tab-btn" onclick="switchTab('vocab')">📚 词汇卡片</button>
@@ -177,6 +198,7 @@ textarea:focus{border-color:#4a90d9;box-shadow:0 0 0 3px rgba(74,144,217,.12)}
   <button class="tab-btn" onclick="switchTab('phonics')">🔤 音标</button>
   <button class="tab-btn" onclick="switchTab('wordbook')">⭐ 单词本<span id="reviewBadge" class="review-badge" style="display:none">0</span></button>
   <button class="tab-btn" onclick="switchTab('history')">📈 练习记录</button>
+  <button class="tab-btn" onclick="switchTab('checkin')">🔥 每日打卡</button>
 </div>
 <div class="speed-bar" style="width:100%;max-width:700px">
   <span class="speed-label">🔊 语速：</span>
@@ -230,6 +252,19 @@ textarea:focus{border-color:#4a90d9;box-shadow:0 0 0 3px rgba(74,144,217,.12)}
   <div class="stats-grid" id="statsGrid"></div>
   <canvas id="chartCanvas"></canvas>
   <div class="history-list" id="historyList"></div>
+</div>
+<div id="tab-checkin" class="panel">
+  <div style="text-align:center;margin-bottom:8px">
+    <div style="font-size:1rem;font-weight:700;color:#2d3748">今日学习进度</div>
+    <div class="checkin-timer" id="ciTimer">00:00</div>
+    <div style="font-size:.8rem;color:#718096;margin-bottom:8px" id="ciGoalLabel">目标 60 分钟</div>
+    <div class="checkin-progress"><div class="checkin-progress-bar" id="ciBar" style="width:0%"></div></div>
+    <button class="quiz-btn" id="ciBtn" onclick="toggleCheckinTimer()" style="margin-top:10px">▶ 开始学习</button>
+    <div id="ciDoneMsg" style="display:none;margin-top:8px;font-size:.9rem;font-weight:700;color:#166534">🎉 今日打卡完成！</div>
+  </div>
+  <div class="checkin-streak" id="ciStreak"></div>
+  <div style="font-size:.8rem;color:#718096;text-align:center;margin-bottom:6px">本月打卡</div>
+  <div class="checkin-calendar" id="ciCalendar"></div>
 </div>
 <script>
 const SCENES = [
@@ -576,10 +611,12 @@ function showSimilarity(userText) {
 
 renderScenes();
 updateReviewBadge();
+// 初始化顶部打卡条
+(function(){ const d = ciLoad(); ciSeconds = d.s; updateCheckinUI(); })();
 
 // ── tab 切换 ──
 function switchTab(tab) {
-  const allTabs = ['practice','vocab','quiz','repeat','phonics','wordbook','history'];
+  const allTabs = ['practice','vocab','quiz','repeat','phonics','wordbook','history','checkin'];
   document.querySelectorAll('.tab-btn').forEach((b,i) => {
     b.classList.toggle('active', allTabs[i] === tab);
   });
@@ -594,6 +631,7 @@ function switchTab(tab) {
   if (tab === 'quiz') startQuiz();
   if (tab === 'repeat') startRepeat();
   if (tab === 'phonics') renderPhonics(0);
+  if (tab === 'checkin') renderCheckin();
 }
 
 // ── 词汇卡片数据 ──
@@ -2218,6 +2256,113 @@ function startPhonicsMic(type, pidx, sidx, target) {
   };
   rec.start();
 }
+// ── 每日打卡 ──
+const CI_GOAL = 60 * 60; // 60分钟秒数
+let ciSeconds = 0, ciRunning = false, ciInterval = null;
+
+function ciTodayKey() { return 'ci_' + new Date().toISOString().slice(0,10); }
+
+function ciLoad() {
+  const d = JSON.parse(localStorage.getItem(ciTodayKey()) || '{"s":0,"done":false}');
+  ciSeconds = d.s; return d;
+}
+
+function ciSave(done) {
+  localStorage.setItem(ciTodayKey(), JSON.stringify({s: ciSeconds, done}));
+}
+
+function toggleCheckinTimer() {
+  if (ciRunning) {
+    clearInterval(ciInterval); ciRunning = false;
+    document.getElementById('ciBtn').textContent = '▶ 继续学习';
+    ciSave(ciSeconds >= CI_GOAL);
+  } else {
+    const d = ciLoad();
+    if (d.done) return;
+    ciRunning = true;
+    document.getElementById('ciBtn').textContent = '⏸ 暂停';
+    ciInterval = setInterval(() => {
+      ciSeconds++;
+      updateCheckinUI();
+      if (ciSeconds >= CI_GOAL) {
+        clearInterval(ciInterval); ciRunning = false;
+        ciSave(true);
+        markTodayDone();
+        updateCheckinUI();
+      }
+    }, 1000);
+  }
+}
+
+function markTodayDone() {
+  const key = ciTodayKey();
+  const all = JSON.parse(localStorage.getItem('ciDays') || '[]');
+  if (!all.includes(key)) { all.push(key); localStorage.setItem('ciDays', JSON.stringify(all)); }
+}
+
+function updateCheckinUI() {
+  const m = String(Math.floor(ciSeconds/60)).padStart(2,'0');
+  const s = String(ciSeconds%60).padStart(2,'0');
+  const timeStr = m + ':' + s;
+  const pct = Math.min(ciSeconds/CI_GOAL*100, 100);
+  const done = ciSeconds >= CI_GOAL;
+
+  // 顶部条
+  document.getElementById('ciBarTime').textContent = timeStr;
+  document.getElementById('ciBarFill').style.width = pct + '%';
+  document.getElementById('ciBarDone').style.display = done ? '' : 'none';
+  const barBtn = document.getElementById('ciBarBtn');
+  barBtn.style.display = done ? 'none' : '';
+  barBtn.textContent = ciRunning ? '⏸ 暂停' : '▶ 开始';
+
+  // 打卡 tab 内
+  const timer = document.getElementById('ciTimer');
+  if (timer) {
+    timer.textContent = timeStr;
+    document.getElementById('ciBar').style.width = pct + '%';
+    document.getElementById('ciDoneMsg').style.display = done ? '' : 'none';
+    document.getElementById('ciBtn').style.display = done ? 'none' : '';
+    document.getElementById('ciBtn').textContent = ciRunning ? '⏸ 暂停' : '▶ 开始学习';
+    document.getElementById('ciGoalLabel').textContent = done ? '✅ 已完成今日目标' : '目标 60 分钟';
+  }
+}
+
+function renderCheckin() {
+  const d = ciLoad();
+  if (d.done && ciRunning) { clearInterval(ciInterval); ciRunning = false; }
+  updateCheckinUI();
+
+  // 连续打卡天数
+  const all = JSON.parse(localStorage.getItem('ciDays') || '[]');
+  let streak = 0;
+  const today = new Date();
+  for (let i = 0; i < 365; i++) {
+    const dd = new Date(today); dd.setDate(dd.getDate() - i);
+    const k = 'ci_' + dd.toISOString().slice(0,10);
+    if (all.includes(k)) streak++; else break;
+  }
+  document.getElementById('ciStreak').textContent = streak > 0 ? '🔥 已连续打卡 ' + streak + ' 天' : '今天开始你的第一天！';
+
+  // 本月日历
+  const cal = document.getElementById('ciCalendar');
+  const y = today.getFullYear(), mo = today.getMonth();
+  const daysInMonth = new Date(y, mo+1, 0).getDate();
+  const todayStr = today.toISOString().slice(0,10);
+  let html = '';
+  // 星期标题
+  ['日','一','二','三','四','五','六'].forEach(w => {
+    html += `<div style="text-align:center;font-size:.7rem;color:#a0aec0">${w}</div>`;
+  });
+  // 第一天是周几，补空格
+  const firstDay = new Date(y, mo, 1).getDay();
+  for (let i = 0; i < firstDay; i++) html += '<div></div>';
+  for (let i = 1; i <= daysInMonth; i++) {
+    const ds = y + '-' + String(mo+1).padStart(2,'0') + '-' + String(i).padStart(2,'0');
+    const isDone = all.includes('ci_' + ds);
+    const isToday = ds === todayStr;
+    html += `<div class="checkin-day${isDone?' done':''}${isToday?' today':''}">${i}</div>`;
+  }
+  cal.innerHTML = html;
+}
 </script>
-</body>
 </html>
