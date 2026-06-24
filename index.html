@@ -98,6 +98,9 @@ textarea:focus{border-color:#4a90d9;box-shadow:0 0 0 3px rgba(74,144,217,.12)}
   .phonics-layout{flex-direction:column}
   .phonics-sidebar{width:100%;max-height:none;flex-direction:row;flex-wrap:wrap;overflow-y:visible}
   .phonics-cat-btn{font-size:.75rem;padding:5px 8px}
+  .ci-bar-wrap{padding:6px 10px;gap:6px}
+  .ci-bar-time{font-size:.85rem;min-width:42px}
+  .ci-bar-btn{padding:3px 8px;font-size:.75rem}
 }
 .phonics-cat-btn{padding:7px 10px;border:1px solid #e2e8f0;border-radius:8px;background:#f7fafc;cursor:pointer;font-size:.82rem;text-align:left;color:#4a5568}
 .ph-grp-hdr{font-size:.72rem;font-weight:700;padding:6px 4px 2px;letter-spacing:.5px}
@@ -520,7 +523,17 @@ function sendMsg() {
     if (next) {
       addMsg('bot', next.bot, next.zh);
     } else {
-      addMsg('bot', '✅ 太棒了！你已完成本场景练习。点击上方场景卡片继续练习，或点击 ↺ 重新开始。');
+      const vocabLink = {
+        standup:'💬 沟通协作', review:'📌 项目管理', debug:'🚨 常见报错 & 错误信息',
+        general:'💬 沟通协作', codereview:'🔍 SQL & 查询', datareport:'📊 数据对账 & 差异分析',
+        interview:'🏗️ 数据仓库分层', anomaly:'📊 数据对账 & 差异分析', golive:'⚙️ ETL / 调度 / 运维',
+        airport:'✈️ 旅游必备 — 机场 & 交通', restaurant:'🍽️ 旅游必备 — 餐厅 & 点餐',
+        hotel:'🏨 旅游必备 — 酒店', shopping:'🛍️ 旅游必备 — 购物',
+      }[currentScene.id];
+      const extra = vocabLink
+        ? `<br><span style="font-size:.8rem;color:#4a90d9;cursor:pointer" onclick="activeCat='${vocabLink}';document.getElementById('catFilter').innerHTML='';switchTab('vocab')">📚 去学对应词汇 →</span>`
+        : '';
+      addMsg('bot', '✅ 太棒了！你已完成本场景练习。点击上方场景卡片继续练习，或点击 ↺ 重新开始。' + extra);
     }
   }, 400);
 }
@@ -1047,6 +1060,92 @@ const VOCAB_GROUPS = [
       {en:'refund', zh:'退款', eg:'Can I get a refund?', memo:'re(退回)+fund(钱) → 退钱 → 退款'},
       {en:'cash', zh:'现金', eg:'Do you accept cash?', memo:'cash=现金，和card(刷卡)相对'},
       {en:'credit card', zh:'信用卡', eg:'Can I pay by credit card?', memo:'credit(信用)+card(卡) → 信用卡'},
+    ]
+  },
+  {
+    title:'📅 日期 & 时间',
+    items:[
+      {en:'Monday', zh:'星期一', eg:'See you on Monday.', memo:'Mon=月亮(Moon)的缩写 → 月曜日'},
+      {en:'Tuesday', zh:'星期二', eg:'The meeting is on Tuesday.', memo:'Tue=战神提尔(Tyr)之日'},
+      {en:'Wednesday', zh:'星期三', eg:'I\'m free on Wednesday.', memo:'Wed=主神沃丁(Woden)之日，d不发音'},
+      {en:'Thursday', zh:'星期四', eg:'See you Thursday.', memo:'Thu=雷神托尔(Thor)之日'},
+      {en:'Friday', zh:'星期五', eg:'Happy Friday!', memo:'Fri=女神弗丽嘉(Frigg)之日 → 周五最开心'},
+      {en:'Saturday', zh:'星期六', eg:'I sleep in on Saturday.', memo:'Sat=土星(Saturn)之日'},
+      {en:'Sunday', zh:'星期日', eg:'Sunday is my rest day.', memo:'Sun=太阳(Sun)之日'},
+      {en:'January', zh:'一月', eg:'My birthday is in January.', memo:'Jan=门神雅努斯(Janus)，Jan缩写'},
+      {en:'February', zh:'二月', eg:'Valentine\'s Day is in February.', memo:'Feb，最短的月，2月'},
+      {en:'March', zh:'三月', eg:'Spring starts in March.', memo:'Mar=战神马尔斯(Mars)'},
+      {en:'April', zh:'四月', eg:'April showers bring May flowers.', memo:'Apr，4月'},
+      {en:'May', zh:'五月', eg:'May is my favorite month.', memo:'直接记，就叫May'},
+      {en:'June', zh:'六月', eg:'School ends in June.', memo:'Jun=女神朱诺(Juno)'},
+      {en:'July', zh:'七月', eg:'It\'s very hot in July.', memo:'Jul=凯撒(Julius Caesar)的月'},
+      {en:'August', zh:'八月', eg:'We go on vacation in August.', memo:'Aug=奥古斯都(Augustus)的月'},
+      {en:'September', zh:'九月', eg:'School starts in September.', memo:'Sept=七(七月往后数两个)，sep缩写'},
+      {en:'October', zh:'十月', eg:'Halloween is in October.', memo:'Oct=八(octo)，历史上是第八月'},
+      {en:'November', zh:'十一月', eg:'It gets cold in November.', memo:'Nov=九(novem)，历史上是第九月'},
+      {en:'December', zh:'十二月', eg:'Christmas is in December.', memo:'Dec=十(decem)，历史上是第十月'},
+      {en:'morning', zh:'早上', eg:'Good morning!', memo:'mor=死(mort)的反面，太阳升起 → 早晨'},
+      {en:'afternoon', zh:'下午', eg:'See you this afternoon.', memo:'after(之后)+noon(正午) → 中午之后'},
+      {en:'evening', zh:'傍晚/晚上', eg:'Good evening!', memo:'evening=变暗的时候，天色渐暗'},
+      {en:'night', zh:'夜晚', eg:'Good night!', memo:'night=黑夜，n开头想象nighty night'},
+      {en:'today', zh:'今天', eg:'What are you doing today?', memo:'to(去)+day(天) → 去到这一天 → 今天'},
+      {en:'tomorrow', zh:'明天', eg:'See you tomorrow!', memo:'to+morrow(古英语=早晨) → 到下一个早晨'},
+      {en:'yesterday', zh:'昨天', eg:'I was tired yesterday.', memo:'yester(昨)+day → 昨天，直接记'},
+    ]
+  },
+  {
+    title:'🌤️ 天气',
+    items:[
+      {en:'sunny', zh:'晴天', eg:'It\'s sunny today.', memo:'sun(太阳)+ny → 有太阳的 → 晴天'},
+      {en:'cloudy', zh:'多云', eg:'It\'s a bit cloudy.', memo:'cloud(云)+y → 多云的'},
+      {en:'rainy', zh:'下雨', eg:'It\'s rainy today, bring an umbrella.', memo:'rain(雨)+y → 下雨的'},
+      {en:'windy', zh:'刮风', eg:'It\'s too windy outside.', memo:'wind(风)+y → 大风的'},
+      {en:'foggy', zh:'有雾', eg:'Drive carefully, it\'s foggy.', memo:'fog(雾)+gy → 多雾的'},
+      {en:'snowy', zh:'下雪', eg:'It\'s snowy in December.', memo:'snow(雪)+y → 下雪的'},
+      {en:'hot', zh:'热', eg:'It\'s so hot today!', memo:'hot=烫/热，直接记'},
+      {en:'cold', zh:'冷', eg:'It\'s cold outside.', memo:'cold=冷，cold(感冒)也是因为冷'},
+      {en:'warm', zh:'暖和', eg:'The weather is warm in spring.', memo:'warm=温暖，like a warm hug'},
+      {en:'humid', zh:'潮湿', eg:'It\'s very humid in summer.', memo:'humid=潮湿，summer in Asia'},
+      {en:'temperature', zh:'温度', eg:'The temperature is 35 degrees.', memo:'temper(控制)+ature → 控制热度 → 温度'},
+      {en:'umbrella', zh:'雨伞', eg:'Don\'t forget your umbrella.', memo:'谐音"俺不来" → 撑伞就不来雨了 → 雨伞'},
+    ]
+  },
+  {
+    title:'🎨 颜色',
+    items:[
+      {en:'red', zh:'红色', eg:'She wore a red dress.', memo:'红色=red，想象红色的血'},
+      {en:'blue', zh:'蓝色', eg:'The sky is blue.', memo:'blue=蓝，天空和大海的颜色'},
+      {en:'green', zh:'绿色', eg:'The grass is green.', memo:'green=绿，草地的颜色'},
+      {en:'yellow', zh:'黄色', eg:'The sun is yellow.', memo:'yellow=黄，太阳的颜色'},
+      {en:'orange', zh:'橙色', eg:'I like orange juice.', memo:'orange既是橙子也是橙色'},
+      {en:'purple', zh:'紫色', eg:'She likes purple flowers.', memo:'purple=紫，皇家紫'},
+      {en:'pink', zh:'粉色', eg:'The roses are pink.', memo:'pink=粉，粉嫩嫩的'},
+      {en:'black', zh:'黑色', eg:'I wear black every day.', memo:'black=黑，最好记的颜色'},
+      {en:'white', zh:'白色', eg:'The snow is white.', memo:'white=白，雪的颜色'},
+      {en:'gray', zh:'灰色', eg:'The sky is gray today.', memo:'gray=灰，阴天的颜色'},
+      {en:'brown', zh:'棕色', eg:'I like brown coffee.', memo:'brown=棕，咖啡和巧克力的颜色'},
+      {en:'gold', zh:'金色', eg:'The trophy is gold.', memo:'gold=金，黄金的颜色'},
+    ]
+  },
+  {
+    title:'🏠 日常生活',
+    items:[
+      {en:'water', zh:'水', eg:'Can I have some water?', memo:'最常用的词，直接记'},
+      {en:'food', zh:'食物', eg:'The food here is delicious.', memo:'food=食物，f发音像"吃"的感觉'},
+      {en:'house', zh:'房子', eg:'This is my house.', memo:'house=房子，home=家(感情)'},
+      {en:'family', zh:'家庭', eg:'I love my family.', memo:'fam=熟悉的人(familiar) → 家人'},
+      {en:'friend', zh:'朋友', eg:'She is my best friend.', memo:'friend=朋友，fri=free，自由在一起'},
+      {en:'school', zh:'学校', eg:'I go to school every day.', memo:'school=学校，直接记'},
+      {en:'work', zh:'工作', eg:'I go to work at 9am.', memo:'work=工作，动词名词都能用'},
+      {en:'money', zh:'钱', eg:'Do you have any money?', memo:'money=钱，谐音"马妮" → 有马妮就有钱'},
+      {en:'time', zh:'时间', eg:'What time is it?', memo:'time=时间，直接记'},
+      {en:'help', zh:'帮助', eg:'Can you help me?', memo:'help=帮助，紧急时直接喊Help!'},
+      {en:'bathroom', zh:'洗手间', eg:'Where is the bathroom?', memo:'bath(洗澡)+room(房间) → 洗手间'},
+      {en:'phone', zh:'手机/电话', eg:'Can I use your phone?', memo:'phone=电话，手机=phone或mobile'},
+      {en:'eat', zh:'吃', eg:'Let\'s eat!', memo:'eat=吃，最基础的动词'},
+      {en:'drink', zh:'喝', eg:'Would you like something to drink?', memo:'drink=喝，也可以指饮料'},
+      {en:'sleep', zh:'睡觉', eg:'I need to sleep early.', memo:'sleep=睡觉，sleepy=困的'},
+      {en:'walk', zh:'走路', eg:'Let\'s walk to the station.', memo:'walk中的l不发音，读"沃克"'},
     ]
   },
 ];
@@ -2330,7 +2429,7 @@ function renderCheckin() {
   if (d.done && ciRunning) { clearInterval(ciInterval); ciRunning = false; }
   updateCheckinUI();
 
-  // 连续打卡天数
+  // 连续打卡天数 + 断签提示
   const all = JSON.parse(localStorage.getItem('ciDays') || '[]');
   let streak = 0;
   const today = new Date();
@@ -2339,7 +2438,25 @@ function renderCheckin() {
     const k = 'ci_' + dd.toISOString().slice(0,10);
     if (all.includes(k)) streak++; else break;
   }
-  document.getElementById('ciStreak').textContent = streak > 0 ? '🔥 已连续打卡 ' + streak + ' 天' : '今天开始你的第一天！';
+  // 计算历史最长连续（用于断签后显示）
+  let prevStreak = 0, tempStreak = 0;
+  const yesterday = new Date(today); yesterday.setDate(today.getDate()-1);
+  const yKey = 'ci_' + yesterday.toISOString().slice(0,10);
+  if (streak === 0 && all.length > 0) {
+    // 从昨天往前数上一段连续
+    for (let i = 1; i < 365; i++) {
+      const dd = new Date(today); dd.setDate(dd.getDate() - i);
+      const k = 'ci_' + dd.toISOString().slice(0,10);
+      if (all.includes(k)) tempStreak++; else if (tempStreak > 0) break;
+    }
+    prevStreak = tempStreak;
+  }
+  let streakText = streak > 0
+    ? '🔥 已连续打卡 ' + streak + ' 天'
+    : prevStreak > 0
+      ? '😢 上次连续打卡 ' + prevStreak + ' 天，今天重新开始！'
+      : '今天开始你的第一天！';
+  document.getElementById('ciStreak').textContent = streakText;
 
   // 本月日历
   const cal = document.getElementById('ciCalendar');
