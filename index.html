@@ -611,8 +611,6 @@ function showSimilarity(userText) {
 
 renderScenes();
 updateReviewBadge();
-// 初始化顶部打卡条
-(function(){ const d = ciLoad(); ciSeconds = d.s; updateCheckinUI(); })();
 
 // ── tab 切换 ──
 function switchTab(tab) {
@@ -2364,5 +2362,7 @@ function renderCheckin() {
   }
   cal.innerHTML = html;
 }
+// 初始化顶部打卡条
+(function(){ const d = ciLoad(); ciSeconds = d.s; updateCheckinUI(); })();
 </script>
 </html>
