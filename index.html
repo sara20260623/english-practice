@@ -465,11 +465,22 @@ function setSpeed(rate) {
 }
 
 function speak(text) {
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-US';
-  u.rate = speechRate;
   speechSynthesis.cancel();
-  setTimeout(() => speechSynthesis.speak(u), 100);
+  function doSpeak() {
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    u.rate = speechRate;
+    const voices = speechSynthesis.getVoices();
+    const v = voices.find(v => v.lang.startsWith('en')) || voices[0];
+    if (v) u.voice = v;
+    speechSynthesis.speak(u);
+  }
+  const voices = speechSynthesis.getVoices();
+  if (voices.length) {
+    doSpeak();
+  } else {
+    speechSynthesis.onvoiceschanged = () => { speechSynthesis.onvoiceschanged = null; doSpeak(); };
+  }
 }
 
 function addMsg(role, text, zh) {
