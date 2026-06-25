@@ -458,10 +458,16 @@ function startScene(id) {
 
 let speechRate = 1;
 let cachedVoice = null;
-speechSynthesis.onvoiceschanged = () => {
+window.addEventListener('load', () => {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.onvoiceschanged = () => {
+    const voices = speechSynthesis.getVoices();
+    cachedVoice = voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en')) || null;
+  };
+  // 部分浏览器不触发 onvoiceschanged，直接尝试获取
   const voices = speechSynthesis.getVoices();
-  cachedVoice = voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en')) || null;
-};
+  if (voices.length) cachedVoice = voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en')) || null;
+});
 function setSpeed(rate) {
   speechRate = rate;
   document.querySelectorAll('.speed-btn').forEach(b => {
