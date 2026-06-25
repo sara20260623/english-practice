@@ -476,12 +476,17 @@ function setSpeed(rate) {
 }
 
 function speak(text) {
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-US';
-  u.rate = speechRate;
-  if (cachedVoice) u.voice = cachedVoice;
-  speechSynthesis.cancel();
-  speechSynthesis.speak(u);
+  const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&type=1`;
+  const audio = new Audio(url);
+  audio.play().catch(() => {
+    if (!window.speechSynthesis) return;
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    u.rate = speechRate;
+    if (cachedVoice) u.voice = cachedVoice;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  });
 }
 
 function addMsg(role, text, zh) {
