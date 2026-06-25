@@ -457,6 +457,11 @@ function startScene(id) {
 }
 
 let speechRate = 1;
+let cachedVoice = null;
+speechSynthesis.onvoiceschanged = () => {
+  const voices = speechSynthesis.getVoices();
+  cachedVoice = voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en')) || null;
+};
 function setSpeed(rate) {
   speechRate = rate;
   document.querySelectorAll('.speed-btn').forEach(b => {
@@ -466,21 +471,11 @@ function setSpeed(rate) {
 
 function speak(text) {
   speechSynthesis.cancel();
-  function doSpeak() {
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'en-US';
-    u.rate = speechRate;
-    const voices = speechSynthesis.getVoices();
-    const v = voices.find(v => v.lang.startsWith('en')) || voices[0];
-    if (v) u.voice = v;
-    speechSynthesis.speak(u);
-  }
-  const voices = speechSynthesis.getVoices();
-  if (voices.length) {
-    doSpeak();
-  } else {
-    speechSynthesis.onvoiceschanged = () => { speechSynthesis.onvoiceschanged = null; doSpeak(); };
-  }
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US';
+  u.rate = speechRate;
+  if (cachedVoice) u.voice = cachedVoice;
+  speechSynthesis.speak(u);
 }
 
 function addMsg(role, text, zh) {
