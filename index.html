@@ -476,11 +476,11 @@ function setSpeed(rate) {
 }
 
 function speak(text) {
-  speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'en-US';
   u.rate = speechRate;
   if (cachedVoice) u.voice = cachedVoice;
+  speechSynthesis.cancel();
   speechSynthesis.speak(u);
 }
 
