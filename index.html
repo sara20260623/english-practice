@@ -1357,7 +1357,9 @@ function startRepeatMic(targetEn) {
   repeatRecognition.interimResults = false;
   btn.textContent = '⏹️ 停止';
   btn.style.background = '#fee2e2';
+  let gotResult = false;
   repeatRecognition.onresult = (e) => {
+    gotResult = true;
     const said = e.results[0][0].transcript;
     const score = similarity(said, targetEn);
     const res = document.getElementById('repeatResult');
@@ -1375,11 +1377,20 @@ function startRepeatMic(targetEn) {
   };
   repeatRecognition.onend = () => {
     repeatRecognition = null;
-    if (btn) { btn.textContent = '🎤 再次跟读'; btn.style.background = ''; }
+    const b = document.getElementById('repeatMicBtn');
+    if (b) { b.textContent = '🎤 再次跟读'; b.style.background = ''; }
+    if (!gotResult) {
+      const res = document.getElementById('repeatResult');
+      if (res) { res.style.display = 'block'; res.className = 'repeat-result bad'; res.textContent = '没有识别到语音，请说话后再停止，或检查麦克风权限。'; }
+    }
   };
-  repeatRecognition.onerror = () => {
+  repeatRecognition.onerror = (e) => {
     repeatRecognition = null;
-    if (btn) { btn.textContent = '🎤 开始跟读'; btn.style.background = ''; }
+    const b = document.getElementById('repeatMicBtn');
+    if (b) { b.textContent = '🎤 开始跟读'; b.style.background = ''; }
+    const errMsgs = { 'not-allowed': '麦克风权限被拒绝，请在浏览器地址栏点击锁形图标开启权限。', 'no-speech': '没有检测到语音，请靠近麦克风再试。', 'audio-capture': '无法访问麦克风设备，请检查设备是否连接。', 'network': '网络错误，语音识别需要联网。' };
+    const res = document.getElementById('repeatResult');
+    if (res) { res.style.display = 'block'; res.className = 'repeat-result bad'; res.textContent = errMsgs[e.error] || ('录音出错：' + e.error); }
   };
   repeatRecognition.start();
 }
