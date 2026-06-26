@@ -476,13 +476,45 @@ function setSpeed(rate) {
 }
 
 function speak(text) {
-  if (!window.speechSynthesis) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-US';
-  u.rate = speechRate;
-  if (cachedVoice) u.voice = cachedVoice;
-  speechSynthesis.speak(u);
+  xfTTS(text).catch(() => {
+    if (!window.speechSynthesis) return;
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US'; u.rate = speechRate;
+    if (cachedVoice) u.voice = cachedVoice;
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  });
+}
+
+function xfTTS(text) {
+  return new Promise((resolve, reject) => {
+    const date = new Date().toUTCString();
+    const signStr = 'host: tts-api.xfyun.cn\ndate: ' + date + '\nGET /v2/tts HTTP/1.1';
+    const enc = new TextEncoder();
+    crypto.subtle.importKey('raw', enc.encode(XF_APISECRET), {name:'HMAC',hash:'SHA-256'}, false, ['sign'])
+    .then(key => crypto.subtle.sign('HMAC', key, enc.encode(signStr)))
+    .then(sig => {
+      const b64sig = btoa(String.fromCharCode(...new Uint8Array(sig)));
+      const auth = btoa(`api_key="${XF_APIKEY}", algorithm="hmac-sha256", headers="host date request-line", signature="${b64sig}"`);
+      const url = `wss://tts-api.xfyun.cn/v2/tts?authorization=${encodeURIComponent(auth)}&date=${encodeURIComponent(date)}&host=tts-api.xfyun.cn`;
+      const ws = new WebSocket(url);
+      const chunks = [];
+      ws.onopen = () => ws.send(JSON.stringify({
+        common: {app_id: XF_APPID},
+        business: {aue:'lame', sfl:1, vcn:'x4_EnUs_Catherine', speed:50, volume:50, pitch:50, tte:'utf8'},
+        data: {status:2, text: btoa(unescape(encodeURIComponent(text)))}
+      }));
+      ws.onmessage = e => {
+        const d = JSON.parse(e.data);
+        if (d.code !== 0) { ws.close(); reject(new Error(d.message)); return; }
+        if (d.data?.audio) chunks.push(d.data.audio);
+        if (d.data?.status === 2) {
+          ws.close();
+          new Audio('data:audio/mp3;base64,' + chunks.join('')).play().then(resolve).catch(reject);
+        }
+      };
+      ws.onerror = () => reject(new Error('TTS失败'));
+    });
+  });
 }
 
 function addMsg(role, text, zh) {
