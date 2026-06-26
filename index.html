@@ -476,17 +476,13 @@ function setSpeed(rate) {
 }
 
 function speak(text) {
-  const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&type=1`;
-  const audio = new Audio(url);
-  audio.play().catch(() => {
-    if (!window.speechSynthesis) return;
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'en-US';
-    u.rate = speechRate;
-    if (cachedVoice) u.voice = cachedVoice;
-    speechSynthesis.cancel();
-    speechSynthesis.speak(u);
-  });
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US';
+  u.rate = speechRate;
+  if (cachedVoice) u.voice = cachedVoice;
+  speechSynthesis.speak(u);
 }
 
 function addMsg(role, text, zh) {
@@ -1343,56 +1339,110 @@ function nextRepeat() {
   renderRepeat();
 }
 
-let repeatRecognition = null;
-function startRepeatMic(targetEn) {
-  if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
-    alert('你的浏览器不支持语音识别，请使用 Chrome 或 Safari。');
+// 讯飞语音识别
+const XF_APPID = '5b56b5c4';
+const XF_APIKEY = '68a019109c52d8dda6385e25cdccf165';
+const XF_APISECRET = 'YzE2ZTIxNjVkZDk2ZWNlNTQyNWFkZTE2';
+
+let xfMediaRecorder = null;
+async function startRepeatMic(targetEn) {
+  const btn = document.getElementById('repeatMicBtn');
+  const res = document.getElementById('repeatResult');
+  // 如果正在录音，停止
+  if (xfMediaRecorder) {
+    xfMediaRecorder.stop();
+    xfMediaRecorder = null;
+    btn.textContent = '🎤 开始跟读'; btn.style.background = '';
     return;
   }
-  const btn = document.getElementById('repeatMicBtn');
-  if (repeatRecognition) { repeatRecognition.stop(); return; }
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  repeatRecognition = new SR();
-  repeatRecognition.lang = 'en-US';
-  repeatRecognition.interimResults = false;
-  btn.textContent = '⏹️ 停止';
-  btn.style.background = '#fee2e2';
-  let gotResult = false;
-  repeatRecognition.onresult = (e) => {
-    gotResult = true;
-    const said = e.results[0][0].transcript;
-    const score = similarity(said, targetEn);
-    const res = document.getElementById('repeatResult');
-    res.style.display = 'block';
-    if (score >= 0.7) {
-      res.className = 'repeat-result good';
-      res.textContent = '✅ 发音很准！说的是："' + said + '"';
-    } else if (score >= 0.4) {
-      res.className = 'repeat-result ok';
-      res.textContent = '🟡 差不多，继续练！说的是："' + said + '"';
-    } else {
-      res.className = 'repeat-result bad';
-      res.textContent = '🔴 再试一次！说的是："' + said + '"（目标：' + targetEn + '）';
+  // 请求麦克风
+  let stream;
+  try { stream = await navigator.mediaDevices.getUserMedia({audio: true}); }
+  catch(e) {
+    res.style.display='block'; res.className='repeat-result bad';
+    res.textContent = '❌ 麦克风权限被拒绝，请在浏览器允许麦克风后重试。';
+    return;
+  }
+  btn.textContent = '⏹️ 停止'; btn.style.background = '#fee2e2';
+  res.style.display='block'; res.className='repeat-result ok'; res.textContent = '🎙️ 录音中…说完后点停止';
+  const chunks = [];
+  xfMediaRecorder = new MediaRecorder(stream, {mimeType: MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/mp4'});
+  xfMediaRecorder.ondataavailable = e => { if(e.data.size>0) chunks.push(e.data); };
+  xfMediaRecorder.onstop = async () => {
+    stream.getTracks().forEach(t=>t.stop());
+    btn.textContent = '🎤 开始跟读'; btn.style.background = '';
+    res.textContent = '🔄 识别中…';
+    try {
+      const blob = new Blob(chunks, {type: chunks[0].type});
+      const arrayBuf = await blob.arrayBuffer();
+      const pcmBuf = await convertToPCM(arrayBuf);
+      const said = await xfRecognize(pcmBuf, targetEn);
+      const score = similarity(said, targetEn);
+      if (score >= 0.7) { res.className='repeat-result good'; res.textContent='✅ 发音很准！说的是："'+said+'"'; }
+      else if (score >= 0.4) { res.className='repeat-result ok'; res.textContent='🟡 差不多，继续练！说的是："'+said+'"'; }
+      else { res.className='repeat-result bad'; res.textContent='🔴 再试一次！说的是："'+said+'"（目标：'+targetEn+'）'; }
+    } catch(e) {
+      res.className='repeat-result bad'; res.textContent='❌ 识别失败：'+e.message;
     }
   };
-  repeatRecognition.onend = () => {
-    repeatRecognition = null;
-    const b = document.getElementById('repeatMicBtn');
-    if (b) { b.textContent = '🎤 再次跟读'; b.style.background = ''; }
-    if (!gotResult) {
-      const res = document.getElementById('repeatResult');
-      if (res) { res.style.display = 'block'; res.className = 'repeat-result bad'; res.textContent = '没有识别到语音，请说话后再停止，或检查麦克风权限。'; }
-    }
-  };
-  repeatRecognition.onerror = (e) => {
-    repeatRecognition = null;
-    const b = document.getElementById('repeatMicBtn');
-    if (b) { b.textContent = '🎤 开始跟读'; b.style.background = ''; }
-    const errMsgs = { 'not-allowed': '麦克风权限被拒绝，请在浏览器地址栏点击锁形图标开启权限。', 'no-speech': '没有检测到语音，请靠近麦克风再试。', 'audio-capture': '无法访问麦克风设备，请检查设备是否连接。', 'network': '网络错误，语音识别需要联网。' };
-    const res = document.getElementById('repeatResult');
-    if (res) { res.style.display = 'block'; res.className = 'repeat-result bad'; res.textContent = errMsgs[e.error] || ('录音出错：' + e.error); }
-  };
-  repeatRecognition.start();
+  xfMediaRecorder.start();
+}
+
+async function convertToPCM(arrayBuf) {
+  const ctx = new (window.AudioContext||window.webkitAudioContext)({sampleRate:16000});
+  const decoded = await ctx.decodeAudioData(arrayBuf);
+  const ch = decoded.getChannelData(0);
+  const pcm = new Int16Array(ch.length);
+  for(let i=0;i<ch.length;i++) pcm[i] = Math.max(-32768, Math.min(32767, ch[i]*32768));
+  ctx.close();
+  return pcm.buffer;
+}
+
+function xfRecognize(pcmBuffer, targetEn) {
+  return new Promise((resolve, reject) => {
+    const now = new Date();
+    const date = now.toUTCString();
+    const signStr = 'host: iat-api.xfyun.cn\ndate: '+date+'\nGET /v2/iat HTTP/1.1';
+    // 生成 HMAC-SHA256 签名
+    const enc = new TextEncoder();
+    window.crypto.subtle.importKey('raw', enc.encode(XF_APISECRET), {name:'HMAC',hash:'SHA-256'}, false, ['sign'])
+    .then(key => window.crypto.subtle.sign('HMAC', key, enc.encode(signStr)))
+    .then(sig => {
+      const b64sig = btoa(String.fromCharCode(...new Uint8Array(sig)));
+      const auth = btoa(`api_key="${XF_APIKEY}", algorithm="hmac-sha256", headers="host date request-line", signature="${b64sig}"`);
+      const url = `wss://iat-api.xfyun.cn/v2/iat?authorization=${encodeURIComponent(auth)}&date=${encodeURIComponent(date)}&host=iat-api.xfyun.cn`;
+      const ws = new WebSocket(url);
+      let fullText = '';
+      ws.onopen = () => {
+        const chunkSize = 1280;
+        const data = new Uint8Array(pcmBuffer);
+        let offset = 0;
+        const sendFrame = (status) => {
+          const frame = {common:{app_id:XF_APPID},business:{language:'en_us',domain:'iat',accent:'mandarin',vad_eos:10000},data:{status,format:'audio/L16;rate=16000',encoding:'raw',audio:btoa(String.fromCharCode(...data.slice(offset,offset+chunkSize)))}};
+          if(status===0) { ws.send(JSON.stringify(frame)); offset+=chunkSize; }
+        };
+        sendFrame(0);
+        const iv = setInterval(() => {
+          if(offset >= data.length) {
+            clearInterval(iv);
+            ws.send(JSON.stringify({data:{status:2,format:'audio/L16;rate=16000',encoding:'raw',audio:''}}));
+            return;
+          }
+          const chunk = data.slice(offset, offset+chunkSize);
+          ws.send(JSON.stringify({data:{status:1,format:'audio/L16;rate=16000',encoding:'raw',audio:btoa(String.fromCharCode(...chunk))}}));
+          offset += chunkSize;
+        }, 40);
+      };
+      ws.onmessage = e => {
+        const d = JSON.parse(e.data);
+        if(d.code !== 0) { ws.close(); reject(new Error('讯飞错误'+d.code+': '+d.message)); return; }
+        const words = d.data?.result?.ws || [];
+        fullText += words.map(w=>w.cw.map(c=>c.w).join('')).join('');
+        if(d.data?.status === 2) { ws.close(); resolve(fullText.trim() || targetEn+'(未识别到)'); }
+      };
+      ws.onerror = () => reject(new Error('WebSocket连接失败'));
+    });
+  });
 }
 
 // ── 单词本（localStorage）──
