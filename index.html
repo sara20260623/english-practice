@@ -476,7 +476,8 @@ function setSpeed(rate) {
 }
 
 function speak(text) {
-  xfTTS(text).catch(() => {
+  xfTTS(text).catch((err) => {
+    document.title = '❌' + (err&&err.message||err);
     if (!window.speechSynthesis) return;
     const u = new SpeechSynthesisUtterance(text);
     u.lang = 'en-US'; u.rate = speechRate;
