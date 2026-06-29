@@ -186,6 +186,7 @@ textarea:focus{border-color:#4a90d9;box-shadow:0 0 0 3px rgba(74,144,217,.12)}
 </style>
 </head>
 <body>
+<div id="debugBar" style="display:none;background:#fee2e2;color:#991b1b;padding:8px;font-size:.8rem;position:fixed;top:0;left:0;right:0;z-index:9999;word-break:break-all"></div>
 <h1>💬 职场英语口语练习</h1>
 <div class="ci-bar-wrap" id="ciBarWrap">
   <span class="ci-bar-time" id="ciBarTime">00:00</span>
@@ -476,14 +477,12 @@ function setSpeed(rate) {
 }
 
 function speak(text) {
-  xfTTS(text).catch((err) => {
-    document.title = '❌' + (err&&err.message||err);
-    if (!window.speechSynthesis) return;
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'en-US'; u.rate = speechRate;
-    if (cachedVoice) u.voice = cachedVoice;
-    speechSynthesis.cancel(); speechSynthesis.speak(u);
-  });
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US'; u.rate = speechRate;
+  if (cachedVoice) u.voice = cachedVoice;
+  speechSynthesis.speak(u);
 }
 
 function xfTTS(text) {
@@ -501,7 +500,7 @@ function xfTTS(text) {
       const chunks = [];
       ws.onopen = () => ws.send(JSON.stringify({
         common: {app_id: XF_APPID},
-        business: {aue:'lame', sfl:1, vcn:'x4_EnUs_Catherine', speed:50, volume:50, pitch:50, tte:'utf8'},
+        business: {aue:'lame', sfl:1, vcn:'xiaoyan', speed:50, volume:50, pitch:50, tte:'utf8'},
         data: {status:2, text: btoa(unescape(encodeURIComponent(text)))}
       }));
       ws.onmessage = e => {
