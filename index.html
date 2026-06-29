@@ -477,7 +477,8 @@ function setSpeed(rate) {
 }
 
 function speak(text) {
-  const audio = new Audio('https://dict.youdao.com/dictvoice?audio=' + encodeURIComponent(text) + '&type=2');
+  const url = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=en-US&client=tw-ob&q=' + encodeURIComponent(text);
+  const audio = new Audio(url);
   audio.play().catch(() => {
     if (!window.speechSynthesis) return;
     const u = new SpeechSynthesisUtterance(text);
