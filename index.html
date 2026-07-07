@@ -497,9 +497,9 @@ const IPA_TTS_MAP = {
   '/dz/':'beds', '/tr/':'tree', '/dr/':'dream'
 };
 function speakIPA(ipa) {
-  const word = IPA_TTS_MAP[ipa];
-  if (word) speak(word);
-  else fallbackSpeak(ipa);
+  const clean = ipa.replace(/\//g, '');
+  const audio = new Audio('https://dict.youdao.com/dictvoice?audio=' + encodeURIComponent(clean) + '&type=2');
+  audio.play().catch(() => fallbackSpeak(clean));
 }
 function fallbackSpeak(text) {
   if (!window.speechSynthesis) return;
