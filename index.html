@@ -477,10 +477,6 @@ function setSpeed(rate) {
 }
 
 function speak(text) {
-  if (text.includes(' ') || text.length > 20) {
-    fallbackSpeak(text);
-    return;
-  }
   const audio = new Audio('https://dict.youdao.com/dictvoice?audio=' + encodeURIComponent(text) + '&type=2');
   audio.play().catch(() => fallbackSpeak(text));
 }
