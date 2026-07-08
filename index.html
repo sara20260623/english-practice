@@ -477,8 +477,7 @@ function setSpeed(rate) {
 }
 
 function speak(text) {
-  const url = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=' + encodeURIComponent(text);
-  const audio = new Audio(url);
+  const audio = new Audio('https://dict.youdao.com/dictvoice?audio=' + encodeURIComponent(text) + '&type=2');
   audio.play().catch(() => fallbackSpeak(text));
 }
 const IPA_TTS_MAP = {
@@ -494,9 +493,9 @@ const IPA_TTS_MAP = {
   '/dz/':'beds', '/tr/':'tree', '/dr/':'dream'
 };
 function speakIPA(ipa) {
-  const clean = ipa.replace(/\//g, '');
-  const audio = new Audio('https://dict.youdao.com/dictvoice?audio=' + encodeURIComponent(clean) + '&type=2');
-  audio.play().catch(() => fallbackSpeak(clean));
+  const word = IPA_TTS_MAP[ipa];
+  if (word) speak(word);
+  else fallbackSpeak(ipa.replace(/\//g, ''));
 }
 function fallbackSpeak(text) {
   if (!window.speechSynthesis) return;
