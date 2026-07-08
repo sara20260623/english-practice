@@ -477,7 +477,9 @@ function setSpeed(rate) {
 }
 
 function speak(text) {
-  fallbackSpeak(text);
+  const url = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=' + encodeURIComponent(text);
+  const audio = new Audio(url);
+  audio.play().catch(() => fallbackSpeak(text));
 }
 const IPA_TTS_MAP = {
   '/iː/':'see', '/ɪ/':'sit', '/e/':'bed', '/æ/':'cat', '/ɑː/':'car',
@@ -499,10 +501,17 @@ function speakIPA(ipa) {
 function fallbackSpeak(text) {
   if (!window.speechSynthesis) return;
   speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-US'; u.rate = speechRate;
-  if (cachedVoice) u.voice = cachedVoice;
-  speechSynthesis.speak(u);
+  const doSpeak = () => {
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US'; u.rate = speechRate;
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en')) || null;
+    if (voice) u.voice = voice;
+    speechSynthesis.speak(u);
+  };
+  const voices = speechSynthesis.getVoices();
+  if (voices.length) { doSpeak(); }
+  else { speechSynthesis.onvoiceschanged = () => { doSpeak(); }; }
 }
 
 function xfTTS(text) {
@@ -2442,7 +2451,6 @@ function renderPhonics(idx) {
       <div class="phonics-sentences">${sentsHtml}</div>
     </div>
   `;
-  speak(p.words[0].en);
 }
 
 function startPhonicsMic(type, pidx, sidx, target) {
