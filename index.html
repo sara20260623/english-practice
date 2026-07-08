@@ -477,8 +477,7 @@ function setSpeed(rate) {
 }
 
 function speak(text) {
-  const audio = new Audio('https://dict.youdao.com/dictvoice?audio=' + encodeURIComponent(text) + '&type=2');
-  audio.play().catch(() => fallbackSpeak(text));
+  fallbackSpeak(text);
 }
 const IPA_TTS_MAP = {
   '/iː/':'see', '/ɪ/':'sit', '/e/':'bed', '/æ/':'cat', '/ɑː/':'car',
