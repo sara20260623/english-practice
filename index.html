@@ -249,6 +249,8 @@ textarea:focus{border-color:#4a90d9;box-shadow:0 0 0 3px rgba(74,144,217,.12)}
   <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:10px">
     <button class="quiz-btn" style="padding:6px 14px;font-size:.8rem" onclick="startWordbookQuiz()">🧠 复习测验</button>
     <button class="quiz-btn secondary" style="padding:6px 14px;font-size:.8rem" onclick="exportWordbook()">📤 导出单词本</button>
+    <button class="quiz-btn secondary" style="padding:6px 14px;font-size:.8rem" onclick="document.getElementById('importFile').click()">📥 导入单词本</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importWordbook(this)">
   </div>
   <div class="wordbook" id="wordbookList"></div>
 </div>
@@ -1247,9 +1249,32 @@ function renderVocab() {
     if (!items.length) return '';
     return `<div class="vocab-section" id="cat-${g.title}">${g.title}</div>` +
       items.map(v => {
-        // lookup phonetic from PHONICS data
+        // lookup phonetic from PHONICS data first, then cache
         const pw = typeof PHONICS !== 'undefined' ? PHONICS.flatMap(p=>p.words).find(w=>w.en.toLowerCase()===v.en.toLowerCase()) : null;
-        const symHtml = pw ? `<div class="sym">${pw.sym}${pw.rhyme ? ` <span style="color:#e07a2f;font-size:.7rem">🗣 ${pw.rhyme}</span>` : ''}</div>` : '';
+        const cache = JSON.parse(sessionStorage.getItem('phoneticCache')||'{}');
+        const cachedSym = cache[v.en.toLowerCase()];
+        const sym = pw ? pw.sym : (cachedSym || '');
+        const rhyme = (pw && pw.rhyme) ? pw.rhyme : (RHYME_MAP[v.en.toLowerCase()] || RHYME_MAP[v.en] || '');
+        const symHtml = sym
+          ? `<div class="sym">${sym}${rhyme ? ` <span style="color:#e07a2f;font-size:.7rem">🗣 ${rhyme}</span>` : ''}</div>`
+          : `<div class="sym" id="sym-${v.en.replace(/\s+/g,'_')}">${rhyme ? `<span style="color:#e07a2f;font-size:.7rem">🗣 ${rhyme}</span>` : '<span style="color:#ccc;font-size:.7rem">查询中…</span>'}</div>`;
+        if (!sym) {
+          fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + encodeURIComponent(v.en))
+            .then(r=>r.json()).then(data=>{
+              if(!Array.isArray(data)||!data[0]) return;
+              const phonetics = data[0].phonetics||[];
+              const s = (phonetics.find(p=>p.text)||{}).text || data[0].phonetic || '';
+              if(!s) return;
+              const c = JSON.parse(sessionStorage.getItem('phoneticCache')||'{}');
+              c[v.en.toLowerCase()] = s;
+              sessionStorage.setItem('phoneticCache', JSON.stringify(c));
+              const el = document.getElementById('sym-' + v.en.replace(/\s+/g,'_'));
+              if(el) el.innerHTML = s;
+            }).catch(()=>{
+              const el = document.getElementById('sym-' + v.en.replace(/\s+/g,'_'));
+              if(el) el.innerHTML = '';
+            });
+        }
         return `<div class="vocab-card" onclick="speak('${v.en.replace(/'/g,"\\'")}')">
           <div class="en">${v.en} <button onclick="event.stopPropagation();speak('${v.en.replace(/'/g,"\\'")}')  " style="background:none;border:none;cursor:pointer;font-size:.8rem;opacity:.5">🔊</button>
             <button class="save-word-btn" onclick="event.stopPropagation();saveWord('${v.en.replace(/'/g,"\\'")}','${v.zh.replace(/'/g,"\\'")}')">+ 单词本</button>
@@ -1525,17 +1550,28 @@ function updateReviewBadge() {
 
 function saveWord(en, zh) {
   const book = JSON.parse(localStorage.getItem('wordbook') || '[]');
-  if (!book.find(w => w.en === en)) {
-    const pw = typeof PHONICS !== 'undefined' ? PHONICS.flatMap(p=>p.words).find(w=>w.en.toLowerCase()===en.toLowerCase()) : null;
-    const sym = pw ? pw.sym : '';
-    const rhyme = pw ? (pw.rhyme || '') : '';
-    book.push({en, zh, sym, rhyme, date: new Date().toLocaleDateString(), addedDate: new Date().toISOString()});
-    localStorage.setItem('wordbook', JSON.stringify(book));
-    updateReviewBadge();
-    alert('已加入单词本：' + en);
-  } else {
-    alert('已在单词本中：' + en);
-  }
+  if (book.find(w => w.en === en)) { alert('已在单词本中：' + en); return; }
+  // 先用本地 PHONICS 数据
+  const pw = typeof PHONICS !== 'undefined' ? PHONICS.flatMap(p=>p.words).find(w=>w.en.toLowerCase()===en.toLowerCase()) : null;
+  const rhyme = (pw && pw.rhyme) ? pw.rhyme : (RHYME_MAP[en.toLowerCase()] || RHYME_MAP[en] || '');
+  const entry = {en, zh, sym: pw ? pw.sym : '', rhyme, date: new Date().toLocaleDateString(), addedDate: new Date().toISOString()};
+  book.push(entry);
+  localStorage.setItem('wordbook', JSON.stringify(book));
+  updateReviewBadge();
+  alert('已加入单词本：' + en);
+  // 在线查音标（异步补充）
+  fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + encodeURIComponent(en))
+    .then(r => r.json())
+    .then(data => {
+      if (!Array.isArray(data) || !data[0]) return;
+      const phonetics = data[0].phonetics || [];
+      const sym = (phonetics.find(p => p.text) || {}).text || data[0].phonetic || '';
+      if (!sym) return;
+      const b2 = JSON.parse(localStorage.getItem('wordbook') || '[]');
+      const idx = b2.findIndex(w => w.en === en);
+      if (idx !== -1) { b2[idx].sym = sym; localStorage.setItem('wordbook', JSON.stringify(b2)); }
+    })
+    .catch(() => {});
 }
 
 function renderWordbook() {
@@ -1667,12 +1703,97 @@ function startWordbookQuiz() {
 function exportWordbook() {
   const book = JSON.parse(localStorage.getItem('wordbook') || '[]');
   if (!book.length) { alert('单词本是空的'); return; }
-  const text = book.map(w => `${w.en}\t${w.zh}`).join('\n');
   const a = document.createElement('a');
-  a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(text);
-  a.download = 'wordbook.txt';
+  a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(book));
+  a.download = 'wordbook.json';
   a.click();
 }
+
+function importWordbook(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (!Array.isArray(imported)) { alert('文件格式错误'); return; }
+      const existing = JSON.parse(localStorage.getItem('wordbook') || '[]');
+      const merged = [...existing];
+      let added = 0;
+      imported.forEach(w => {
+        if (w.en && w.zh && !merged.find(x => x.en.toLowerCase() === w.en.toLowerCase())) {
+          merged.push(w);
+          added++;
+        }
+      });
+      localStorage.setItem('wordbook', JSON.stringify(merged));
+      input.value = '';
+      alert(`导入成功，新增 ${added} 个单词`);
+      renderWordbook();
+    } catch(err) {
+      alert('文件解析失败，请使用导出的 .json 文件');
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ── 谐音映射表 ──
+const RHYME_MAP = {
+  // 数据对账
+  'reconciliation':'瑞康斯利艾申','discrepancy':'迪斯克瑞潘西','delta':'得尔塔','offset':'奥夫赛特',
+  'mismatch':'米斯麦趣','gap':'盖普','variance':'维尔瑞安斯','threshold':'斯瑞修德',
+  'baseline':'贝斯莱因','granularity':'格兰纽拉瑞提','accuracy':'艾克尤拉西','consistency':'肯西斯腾西',
+  'timeliness':'泰姆利尼斯','uniqueness':'尤尼克尼斯','completeness':'肯普里特尼斯',
+  // 数据库基础
+  'data':'得他','database':'得他贝斯','table':'忒宝','column':'扣伦','schema':'斯奇玛',
+  'metadata':'没他得他','source':'搜斯','target':'塔盖特','entity':'恩体提','dataset':'得他赛特',
+  'catalog':'卡他楼格','instance':'因斯腾斯','query':'奎锐','select':'塞雷克特','insert':'因瑟特',
+  'update':'阿普得特','delete':'地里特','truncate':'踹恩盖特','join':'乔因','subquery':'撒布奎锐',
+  'filter':'菲尔特','aggregation':'阿格瑞盖申','partition':'趴踢申','snapshot':'斯拿普绍特',
+  'backfill':'拜克菲','duplicate':'迪尤普利盖特','deduplication':'迪迪尤普利盖申',
+  'lineage':'莱尼居','index':'因得克斯','view':'维尤','distinct':'迪斯廷克特',
+  // 表类型
+  'fact table':'法克特忒宝','dimension table':'迪们雄忒宝','lookup table':'鲁克阿普忒宝',
+  'summary table':'萨马锐忒宝','wide table':'外德忒宝','base table':'贝斯忒宝',
+  'source table':'搜斯忒宝','upstream table':'阿普斯踹姆忒宝','downstream table':'道恩斯踹姆忒宝',
+  // 数仓
+  'data warehouse':'得他沃尔豪斯','star schema':'斯达斯奇玛','snowflake schema':'斯诺弗雷克斯奇玛',
+  'data mart':'得他马特','subject area':'萨布切克特艾瑞啊',
+  // ETL/管道
+  'pipeline':'派普莱因','workflow':'沃克夫楼','schedule':'斯凯朱','dependency':'迪潘得西',
+  'orchestration':'奥克斯踹申','incremental':'因克瑞门特','batch':'拜趣','streaming':'斯踹明',
+  'latency':'雷腾西','throughput':'斯鲁普特','checkpoint':'切克点特',
+  // 数据质量
+  'validate':'维尔得得','anomaly':'阿诺马利','monitor':'蒙尼特','metric':'美踹克','alert':'阿勒特',
+  // 商业分析
+  'dashboard':'带什板','dimension':'迪们雄','measure':'没绍','retention':'瑞腾申',
+  'conversion':'肯沃申','funnel':'发内尔','attribution':'阿踹比尤申','segment':'赛格门特',
+  // 系统工具
+  'kafka':'卡夫卡','spark':'斯帕克','hive':'嗨夫','cluster':'克拉斯特',
+  'deployment':'迪普楼门特','rollback':'楼拜克','configuration':'肯菲格瑞申','parameter':'帕拉米特',
+  'timeout':'泰姆奥特','permission':'泼米申','authentication':'奥森提盖申','authorization':'奥斯锐扎申',
+  'governance':'嗝弗南斯','encryption':'恩克瑞普申','compliance':'肯普莱安斯',
+  // 数据操作动词
+  'ingest':'因杰斯特','extract':'艾克斯踹克特','transform':'踹恩斯佛姆','synchronize':'辛克若奈兹',
+  'optimize':'奥普提迈兹','troubleshoot':'踹宝尔绍特','archive':'阿凯夫','debug':'迪拜格',
+  // 沟通
+  'align':'阿莱因','follow up':'佛楼阿普','loop in':'鲁普因','ping':'嘭',
+  'bandwidth':'拜恩德威斯','blocker':'拜拉克','milestone':'迈尔斯通','workaround':'沃克阿劳得',
+  'trade-off':'踹德奥夫','hotfix':'厚特菲克斯','spike':'斯派克',
+  // 错误信息
+  'syntax error':'辛塔克斯艾若','timeout':'泰姆奥特','permission denied':'泼米申迪奈德',
+  // 日常
+  'hello':'嗨楼','passport':'拍斯坡特','boarding pass':'波丁拍斯','luggage':'拉盖居',
+  'menu':'没纽','receipt':'瑞西特','discount':'迪斯扣特','reservation':'瑞赛沃申',
+  'temperature':'腾普瑞处','umbrella':'阿姆布瑞拉','vegetarian':'维居忒利安',
+  // 数字星期月份
+  'monday':'曼迪','tuesday':'踹兹迪','wednesday':'温兹迪','thursday':'斯尔兹迪',
+  'friday':'弗莱迪','saturday':'萨特迪','sunday':'撒恩迪',
+  'january':'战纽尔锐','february':'费布尔锐','march':'马趣','april':'爱普锐',
+  'august':'奥格斯特','september':'赛普腾伯','october':'奥克托伯','november':'诺温伯','december':'迪赛伯',
+  // 颜色
+  'orange':'奥润居','purple':'泼坡','yellow':'耶楼','brown':'布劳恩','humid':'休米德',
+};
 
 // ── 音标学习 ──
 const PHONICS = [
