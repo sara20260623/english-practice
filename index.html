@@ -1249,7 +1249,7 @@ function renderVocab() {
       items.map(v => {
         // lookup phonetic from PHONICS data
         const pw = typeof PHONICS !== 'undefined' ? PHONICS.flatMap(p=>p.words).find(w=>w.en.toLowerCase()===v.en.toLowerCase()) : null;
-        const symHtml = pw ? `<div class="sym">${pw.sym}</div>` : '';
+        const symHtml = pw ? `<div class="sym">${pw.sym}${pw.rhyme ? ` <span style="color:#e07a2f;font-size:.7rem">🗣 ${pw.rhyme}</span>` : ''}</div>` : '';
         return `<div class="vocab-card" onclick="speak('${v.en.replace(/'/g,"\\'")}')">
           <div class="en">${v.en} <button onclick="event.stopPropagation();speak('${v.en.replace(/'/g,"\\'")}')  " style="background:none;border:none;cursor:pointer;font-size:.8rem;opacity:.5">🔊</button>
             <button class="save-word-btn" onclick="event.stopPropagation();saveWord('${v.en.replace(/'/g,"\\'")}','${v.zh.replace(/'/g,"\\'")}')">+ 单词本</button>
@@ -1526,7 +1526,10 @@ function updateReviewBadge() {
 function saveWord(en, zh) {
   const book = JSON.parse(localStorage.getItem('wordbook') || '[]');
   if (!book.find(w => w.en === en)) {
-    book.push({en, zh, date: new Date().toLocaleDateString(), addedDate: new Date().toISOString()});
+    const pw = typeof PHONICS !== 'undefined' ? PHONICS.flatMap(p=>p.words).find(w=>w.en.toLowerCase()===en.toLowerCase()) : null;
+    const sym = pw ? pw.sym : '';
+    const rhyme = pw ? (pw.rhyme || '') : '';
+    book.push({en, zh, sym, rhyme, date: new Date().toLocaleDateString(), addedDate: new Date().toISOString()});
     localStorage.setItem('wordbook', JSON.stringify(book));
     updateReviewBadge();
     alert('已加入单词本：' + en);
@@ -1551,7 +1554,7 @@ function renderWordbook() {
     </div>` : '';
     return `<div class="wordbook-item" style="${due?'border-left:3px solid #f59e0b':''};cursor:pointer;flex-direction:column;align-items:stretch" onclick="toggleWbDetail(${i})">
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <span><b>${w.en}</b>${due?' <span class="review-badge">复习</span>':''} — ${w.zh}</span>
+        <span><b>${w.en}</b>${w.sym ? ` <span style="font-size:.75rem;color:#4a90d9">${w.sym}</span>` : ''}${w.rhyme ? ` <span style="font-size:.72rem;color:#e07a2f">🗣 ${w.rhyme}</span>` : ''}${due?' <span class="review-badge">复习</span>':''} — ${w.zh}</span>
         <span>
           <button onclick="event.stopPropagation();speak('${w.en.replace(/'/g,"\\'")}') " style="background:none;border:none;cursor:pointer;font-size:.85rem;opacity:.6">🔊</button>
           <button class="del-btn" onclick="event.stopPropagation();delWord(${i})">删除</button>
